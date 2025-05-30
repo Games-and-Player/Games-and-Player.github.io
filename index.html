@@ -313,7 +313,7 @@
             
             <div id="errorMessage" class="error" style="display: none;">
                 <i class="fas fa-exclamation-triangle"></i>
-                <strong>加载失败：</strong>请确保 final_complete_videos.json 文件在同一目录下。
+                <strong>加载失败：</strong>请确保 db.json 文件在同一目录下。
             </div>
             
             <table id="videosTable" class="table table-striped table-hover" style="display: none;">
@@ -391,7 +391,7 @@
         });
         
         function loadVideoData() {
-            fetch('final_complete_videos.json')
+            fetch('db.json')
                 .then(response => {
                     if (!response.ok) {
                         throw new Error('文件不存在或无法访问');
