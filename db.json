@@ -1,6 +1,47 @@
 {
     "videos": [
         {
+            "aid": 114844925694477,
+            "title": "我的微软账号被盗刷了，好在挽回损失",
+            "cover": "http://i1.hdslb.com/bfs/archive/ff289c4dff4b0e50924fcf1c56779daab70bd909.jpg",
+            "desc": "周末我经历了惊魂一刻。\n我的微软账号被盗刷了，惨遭损失。\n好在经过努力，成功挽回了被盗刷的金额。\n本期节目，就和大家分享经历，希望起到参考作用，顺便，也当个故事听听。",
+            "tags": [
+                "整点电子榨菜",
+                "微软",
+                "游戏杂谈",
+                "支付宝",
+                "客服",
+                "游戏文化",
+                "找回",
+                "xbox",
+                "盗刷"
+            ],
+            "cid": 31012292251,
+            "created_at": "2025-07-14 12:00",
+            "created_timestamp": 1752465600
+        },
+        {
+            "aid": 114829037674305,
+            "title": "大误！steam成功是因为玩家的囤积癖？",
+            "cover": "http://i2.hdslb.com/bfs/archive/6c80f4a41d82fc15e40e54edd24c300b6ee61db7.jpg",
+            "desc": "之前业界分析师chris zukowski曾谈到steam成功的诸多原因，其中关于玩家囤积癖成就steam的话题，最近引发热议。但实际上，这可能是断章取义后产生的误会。本期节目，我们就顺着这个话题聊聊。",
+            "tags": [
+                "整点电子榨菜",
+                "游戏杂谈",
+                "steam",
+                "chris zukowski",
+                "游戏文化",
+                "电脑游戏",
+                "囤积癖",
+                "valve",
+                "epic",
+                "业界分析"
+            ],
+            "cid": 30960520797,
+            "created_at": "2025-07-11 12:00",
+            "created_timestamp": 1752206400
+        },
+        {
             "aid": 114817813714386,
             "title": "层层突破，主机热卖要出几个圈？",
             "cover": "http://i0.hdslb.com/bfs/archive/4554691ea3c5576bea702925fbb6a2ce6d4ecfde.jpg",
