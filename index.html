@@ -994,6 +994,12 @@
                     setTimeout(function() {
                         initLazyLoading();
                     }, 100);
+                },
+                initComplete: function() {
+                    // DataTables 初始化完成后，如果有当前显示年份，进行筛选
+                    if (currentDisplayYear) {
+                        filterTableByYear(currentDisplayYear);
+                    }
                 }
             });
         }
@@ -1280,6 +1286,11 @@
             currentDisplayYear = availableYears[availableYears.length - 1];
             
             renderHeatmapCalendar();
+            
+            // 如果 DataTables 已经初始化，立即进行筛选
+            if ($.fn.DataTable.isDataTable('#videosTable')) {
+                filterTableByYear(currentDisplayYear);
+            }
         }
         
         function renderHeatmapCalendar() {
@@ -1364,6 +1375,7 @@
                     共有 ${activeDays} 天发布了视频，总计 ${totalVideos} 个视频，
                     最高单日发布 ${maxCount} 个视频
                     ${currentDateFilter ? `<br><strong>当前筛选：</strong>${formatDisplayDate(currentDateFilter)} <a href="javascript:clearDateFilter()" style="color: #667eea; text-decoration: none;">[清除筛选]</a>` : ''}
+                    <br><strong>表格筛选：</strong>仅显示${currentDisplayYear}年的视频 <a href="javascript:clearYearFilter()" style="color: #667eea; text-decoration: none;">[显示所有年份]</a>
                     <br><small style="color: #999;">💡 点击有视频的日期方块可筛选当天发布的视频</small>
                 </div>
             `;
@@ -1387,6 +1399,9 @@
             
             // 重新渲染
             renderHeatmapCalendar();
+            
+            // 过滤表格显示当前年份的数据
+            filterTableByYear(currentDisplayYear);
         }
         
         function processDailyData(videos) {
@@ -1595,9 +1610,12 @@
             
             currentDateFilter = date;
             
-            // 清除标签筛选
+            // 清除标签筛选和年份筛选
             if (currentTagFilter) {
                 clearTagFilter();
+            }
+            if (currentYearFilter) {
+                currentYearFilter = null;
             }
             
             // 更新视觉状态
@@ -1610,7 +1628,13 @@
             currentDateFilter = null;
             updateHeatmapSelection();
             updateDateFilterStats();
-            filterTableByDate();
+            
+            // 恢复年份筛选
+            if (currentDisplayYear) {
+                filterTableByYear(currentDisplayYear);
+            } else {
+                filterTableByDate();
+            }
         }
         
         function updateHeatmapSelection() {
@@ -1644,6 +1668,11 @@
         }
         
         function filterTableByDate() {
+            // 检查 DataTables 是否已经初始化
+            if (!$.fn.DataTable.isDataTable('#videosTable')) {
+                return;
+            }
+            
             const table = $('#videosTable').DataTable();
             
             if (currentDateFilter === null) {
@@ -1660,6 +1689,7 @@
         
         let currentTagFilter = null;
         let currentDateFilter = null;
+        let currentYearFilter = null;
         let originalTableData = null;
         
         function createTagCloud(videos) {
@@ -1734,9 +1764,12 @@
         function filterByTag(tag) {
             currentTagFilter = currentTagFilter === tag ? null : tag;
             
-            // 清除日期筛选
+            // 清除日期筛选和年份筛选
             if (currentDateFilter) {
                 clearDateFilter();
+            }
+            if (currentYearFilter) {
+                currentYearFilter = null;
             }
             
             document.querySelectorAll('.cloud-tag').forEach(tagElement => {
@@ -1759,7 +1792,21 @@
         
         function clearTagFilter() {
             currentTagFilter = null;
-            filterByTag(null);
+            
+            // 清除标签的视觉效果
+            document.querySelectorAll('.cloud-tag').forEach(tagElement => {
+                tagElement.classList.remove('active', 'filtered');
+            });
+            
+            // 更新标签统计
+            updateTagStats();
+            
+            // 恢复年份筛选
+            if (currentDisplayYear) {
+                filterTableByYear(currentDisplayYear);
+            } else {
+                filterTableByTag();
+            }
         }
         
         function updateTagStats() {
@@ -1774,6 +1821,11 @@
         }
         
         function filterTableByTag() {
+            // 检查 DataTables 是否已经初始化
+            if (!$.fn.DataTable.isDataTable('#videosTable')) {
+                return;
+            }
+            
             const table = $('#videosTable').DataTable();
             
             if (currentTagFilter === null) {
@@ -1781,6 +1833,30 @@
             } else {
                 table.search(currentTagFilter).draw();
             }
+        }
+        
+        function filterTableByYear(year) {
+            // 检查 DataTables 是否已经初始化
+            if (!$.fn.DataTable.isDataTable('#videosTable')) {
+                console.log('DataTables 未初始化，跳过年份筛选');
+                return;
+            }
+            
+            const table = $('#videosTable').DataTable();
+            
+            if (year === null) {
+                currentYearFilter = null;
+                table.search('').draw();
+            } else {
+                currentYearFilter = year;
+                // 搜索年份格式：2025 或 2025年
+                table.search(`${year}年|${year}-`, true, false).draw();
+            }
+        }
+        
+        function clearYearFilter() {
+            currentYearFilter = null;
+            filterTableByYear(null);
         }
         
         function toggleChart(chartType) {
