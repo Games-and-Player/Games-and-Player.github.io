@@ -781,6 +781,27 @@
                 <div class="stat-label">时间跨度(年)</div>
             </div>
         </div>
+
+        <!-- 标签云 -->
+        <div class="chart-container collapsible">
+            <div class="chart-header" onclick="toggleChart('tagcloud')">
+                <div class="header-content">
+                    <h3><i class="fas fa-tags"></i> 标签热力云</h3>
+                    <p>点击标签可筛选相关视频，标签大小表示使用频率</p>
+                </div>
+                <div class="collapse-btn">
+                    <i class="fas fa-chevron-up" id="tagcloudToggle"></i>
+                </div>
+            </div>
+            <div class="chart-content">
+                <div class="tag-cloud" id="tagCloud">
+                    <div class="tag-cloud-loading">
+                        <i class="fas fa-spinner fa-spin"></i>
+                        <span>正在生成标签云...</span>
+                    </div>
+                </div>
+            </div>
+        </div>
         
         <!-- 热力日历 -->
         <div class="chart-container collapsible">
@@ -798,27 +819,6 @@
                     <div class="heatmap-loading">
                         <i class="fas fa-spinner fa-spin"></i>
                         <span>正在生成热力日历...</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-        
-        <!-- 标签云 -->
-        <div class="chart-container collapsible">
-            <div class="chart-header" onclick="toggleChart('tagcloud')">
-                <div class="header-content">
-                    <h3><i class="fas fa-tags"></i> 标签热力云</h3>
-                    <p>点击标签可筛选相关视频，标签大小表示使用频率</p>
-                </div>
-                <div class="collapse-btn">
-                    <i class="fas fa-chevron-up" id="tagcloudToggle"></i>
-                </div>
-            </div>
-            <div class="chart-content">
-                <div class="tag-cloud" id="tagCloud">
-                    <div class="tag-cloud-loading">
-                        <i class="fas fa-spinner fa-spin"></i>
-                        <span>正在生成标签云...</span>
                     </div>
                 </div>
             </div>
