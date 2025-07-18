@@ -203,7 +203,15 @@
         #videosTable_wrapper .dataTables_length select {
             border-radius: 10px;
             border: 2px solid #667eea;
-            padding: 5px;
+            padding: 5px 25px 5px 8px;
+            appearance: none;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23667eea' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6,9 12,15 18,9'%3e%3c/polyline%3e%3c/svg%3e");
+            background-repeat: no-repeat;
+            background-position: right 6px center;
+            background-size: 14px;
+            width: 65px;
         }
         
         .dataTables_wrapper .dataTables_paginate .paginate_button {
@@ -252,6 +260,52 @@
             .table-container {
                 padding: 15px;
             }
+            
+            .chart-container {
+                padding: 15px;
+            }
+            
+            .tag-cloud {
+                padding: 10px;
+                min-height: 200px;
+            }
+            
+            .heatmap-container {
+                padding: 10px;
+                overflow-x: auto;
+            }
+            
+            .heatmap-days {
+                grid-template-columns: repeat(53, 8px);
+                gap: 1px;
+            }
+            
+            .heatmap-day {
+                width: 8px;
+                height: 8px;
+            }
+            
+            .cloud-tag {
+                padding: 6px 12px;
+                margin: 2px;
+                font-size: 0.85rem !important;
+            }
+            
+            .chart-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
+            
+            .chart-header:hover {
+                padding: 10px;
+                margin: -10px;
+            }
+            
+            .collapse-btn {
+                align-self: flex-end;
+                margin-top: -40px;
+            }
         }
         
         /* 模态框样式 */
@@ -273,6 +327,430 @@
             max-height: 300px;
             overflow-y: auto;
             line-height: 1.6;
+        }
+        
+        /* 图表容器样式 */
+        .chart-container {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.1);
+            backdrop-filter: blur(10px);
+        }
+        
+        .chart-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            cursor: pointer;
+            user-select: none;
+            transition: all 0.3s ease;
+        }
+        
+        .chart-header:hover {
+            background: rgba(102, 126, 234, 0.05);
+            border-radius: 10px;
+            padding: 10px;
+            margin: -10px -10px 15px -10px;
+        }
+        
+        .header-content {
+            text-align: left;
+            flex: 1;
+        }
+        
+        .chart-header h3 {
+            color: #667eea;
+            margin-bottom: 10px;
+            font-size: 1.5rem;
+            margin: 0 0 5px 0;
+        }
+        
+        .chart-header p {
+            color: #666;
+            margin: 0;
+            font-size: 0.9rem;
+        }
+        
+        .collapse-btn {
+            color: #667eea;
+            font-size: 1.2rem;
+            transition: transform 0.3s ease;
+            padding: 10px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+        }
+        
+        .collapse-btn:hover {
+            background: rgba(102, 126, 234, 0.1);
+        }
+        
+        .collapsible .chart-content,
+        .collapsible .tag-cloud {
+            transition: all 0.5s ease;
+            overflow: hidden;
+        }
+        
+        .collapsible.collapsed .chart-content,
+        .collapsible.collapsed .tag-cloud {
+            max-height: 0;
+            padding-top: 0;
+            padding-bottom: 0;
+            opacity: 0;
+        }
+        
+        .collapsible.collapsed .collapse-btn i {
+            transform: rotate(180deg);
+        }
+        
+        .collapsible.collapsed .chart-header {
+            margin-bottom: 0;
+        }
+        
+        .chart-content {
+            position: relative;
+            width: 100%;
+        }
+        
+        .chart-content:has(canvas) {
+            height: 400px;
+        }
+        
+        /* 标签云样式 */
+        .tag-cloud {
+            min-height: 300px;
+            padding: 20px;
+            text-align: center;
+            line-height: 1.8;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: flex-start;
+            gap: 10px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        
+        .collapsible.collapsed .chart-content {
+            min-height: 0 !important;
+        }
+        
+        .tag-cloud-loading {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            color: #667eea;
+            font-size: 1.1rem;
+        }
+        
+        .tag-cloud-loading i {
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+        
+        .cloud-tag {
+            display: inline-block;
+            padding: 8px 16px;
+            margin: 4px;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            border: 2px solid transparent;
+            text-decoration: none;
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .cloud-tag::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            transition: left 0.5s;
+        }
+        
+        .cloud-tag:hover {
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+            border-color: rgba(255,255,255,0.3);
+        }
+        
+        .cloud-tag:hover::before {
+            left: 100%;
+        }
+        
+        .cloud-tag.active {
+            background: #fff !important;
+            color: #667eea !important;
+            border-color: #667eea;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+        }
+        
+        .cloud-tag.filtered {
+            opacity: 0.3;
+            transform: scale(0.9);
+        }
+        
+        /* 标签大小等级 */
+        .cloud-tag.size-1 { font-size: 0.8rem; }
+        .cloud-tag.size-2 { font-size: 0.9rem; }
+        .cloud-tag.size-3 { font-size: 1.0rem; }
+        .cloud-tag.size-4 { font-size: 1.1rem; }
+        .cloud-tag.size-5 { font-size: 1.3rem; }
+        .cloud-tag.size-6 { font-size: 1.5rem; }
+        .cloud-tag.size-7 { font-size: 1.7rem; }
+        .cloud-tag.size-8 { font-size: 2.0rem; }
+        
+        /* 标签颜色等级 */
+        .cloud-tag.heat-1 { background: linear-gradient(45deg, #b3d9ff, #87ceeb); }
+        .cloud-tag.heat-2 { background: linear-gradient(45deg, #87ceeb, #5dade2); }
+        .cloud-tag.heat-3 { background: linear-gradient(45deg, #5dade2, #3498db); }
+        .cloud-tag.heat-4 { background: linear-gradient(45deg, #3498db, #2980b9); }
+        .cloud-tag.heat-5 { background: linear-gradient(45deg, #2980b9, #667eea); }
+        .cloud-tag.heat-6 { background: linear-gradient(45deg, #667eea, #764ba2); }
+        .cloud-tag.heat-7 { background: linear-gradient(45deg, #764ba2, #8e44ad); }
+        .cloud-tag.heat-8 { background: linear-gradient(45deg, #8e44ad, #9b59b6); }
+        
+        .tag-stats {
+            margin-top: 15px;
+            padding: 15px;
+            background: rgba(102, 126, 234, 0.1);
+            border-radius: 10px;
+            font-size: 0.9rem;
+            color: #666;
+        }
+        
+        /* 热力日历样式 */
+        .heatmap-container {
+            padding: 20px;
+            overflow-x: auto;
+        }
+        
+        .heatmap-container::-webkit-scrollbar {
+            width: 8px;
+        }
+        
+        .heatmap-container::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 4px;
+        }
+        
+        .heatmap-container::-webkit-scrollbar-thumb {
+            background: #667eea;
+            border-radius: 4px;
+        }
+        
+        .heatmap-container::-webkit-scrollbar-thumb:hover {
+            background: #5a6fd8;
+        }
+        
+        .heatmap-loading {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            color: #667eea;
+            font-size: 1.1rem;
+            padding: 50px;
+        }
+        
+        .heatmap-loading i {
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+        
+        .heatmap-calendar {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        
+        .heatmap-legend {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            font-size: 0.9rem;
+            color: #666;
+            margin-bottom: 15px;
+        }
+        
+        .heatmap-legend-item {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .heatmap-year {
+            margin-bottom: 20px;
+        }
+        
+        .heatmap-year-title {
+            font-size: 1.1rem;
+            font-weight: bold;
+            color: #667eea;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+        
+        .heatmap-months {
+            display: grid;
+            grid-template-columns: repeat(12, 1fr);
+            gap: 3px;
+            margin-bottom: 5px;
+            text-align: center;
+            font-size: 0.8rem;
+            color: #888;
+        }
+        
+        .heatmap-days {
+            display: grid;
+            grid-template-columns: repeat(53, 1fr);
+            gap: 2px;
+        }
+        
+        .heatmap-day {
+            width: 12px;
+            height: 12px;
+            border-radius: 2px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            position: relative;
+        }
+        
+        .heatmap-day:hover {
+            transform: scale(1.2);
+            border: 2px solid #667eea;
+            z-index: 10;
+        }
+        
+        .heatmap-day.selected {
+            border: 2px solid #ff6b6b;
+            box-shadow: 0 0 8px rgba(255, 107, 107, 0.5);
+        }
+        
+        .heatmap-day.has-videos {
+            cursor: pointer;
+        }
+        
+        .heatmap-day.has-videos:hover {
+            border-color: #667eea;
+        }
+        
+        .heatmap-day.level-0 {
+            background: #ebedf0;
+        }
+        
+        .heatmap-day.level-1 {
+            background: #c6e48b;
+        }
+        
+        .heatmap-day.level-2 {
+            background: #7bc96f;
+        }
+        
+        .heatmap-day.level-3 {
+            background: #239a3b;
+        }
+        
+        .heatmap-day.level-4 {
+            background: #196127;
+        }
+        
+        .heatmap-tooltip {
+            position: fixed;
+            background: rgba(0,0,0,0.8);
+            color: white;
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            pointer-events: none;
+            z-index: 1000;
+            white-space: nowrap;
+            opacity: 0;
+            transition: opacity 0.2s ease;
+            max-width: 200px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+        }
+        
+        .heatmap-tooltip.show {
+            opacity: 1;
+        }
+        
+        .heatmap-stats {
+            text-align: center;
+            margin-top: 15px;
+            padding: 10px;
+            background: rgba(102, 126, 234, 0.1);
+            border-radius: 8px;
+            font-size: 0.9rem;
+            color: #666;
+        }
+        
+        .heatmap-year-nav {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+            padding: 15px;
+            background: rgba(102, 126, 234, 0.05);
+            border-radius: 10px;
+        }
+        
+        .year-nav-button {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            min-width: 40px;
+        }
+        
+        .year-nav-button:hover {
+            background: #5a6fd8;
+            transform: translateY(-1px);
+        }
+        
+        .year-nav-button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .year-nav-current {
+            font-size: 1.1rem;
+            font-weight: bold;
+            color: #667eea;
+            min-width: 60px;
+        }
+        
+        .year-nav-select {
+            background: white;
+            border: 2px solid #667eea;
+            border-radius: 6px;
+            padding: 6px 10px;
+            font-size: 0.9rem;
+            color: #667eea;
+            cursor: pointer;
+            outline: none;
+        }
+        
+        .year-nav-select:focus {
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
         }
     </style>
 </head>
@@ -301,6 +779,48 @@
             <div class="stat-card">
                 <div class="stat-number" id="timeSpan">-</div>
                 <div class="stat-label">时间跨度(年)</div>
+            </div>
+        </div>
+        
+        <!-- 热力日历 -->
+        <div class="chart-container collapsible">
+            <div class="chart-header" onclick="toggleChart('heatmap')">
+                <div class="header-content">
+                    <h3><i class="fas fa-calendar-alt"></i> 发布活跃度热力图</h3>
+                    <p>类似GitHub贡献图，显示视频发布的活跃程度</p>
+                </div>
+                <div class="collapse-btn">
+                    <i class="fas fa-chevron-up" id="heatmapToggle"></i>
+                </div>
+            </div>
+            <div class="chart-content">
+                <div id="heatmapCalendar" class="heatmap-container">
+                    <div class="heatmap-loading">
+                        <i class="fas fa-spinner fa-spin"></i>
+                        <span>正在生成热力日历...</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 标签云 -->
+        <div class="chart-container collapsible">
+            <div class="chart-header" onclick="toggleChart('tagcloud')">
+                <div class="header-content">
+                    <h3><i class="fas fa-tags"></i> 标签热力云</h3>
+                    <p>点击标签可筛选相关视频，标签大小表示使用频率</p>
+                </div>
+                <div class="collapse-btn">
+                    <i class="fas fa-chevron-up" id="tagcloudToggle"></i>
+                </div>
+            </div>
+            <div class="chart-content">
+                <div class="tag-cloud" id="tagCloud">
+                    <div class="tag-cloud-loading">
+                        <i class="fas fa-spinner fa-spin"></i>
+                        <span>正在生成标签云...</span>
+                    </div>
+                </div>
             </div>
         </div>
         
@@ -383,9 +903,12 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.0/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/datatables/1.10.21/js/jquery.dataTables.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/datatables/1.10.21/js/dataTables.bootstrap4.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
     
     <script>
         $(document).ready(function() {
+            // 加载折叠状态
+            loadCollapseStates();
             // 加载视频数据
             loadVideoData();
         });
@@ -400,7 +923,10 @@
                 })
                 .then(data => {
                     const videos = data.videos || [];
+                    window.videosData = videos; // 保存数据供其他函数使用
                     displayStats(videos);
+                    createHeatmapCalendar(videos);
+                    createTagCloud(videos);
                     initializeTable(videos);
                     $('#loading').hide();
                     $('#videosTable').show();
@@ -728,6 +1254,603 @@
                         }
                     }
                 });
+            }
+        }
+        
+        let currentDisplayYear = null;
+        let availableYears = [];
+        let heatmapDailyData = {};
+        let heatmapMaxCount = 0;
+        
+        function createHeatmapCalendar(videos) {
+            const dailyData = processDailyData(videos);
+            const container = document.getElementById('heatmapCalendar');
+            
+            if (Object.keys(dailyData).length === 0) {
+                container.innerHTML = '<div class="heatmap-loading"><span>暂无发布数据</span></div>';
+                return;
+            }
+            
+            // 保存全局数据
+            heatmapDailyData = dailyData;
+            availableYears = getYearsFromData(dailyData);
+            heatmapMaxCount = Math.max(...Object.values(dailyData));
+            
+            // 默认显示最新年份
+            currentDisplayYear = availableYears[availableYears.length - 1];
+            
+            renderHeatmapCalendar();
+        }
+        
+        function renderHeatmapCalendar() {
+            const container = document.getElementById('heatmapCalendar');
+            
+            let heatmapHTML = '<div class="heatmap-calendar">';
+            
+            // 添加年份导航
+            heatmapHTML += createYearNavigation();
+            
+            // 添加图例
+            heatmapHTML += createHeatmapLegend();
+            
+            // 显示当前年份的热力图
+            heatmapHTML += createYearHeatmap(currentDisplayYear, heatmapDailyData, heatmapMaxCount);
+            
+            // 添加统计信息（仅当前年份）
+            heatmapHTML += createCurrentYearStats();
+            
+            heatmapHTML += '</div>';
+            
+            // 添加tooltip容器
+            heatmapHTML += '<div class="heatmap-tooltip" id="heatmapTooltip"></div>';
+            
+            container.innerHTML = heatmapHTML;
+            
+            // 绑定事件
+            bindHeatmapEvents();
+        }
+        
+        function createYearNavigation() {
+            const currentIndex = availableYears.indexOf(currentDisplayYear);
+            const hasPrev = currentIndex > 0;
+            const hasNext = currentIndex < availableYears.length - 1;
+            
+            return `
+                <div class="heatmap-year-nav">
+                    <button class="year-nav-button" 
+                            onclick="changeYear('prev')" 
+                            ${!hasPrev ? 'disabled' : ''}>
+                        ← 上一年
+                    </button>
+                    
+                    <div class="year-nav-current">${currentDisplayYear}年</div>
+                    
+                    <select class="year-nav-select" onchange="changeYear('select', this.value)">
+                        ${availableYears.map(year => 
+                            `<option value="${year}" ${year === currentDisplayYear ? 'selected' : ''}>${year}年</option>`
+                        ).join('')}
+                    </select>
+                    
+                    <button class="year-nav-button" 
+                            onclick="changeYear('next')" 
+                            ${!hasNext ? 'disabled' : ''}>
+                        下一年 →
+                    </button>
+                </div>
+            `;
+        }
+        
+        function createCurrentYearStats() {
+            const currentYearData = Object.entries(heatmapDailyData)
+                .filter(([dateKey]) => dateKey.startsWith(currentDisplayYear + '-'))
+                .reduce((acc, [dateKey, count]) => {
+                    acc[dateKey] = count;
+                    return acc;
+                }, {});
+            
+            const totalVideos = Object.values(currentYearData).reduce((sum, count) => sum + count, 0);
+            const activeDays = Object.values(currentYearData).filter(count => count > 0).length;
+            const maxCount = Math.max(...Object.values(currentYearData), 0);
+            
+            return `
+                <div class="heatmap-stats">
+                    <strong>${currentDisplayYear}年统计：</strong>
+                    共有 ${activeDays} 天发布了视频，总计 ${totalVideos} 个视频，
+                    最高单日发布 ${maxCount} 个视频
+                    ${currentDateFilter ? `<br><strong>当前筛选：</strong>${formatDisplayDate(currentDateFilter)} <a href="javascript:clearDateFilter()" style="color: #667eea; text-decoration: none;">[清除筛选]</a>` : ''}
+                    <br><small style="color: #999;">💡 点击有视频的日期方块可筛选当天发布的视频</small>
+                </div>
+            `;
+        }
+        
+        function changeYear(direction, selectedYear) {
+            const currentIndex = availableYears.indexOf(currentDisplayYear);
+            
+            if (direction === 'prev' && currentIndex > 0) {
+                currentDisplayYear = availableYears[currentIndex - 1];
+            } else if (direction === 'next' && currentIndex < availableYears.length - 1) {
+                currentDisplayYear = availableYears[currentIndex + 1];
+            } else if (direction === 'select' && selectedYear) {
+                currentDisplayYear = parseInt(selectedYear);
+            }
+            
+            // 清除当前的筛选状态
+            if (currentDateFilter) {
+                clearDateFilter();
+            }
+            
+            // 重新渲染
+            renderHeatmapCalendar();
+        }
+        
+        function processDailyData(videos) {
+            const dailyCount = {};
+            
+            videos.forEach(video => {
+                let date;
+                if (video.created_timestamp) {
+                    date = new Date(video.created_timestamp * 1000);
+                } else if (video.created_at) {
+                    date = new Date(video.created_at);
+                } else {
+                    return;
+                }
+                
+                const dateKey = formatDateKey(date);
+                dailyCount[dateKey] = (dailyCount[dateKey] || 0) + 1;
+            });
+            
+            return dailyCount;
+        }
+        
+        function formatDateKey(date) {
+            const year = date.getFullYear();
+            const month = String(date.getMonth() + 1).padStart(2, '0');
+            const day = String(date.getDate()).padStart(2, '0');
+            return `${year}-${month}-${day}`;
+        }
+        
+        function getYearsFromData(dailyData) {
+            const years = new Set();
+            Object.keys(dailyData).forEach(dateKey => {
+                years.add(parseInt(dateKey.split('-')[0]));
+            });
+            return Array.from(years).sort((a, b) => a - b); // 升序排列，最早年份在前
+        }
+        
+        function createHeatmapLegend() {
+            return `
+                <div class="heatmap-legend">
+                    <span>少</span>
+                    <div class="heatmap-day level-0"></div>
+                    <div class="heatmap-day level-1"></div>
+                    <div class="heatmap-day level-2"></div>
+                    <div class="heatmap-day level-3"></div>
+                    <div class="heatmap-day level-4"></div>
+                    <span>多</span>
+                </div>
+            `;
+        }
+        
+        function createYearHeatmap(year, dailyData, maxCount) {
+            let html = `
+                <div class="heatmap-year" id="year-${year}">
+                    <div class="heatmap-year-title">${year}年</div>
+                    <div class="heatmap-months">
+                        <span>1月</span><span>2月</span><span>3月</span><span>4月</span>
+                        <span>5月</span><span>6月</span><span>7月</span><span>8月</span>
+                        <span>9月</span><span>10月</span><span>11月</span><span>12月</span>
+                    </div>
+                    <div class="heatmap-days">
+            `;
+            
+            // 创建一个7行53列的网格（按列填充）
+            const grid = [];
+            for (let row = 0; row < 7; row++) {
+                grid[row] = new Array(53).fill(null);
+            }
+            
+            // 计算一年的第一天是星期几
+            const firstDay = new Date(year, 0, 1);
+            const firstDayWeek = firstDay.getDay();
+            
+            // 填充每一天到网格中
+            const daysInYear = isLeapYear(year) ? 366 : 365;
+            for (let day = 0; day < daysInYear; day++) {
+                const currentDate = new Date(year, 0, 1 + day);
+                const dateKey = formatDateKey(currentDate);
+                const count = dailyData[dateKey] || 0;
+                const level = getHeatLevel(count, maxCount);
+                const hasVideos = count > 0 ? 'has-videos' : '';
+                
+                // 计算在网格中的位置
+                const totalDays = firstDayWeek + day;
+                const col = Math.floor(totalDays / 7);
+                const row = totalDays % 7;
+                
+                if (col < 53) {
+                    grid[row][col] = {
+                        dateKey,
+                        count,
+                        level,
+                        hasVideos
+                    };
+                }
+            }
+            
+            // 按行输出网格（这样CSS Grid会按列排列）
+            for (let row = 0; row < 7; row++) {
+                for (let col = 0; col < 53; col++) {
+                    const dayData = grid[row][col];
+                    if (dayData) {
+                        html += `<div class="heatmap-day level-${dayData.level} ${dayData.hasVideos}" 
+                                      data-date="${dayData.dateKey}" 
+                                      data-count="${dayData.count}"></div>`;
+                    } else {
+                        html += '<div class="heatmap-day" style="opacity: 0;"></div>';
+                    }
+                }
+            }
+            
+            html += '</div></div>';
+            return html;
+        }
+        
+        function isLeapYear(year) {
+            return (year % 4 === 0 && year % 100 !== 0) || (year % 400 === 0);
+        }
+        
+        function getHeatLevel(count, maxCount) {
+            if (count === 0) return 0;
+            if (maxCount <= 1) return 1;
+            
+            const ratio = count / maxCount;
+            if (ratio <= 0.25) return 1;
+            if (ratio <= 0.5) return 2;
+            if (ratio <= 0.75) return 3;
+            return 4;
+        }
+        
+        function createHeatmapStats(dailyData, maxCount) {
+            const totalDays = Object.keys(dailyData).length;
+            const totalVideos = Object.values(dailyData).reduce((sum, count) => sum + count, 0);
+            const activeDays = Object.values(dailyData).filter(count => count > 0).length;
+            
+            return `
+                <div class="heatmap-stats">
+                    <strong>活跃统计：</strong>
+                    共有 ${activeDays} 天发布了视频，总计 ${totalVideos} 个视频，
+                    最高单日发布 ${maxCount} 个视频
+                    ${currentDateFilter ? `<br><strong>当前筛选：</strong>${formatDisplayDate(currentDateFilter)} <a href="javascript:clearDateFilter()" style="color: #667eea; text-decoration: none;">[清除筛选]</a>` : ''}
+                    <br><small style="color: #999;">💡 点击有视频的日期方块可筛选当天发布的视频</small>
+                </div>
+            `;
+        }
+        
+        function bindHeatmapEvents() {
+            const tooltip = document.getElementById('heatmapTooltip');
+            const days = document.querySelectorAll('.heatmap-day[data-date]');
+            
+            days.forEach(day => {
+                day.addEventListener('mouseenter', (e) => {
+                    const date = e.target.getAttribute('data-date');
+                    const count = parseInt(e.target.getAttribute('data-count'));
+                    const formattedDate = formatDisplayDate(date);
+                    const hasVideos = count > 0;
+                    
+                    let tooltipText = `${formattedDate}<br>${count} 个视频`;
+                    if (hasVideos) {
+                        tooltipText += '<br><small>点击查看详情</small>';
+                    }
+                    
+                    tooltip.innerHTML = tooltipText;
+                    tooltip.classList.add('show');
+                    
+                    // 简化定位逻辑：跟随鼠标位置
+                    const mouseX = e.clientX;
+                    const mouseY = e.clientY;
+                    
+                    let left = mouseX;
+                    let top = mouseY - 10;
+                    let transform = 'translateX(-50%) translateY(-100%)';
+                    
+                    // 边界检查
+                    if (left < 80) {
+                        left = mouseX + 10;
+                        transform = 'translateY(-50%)';
+                    } else if (left > window.innerWidth - 80) {
+                        left = mouseX - 10;
+                        transform = 'translateX(-100%) translateY(-50%)';
+                    }
+                    
+                    if (top < 60) {
+                        top = mouseY + 10;
+                        if (transform.includes('translateX(-50%)')) {
+                            transform = 'translateX(-50%) translateY(0)';
+                        } else if (transform.includes('translateX(-100%)')) {
+                            transform = 'translateX(-100%) translateY(0)';
+                        } else {
+                            transform = 'translateY(0)';
+                        }
+                    }
+                    
+                    tooltip.style.left = left + 'px';
+                    tooltip.style.top = top + 'px';
+                    tooltip.style.transform = transform;
+                });
+                
+                day.addEventListener('mouseleave', () => {
+                    tooltip.classList.remove('show');
+                });
+                
+                // 添加点击事件
+                day.addEventListener('click', (e) => {
+                    const date = e.target.getAttribute('data-date');
+                    const count = parseInt(e.target.getAttribute('data-count'));
+                    
+                    if (count > 0) {
+                        filterByDate(date);
+                    }
+                });
+            });
+        }
+        
+        function formatDisplayDate(dateKey) {
+            const [year, month, day] = dateKey.split('-');
+            return `${year}年${parseInt(month)}月${parseInt(day)}日`;
+        }
+        
+        function filterByDate(date) {
+            // 如果点击的是当前选择的日期，则取消筛选
+            if (currentDateFilter === date) {
+                clearDateFilter();
+                return;
+            }
+            
+            currentDateFilter = date;
+            
+            // 清除标签筛选
+            if (currentTagFilter) {
+                clearTagFilter();
+            }
+            
+            // 更新视觉状态
+            updateHeatmapSelection();
+            updateDateFilterStats();
+            filterTableByDate();
+        }
+        
+        function clearDateFilter() {
+            currentDateFilter = null;
+            updateHeatmapSelection();
+            updateDateFilterStats();
+            filterTableByDate();
+        }
+        
+        function updateHeatmapSelection() {
+            const days = document.querySelectorAll('.heatmap-day[data-date]');
+            
+            days.forEach(day => {
+                const date = day.getAttribute('data-date');
+                
+                if (currentDateFilter === null) {
+                    day.classList.remove('selected');
+                } else if (date === currentDateFilter) {
+                    day.classList.add('selected');
+                } else {
+                    day.classList.remove('selected');
+                }
+            });
+        }
+        
+        function updateDateFilterStats() {
+            const statsElement = document.querySelector('.heatmap-stats');
+            if (statsElement && currentDateFilter) {
+                const originalContent = statsElement.innerHTML.split('<br><strong>当前筛选：')[0];
+                const count = document.querySelector(`[data-date="${currentDateFilter}"]`).getAttribute('data-count');
+                
+                statsElement.innerHTML = `${originalContent}<br><strong>当前筛选：</strong>${formatDisplayDate(currentDateFilter)} (${count} 个视频) <a href="javascript:clearDateFilter()" style="color: #667eea; text-decoration: none;">[清除筛选]</a><br><small style="color: #999;">💡 点击有视频的日期方块可筛选当天发布的视频</small>`;
+            } else if (statsElement) {
+                // 重新生成当前年份的统计信息
+                const newStats = createCurrentYearStats();
+                statsElement.outerHTML = newStats;
+            }
+        }
+        
+        function filterTableByDate() {
+            const table = $('#videosTable').DataTable();
+            
+            if (currentDateFilter === null) {
+                table.search('').draw();
+            } else {
+                // 搜索日期格式：2025-07-16 或 2025年7月16日
+                const [year, month, day] = currentDateFilter.split('-');
+                const searchDate = `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`;
+                const searchDateChinese = `${year}年${parseInt(month)}月${parseInt(day)}日`;
+                
+                table.search(`${searchDate}|${searchDateChinese}`, true, false).draw();
+            }
+        }
+        
+        let currentTagFilter = null;
+        let currentDateFilter = null;
+        let originalTableData = null;
+        
+        function createTagCloud(videos) {
+            const tagFrequency = calculateTagFrequency(videos);
+            const tagCloudElement = document.getElementById('tagCloud');
+            
+            if (tagFrequency.length === 0) {
+                tagCloudElement.innerHTML = '<div class="tag-cloud-loading"><span>暂无标签数据</span></div>';
+                return;
+            }
+            
+            const maxFreq = Math.max(...tagFrequency.map(t => t.count));
+            const minFreq = Math.min(...tagFrequency.map(t => t.count));
+            
+            const tagElements = tagFrequency.map(tagData => {
+                const { tag, count } = tagData;
+                const sizeLevel = calculateSizeLevel(count, minFreq, maxFreq);
+                const heatLevel = calculateHeatLevel(count, minFreq, maxFreq);
+                
+                return `<span class="cloud-tag size-${sizeLevel} heat-${heatLevel}" 
+                              data-tag="${escapeHtml(tag)}" 
+                              data-count="${count}"
+                              onclick="filterByTag('${escapeHtml(tag)}')"
+                              title="${escapeHtml(tag)} (${count} 个视频)">
+                            ${escapeHtml(tag)}
+                        </span>`;
+            }).join('');
+            
+            const statsHtml = `
+                <div class="tag-stats">
+                    <strong>标签统计：</strong>共 ${tagFrequency.length} 个标签，
+                    最热门：${tagFrequency[0].tag} (${tagFrequency[0].count} 次)，
+                    最冷门：${tagFrequency[tagFrequency.length - 1].tag} (${tagFrequency[tagFrequency.length - 1].count} 次)
+                    ${currentTagFilter ? `<br><strong>当前筛选：</strong>${currentTagFilter} <a href="javascript:clearTagFilter()" style="color: #667eea; text-decoration: none;">[清除筛选]</a>` : ''}
+                </div>
+            `;
+            
+            tagCloudElement.innerHTML = tagElements + statsHtml;
+        }
+        
+        function calculateTagFrequency(videos) {
+            const tagCount = {};
+            
+            videos.forEach(video => {
+                if (video.tags && Array.isArray(video.tags)) {
+                    video.tags.forEach(tag => {
+                        tagCount[tag] = (tagCount[tag] || 0) + 1;
+                    });
+                }
+            });
+            
+            return Object.entries(tagCount)
+                .map(([tag, count]) => ({ tag, count }))
+                .sort((a, b) => b.count - a.count)
+                .slice(0, 50);
+        }
+        
+        function calculateSizeLevel(count, minFreq, maxFreq) {
+            if (maxFreq === minFreq) return 4;
+            
+            const ratio = (count - minFreq) / (maxFreq - minFreq);
+            return Math.max(1, Math.min(8, Math.ceil(ratio * 8)));
+        }
+        
+        function calculateHeatLevel(count, minFreq, maxFreq) {
+            if (maxFreq === minFreq) return 4;
+            
+            const ratio = (count - minFreq) / (maxFreq - minFreq);
+            return Math.max(1, Math.min(8, Math.ceil(ratio * 8)));
+        }
+        
+        function filterByTag(tag) {
+            currentTagFilter = currentTagFilter === tag ? null : tag;
+            
+            // 清除日期筛选
+            if (currentDateFilter) {
+                clearDateFilter();
+            }
+            
+            document.querySelectorAll('.cloud-tag').forEach(tagElement => {
+                const tagName = tagElement.getAttribute('data-tag');
+                
+                if (currentTagFilter === null) {
+                    tagElement.classList.remove('active', 'filtered');
+                } else if (tagName === currentTagFilter) {
+                    tagElement.classList.add('active');
+                    tagElement.classList.remove('filtered');
+                } else {
+                    tagElement.classList.remove('active');
+                    tagElement.classList.add('filtered');
+                }
+            });
+            
+            updateTagStats();
+            filterTableByTag();
+        }
+        
+        function clearTagFilter() {
+            currentTagFilter = null;
+            filterByTag(null);
+        }
+        
+        function updateTagStats() {
+            const statsElement = document.querySelector('.tag-stats');
+            if (statsElement && currentTagFilter) {
+                const tagElement = document.querySelector(`[data-tag="${currentTagFilter}"]`);
+                const count = tagElement ? tagElement.getAttribute('data-count') : 0;
+                
+                const originalContent = statsElement.innerHTML.split('<br>')[0];
+                statsElement.innerHTML = `${originalContent}<br><strong>当前筛选：</strong>${currentTagFilter} (${count} 个视频) <a href="javascript:clearTagFilter()" style="color: #667eea; text-decoration: none;">[清除筛选]</a>`;
+            }
+        }
+        
+        function filterTableByTag() {
+            const table = $('#videosTable').DataTable();
+            
+            if (currentTagFilter === null) {
+                table.search('').draw();
+            } else {
+                table.search(currentTagFilter).draw();
+            }
+        }
+        
+        function toggleChart(chartType) {
+            const container = document.querySelector(`.collapsible:has(#${chartType === 'heatmap' ? 'heatmapCalendar' : 'tagCloud'})`);
+            const toggleIcon = document.getElementById(chartType + 'Toggle');
+            const isCollapsed = container.classList.contains('collapsed');
+            
+            if (isCollapsed) {
+                container.classList.remove('collapsed');
+                saveCollapseState(chartType, false);
+            } else {
+                container.classList.add('collapsed');
+                saveCollapseState(chartType, true);
+            }
+        }
+        
+        function saveCollapseState(chartType, isCollapsed) {
+            try {
+                localStorage.setItem(`chart_${chartType}_collapsed`, isCollapsed.toString());
+            } catch (e) {
+                console.log('无法保存折叠状态到本地存储');
+            }
+        }
+        
+        function loadCollapseStates() {
+            try {
+                // 如果没有保存的状态，则默认折叠
+                const heatmapCollapsed = localStorage.getItem('chart_heatmap_collapsed') !== 'false';
+                const tagcloudCollapsed = localStorage.getItem('chart_tagcloud_collapsed') !== 'false';
+                
+                if (heatmapCollapsed) {
+                    const heatmapContainer = document.querySelector('.collapsible:has(#heatmapCalendar)');
+                    if (heatmapContainer) {
+                        heatmapContainer.classList.add('collapsed');
+                    }
+                }
+                
+                if (tagcloudCollapsed) {
+                    const tagcloudContainer = document.querySelector('.collapsible:has(#tagCloud)');
+                    if (tagcloudContainer) {
+                        tagcloudContainer.classList.add('collapsed');
+                    }
+                }
+            } catch (e) {
+                console.log('无法加载折叠状态');
+                // 如果出错，默认折叠
+                const heatmapContainer = document.querySelector('.collapsible:has(#heatmapCalendar)');
+                const tagcloudContainer = document.querySelector('.collapsible:has(#tagCloud)');
+                
+                if (heatmapContainer) {
+                    heatmapContainer.classList.add('collapsed');
+                }
+                
+                if (tagcloudContainer) {
+                    tagcloudContainer.classList.add('collapsed');
+                }
             }
         }
         
