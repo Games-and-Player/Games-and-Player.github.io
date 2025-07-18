@@ -668,14 +668,14 @@
         }
         
         .heatmap-tooltip {
-            position: fixed;
+            position: absolute;
             background: rgba(0,0,0,0.8);
             color: white;
             padding: 8px 12px;
             border-radius: 6px;
             font-size: 0.85rem;
             pointer-events: none;
-            z-index: 1000;
+            z-index: 9999;
             white-space: nowrap;
             opacity: 0;
             transition: opacity 0.2s ease;
@@ -1301,10 +1301,16 @@
             
             heatmapHTML += '</div>';
             
-            // 添加tooltip容器
-            heatmapHTML += '<div class="heatmap-tooltip" id="heatmapTooltip"></div>';
-            
             container.innerHTML = heatmapHTML;
+            
+            // 将tooltip添加到body，避免容器限制
+            let tooltip = document.getElementById('heatmapTooltip');
+            if (!tooltip) {
+                tooltip = document.createElement('div');
+                tooltip.id = 'heatmapTooltip';
+                tooltip.className = 'heatmap-tooltip';
+                document.body.appendChild(tooltip);
+            }
             
             // 绑定事件
             bindHeatmapEvents();
@@ -1546,37 +1552,17 @@
                     tooltip.innerHTML = tooltipText;
                     tooltip.classList.add('show');
                     
-                    // 简化定位逻辑：跟随鼠标位置
-                    const mouseX = e.clientX;
-                    const mouseY = e.clientY;
+                    // 使用 pageX/pageY 考虑滚动偏移
+                    tooltip.style.left = (e.pageX + 10) + 'px';
+                    tooltip.style.top = (e.pageY + 10) + 'px';
+                });
+                
+                // 鼠标移动时更新悬浮框位置
+                day.addEventListener('mousemove', (e) => {
+                    if (!tooltip.classList.contains('show')) return;
                     
-                    let left = mouseX;
-                    let top = mouseY - 10;
-                    let transform = 'translateX(-50%) translateY(-100%)';
-                    
-                    // 边界检查
-                    if (left < 80) {
-                        left = mouseX + 10;
-                        transform = 'translateY(-50%)';
-                    } else if (left > window.innerWidth - 80) {
-                        left = mouseX - 10;
-                        transform = 'translateX(-100%) translateY(-50%)';
-                    }
-                    
-                    if (top < 60) {
-                        top = mouseY + 10;
-                        if (transform.includes('translateX(-50%)')) {
-                            transform = 'translateX(-50%) translateY(0)';
-                        } else if (transform.includes('translateX(-100%)')) {
-                            transform = 'translateX(-100%) translateY(0)';
-                        } else {
-                            transform = 'translateY(0)';
-                        }
-                    }
-                    
-                    tooltip.style.left = left + 'px';
-                    tooltip.style.top = top + 'px';
-                    tooltip.style.transform = transform;
+                    tooltip.style.left = (e.pageX + 10) + 'px';
+                    tooltip.style.top = (e.pageY + 10) + 'px';
                 });
                 
                 day.addEventListener('mouseleave', () => {
