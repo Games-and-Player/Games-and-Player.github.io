@@ -1676,14 +1676,19 @@
             const table = $('#videosTable').DataTable();
             
             if (currentDateFilter === null) {
-                table.search('').draw();
+                // 清除所有列的搜索
+                table.search('').columns().search('').draw();
             } else {
                 // 搜索日期格式：2025-07-16 或 2025年7月16日
                 const [year, month, day] = currentDateFilter.split('-');
                 const searchDate = `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`;
                 const searchDateChinese = `${year}年${parseInt(month)}月${parseInt(day)}日`;
                 
-                table.search(`${searchDate}|${searchDateChinese}`, true, false).draw();
+                // 清除全局搜索
+                table.search('');
+                // 只在时间列（第4列，索引为4）进行搜索
+                table.columns().search(''); // 清除所有列的搜索
+                table.column(4).search(`${searchDate}|${searchDateChinese}`, true, false).draw();
             }
         }
         
@@ -1829,9 +1834,14 @@
             const table = $('#videosTable').DataTable();
             
             if (currentTagFilter === null) {
-                table.search('').draw();
+                // 清除所有列的搜索
+                table.search('').columns().search('').draw();
             } else {
-                table.search(currentTagFilter).draw();
+                // 清除全局搜索
+                table.search('');
+                // 只在标签列（第3列，索引为3）进行搜索
+                table.columns().search(''); // 清除所有列的搜索
+                table.column(3).search(currentTagFilter, false, false).draw();
             }
         }
         
@@ -1846,11 +1856,15 @@
             
             if (year === null) {
                 currentYearFilter = null;
-                table.search('').draw();
+                // 清除所有列的搜索
+                table.search('').columns().search('').draw();
             } else {
                 currentYearFilter = year;
-                // 搜索年份格式：2025 或 2025年
-                table.search(`${year}年|${year}-`, true, false).draw();
+                // 清除全局搜索
+                table.search('');
+                // 只在时间列（第4列，索引为4）进行搜索
+                table.columns().search(''); // 清除所有列的搜索
+                table.column(4).search(`${year}年|${year}-`, true, false).draw();
             }
         }
         
@@ -1883,8 +1897,8 @@
         
         function loadCollapseStates() {
             try {
-                // 如果没有保存的状态，则默认折叠
-                const heatmapCollapsed = localStorage.getItem('chart_heatmap_collapsed') !== 'false';
+                // 热力图默认展开，标签云默认折叠
+                const heatmapCollapsed = localStorage.getItem('chart_heatmap_collapsed') === 'true';
                 const tagcloudCollapsed = localStorage.getItem('chart_tagcloud_collapsed') !== 'false';
                 
                 if (heatmapCollapsed) {
@@ -1902,17 +1916,13 @@
                 }
             } catch (e) {
                 console.log('无法加载折叠状态');
-                // 如果出错，默认折叠
-                const heatmapContainer = document.querySelector('.collapsible:has(#heatmapCalendar)');
+                // 如果出错，热力图默认展开，标签云默认折叠
                 const tagcloudContainer = document.querySelector('.collapsible:has(#tagCloud)');
-                
-                if (heatmapContainer) {
-                    heatmapContainer.classList.add('collapsed');
-                }
                 
                 if (tagcloudContainer) {
                     tagcloudContainer.classList.add('collapsed');
                 }
+                // 热力图不添加 collapsed 类，保持展开状态
             }
         }
         
