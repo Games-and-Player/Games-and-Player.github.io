@@ -13,9 +13,11 @@
     <style>
         body {
             font-family: 'Microsoft YaHei', Arial, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
             min-height: 100vh;
             padding: 20px 0;
+            position: relative;
+            overflow-x: hidden;
         }
         
         .container-fluid {
@@ -752,9 +754,113 @@
         .year-nav-select:focus {
             box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
         }
+        
+        /* 全屏背景图片墙样式 */
+        .background-gallery {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: -1;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            grid-template-rows: repeat(auto-fill, 120px);
+            gap: 8px;
+            padding: 20px;
+            filter: blur(1.5px) brightness(0.5) contrast(1.2);
+            opacity: 0.3;
+            overflow: hidden;
+            animation: breathe 12s ease-in-out infinite;
+        }
+        
+        .background-gallery-item {
+            width: 180px;
+            height: 120px;
+            border-radius: 8px;
+            background: linear-gradient(135deg, rgba(255,255,255,0.1), rgba(255,255,255,0.05));
+            background-size: cover;
+            background-position: center;
+            animation: itemBreath 12s ease-in-out infinite;
+            transition: all 0.3s ease;
+        }
+        
+        .background-gallery-item:nth-child(odd) {
+            animation-delay: -10s;
+        }
+        
+        .background-gallery-item:nth-child(3n) {
+            animation-delay: -5s;
+        }
+        
+        .background-gallery-item:nth-child(4n) {
+            animation-delay: -15s;
+        }
+        
+        .background-gallery-item.loaded-cover {
+            box-shadow: 0 0 20px rgba(0,0,0,0.3);
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        
+        /* 全屏背景呼吸效果 */
+        @keyframes breathe {
+            0%, 100% { 
+                opacity: 0.25;
+                transform: scale(1);
+            }
+            50% { 
+                opacity: 0.35;
+                transform: scale(1.01);
+            }
+        }
+        
+        /* 个体项目呼吸效果 */
+        @keyframes itemBreath {
+            0%, 100% { 
+                transform: scale(1);
+                opacity: 1;
+            }
+            25% { 
+                transform: scale(1.05);
+                opacity: 0.8;
+            }
+            50% { 
+                transform: scale(0.95);
+                opacity: 1.2;
+            }
+            75% { 
+                transform: scale(1.02);
+                opacity: 0.9;
+            }
+        }
+        
+        /* 添加微妙的装饰效果 */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            z-index: -3;
+            background-image: 
+                radial-gradient(circle at 20% 80%, rgba(102, 126, 234, 0.05) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(118, 75, 162, 0.05) 0%, transparent 50%);
+            animation: gradientShift 20s ease-in-out infinite;
+        }
+        
+        @keyframes gradientShift {
+            0%, 100% { filter: hue-rotate(0deg); }
+            50% { filter: hue-rotate(15deg); }
+        }
     </style>
 </head>
 <body>
+    <!-- 全屏背景图片墙 -->
+    <div class="background-gallery" id="backgroundGallery">
+        <!-- 背景图片将通过JavaScript动态添加 -->
+    </div>
+    
     <div class="container-fluid">
         <!-- 头部 -->
         <div class="header">
@@ -911,6 +1017,8 @@
             loadCollapseStates();
             // 加载视频数据
             loadVideoData();
+            // 初始化背景图片墙
+            initBackgroundGallery();
         });
         
         function loadVideoData() {
@@ -1874,8 +1982,12 @@
         }
         
         function toggleChart(chartType) {
-            const container = document.querySelector(`.collapsible:has(#${chartType === 'heatmap' ? 'heatmapCalendar' : 'tagCloud'})`);
+            const elementId = chartType === 'heatmap' ? 'heatmapCalendar' : 'tagCloud';
+            const container = document.getElementById(elementId)?.closest('.collapsible');
             const toggleIcon = document.getElementById(chartType + 'Toggle');
+            
+            if (!container) return;
+            
             const isCollapsed = container.classList.contains('collapsed');
             
             if (isCollapsed) {
@@ -1902,14 +2014,14 @@
                 const tagcloudCollapsed = localStorage.getItem('chart_tagcloud_collapsed') !== 'false';
                 
                 if (heatmapCollapsed) {
-                    const heatmapContainer = document.querySelector('.collapsible:has(#heatmapCalendar)');
+                    const heatmapContainer = document.getElementById('heatmapCalendar')?.closest('.collapsible');
                     if (heatmapContainer) {
                         heatmapContainer.classList.add('collapsed');
                     }
                 }
                 
                 if (tagcloudCollapsed) {
-                    const tagcloudContainer = document.querySelector('.collapsible:has(#tagCloud)');
+                    const tagcloudContainer = document.getElementById('tagCloud')?.closest('.collapsible');
                     if (tagcloudContainer) {
                         tagcloudContainer.classList.add('collapsed');
                     }
@@ -1917,7 +2029,7 @@
             } catch (e) {
                 console.log('无法加载折叠状态');
                 // 如果出错，热力图默认展开，标签云默认折叠
-                const tagcloudContainer = document.querySelector('.collapsible:has(#tagCloud)');
+                const tagcloudContainer = document.getElementById('tagCloud')?.closest('.collapsible');
                 
                 if (tagcloudContainer) {
                     tagcloudContainer.classList.add('collapsed');
@@ -1933,6 +2045,132 @@
                       .replace(/>/g, '&gt;')
                       .replace(/"/g, '&quot;')
                       .replace(/'/g, '&#039;');
+        }
+        
+        function initBackgroundGallery() {
+            const gallery = document.getElementById('backgroundGallery');
+            
+            if (!gallery) {
+                return;
+            }
+            
+            // 创建全屏背景
+            createBackground(gallery);
+            
+            // 延迟加载封面图片
+            setTimeout(() => {
+                if (window.videosData) {
+                    loadBackgroundCovers(gallery);
+                }
+            }, 3000); // 等待主要内容加载完成
+        }
+        
+        function createBackground(gallery) {
+            // 计算全屏背景的项目数量
+            const itemSize = 120 + 8; // 尺寸 + gap
+            const containerWidth = window.innerWidth - 40; // 减去padding
+            const containerHeight = window.innerHeight - 40;
+            const columns = Math.floor(containerWidth / itemSize);
+            const rows = Math.floor(containerHeight / itemSize);
+            const totalItems = columns * rows;
+            
+            // 创建几何图案项目
+            for (let i = 0; i < totalItems; i++) {
+                const item = document.createElement('div');
+                item.className = 'background-gallery-item';
+                
+                // 添加不同的几何图案
+                const patterns = [
+                    'linear-gradient(45deg, rgba(102, 126, 234, 0.15), rgba(118, 75, 162, 0.15))',
+                    'linear-gradient(135deg, rgba(255, 119, 198, 0.12), rgba(120, 200, 255, 0.12))',
+                    'radial-gradient(circle, rgba(255, 255, 255, 0.08), transparent)',
+                    'linear-gradient(90deg, transparent 30%, rgba(255,255,255,0.06) 50%, transparent 70%)',
+                    'linear-gradient(0deg, transparent 30%, rgba(255,255,255,0.05) 50%, transparent 70%)'
+                ];
+                
+                const pattern = patterns[i % patterns.length];
+                item.style.background = pattern;
+                
+                // 添加随机延迟
+                item.style.animationDelay = `-${Math.random() * 20}s`;
+                
+                gallery.appendChild(item);
+            }
+        }
+        
+        function loadBackgroundCovers(gallery) {
+            if (!window.videosData || window.videosData.length === 0) {
+                return;
+            }
+            
+            // 获取所有有封面的视频并按时间排序
+            const videosWithCovers = window.videosData
+                .filter(video => video.cover)
+                .sort((a, b) => (b.created_timestamp || 0) - (a.created_timestamp || 0));
+            
+            if (videosWithCovers.length === 0) return;
+            
+            // 准备图片池：最多120张
+            const maxImages = Math.min(120, videosWithCovers.length);
+            const halfCount = Math.floor(maxImages / 2);
+            
+            // 前50%从最新的视频中随机选取
+            const recentVideos = videosWithCovers.slice(0, Math.floor(videosWithCovers.length / 2));
+            const selectedRecent = shuffleArray(recentVideos).slice(0, halfCount);
+            
+            // 后50%从最早的视频中随机选取
+            const oldVideos = videosWithCovers.slice(Math.floor(videosWithCovers.length / 2));
+            const selectedOld = shuffleArray(oldVideos).slice(0, maxImages - halfCount);
+            
+            // 合并并随机打乱
+            const finalImagePool = shuffleArray([...selectedRecent, ...selectedOld]);
+            
+            // 为所有项目随机分配封面
+            const items = gallery.querySelectorAll('.background-gallery-item');
+            items.forEach((item, index) => {
+                const video = finalImagePool[index % finalImagePool.length];
+                loadCoverToItem(item, video);
+            });
+        }
+        
+        // 数组随机打乱函数
+        function shuffleArray(array) {
+            const shuffled = [...array];
+            for (let i = shuffled.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+            }
+            return shuffled;
+        }
+        
+        function loadCoverToItem(item, video) {
+            if (!item || !video.cover) return;
+            
+            // 处理封面URL
+            const coverUrl = video.cover.startsWith('//') ? 'https:' + video.cover : video.cover;
+            
+            // 创建img元素
+            const img = document.createElement('img');
+            img.style.width = '100%';
+            img.style.height = '100%';
+            img.style.objectFit = 'cover';
+            img.style.borderRadius = '8px';
+            img.crossOrigin = 'anonymous';
+            img.referrerPolicy = 'no-referrer';
+            
+            img.onload = function() {
+                // 加载成功，替换几何图案
+                item.innerHTML = '';
+                item.appendChild(img);
+                item.classList.add('loaded-cover');
+            };
+            
+            img.onerror = function() {
+                // 加载失败，保持几何图案
+            };
+            
+            // 设置图片源
+            img.src = coverUrl;
         }
     </script>
 </body>
