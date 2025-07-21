@@ -2,8 +2,8 @@ name: Auto Update Database
 
 on:
   schedule:
-    # 每天 UTC 时间 8:00 运行（北京时间 16:00）
-    - cron: '0 8 * * *'
+    # 每天 UTC 时间 4:05 运行（北京时间 12:05）
+    - cron: '5 4 * * *'
   workflow_dispatch:  # 允许手动触发
 
 jobs:
