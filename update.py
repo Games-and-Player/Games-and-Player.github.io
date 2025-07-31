@@ -1,8 +1,10 @@
 #!/usr/bin/python3
 
-import time
 import json
+import time
+from datetime import datetime
 
+import pytz
 from utils.bilibili_api import BilibiliAPI
 
 if __name__ == '__main__':
@@ -41,8 +43,8 @@ if __name__ == '__main__':
                 "desc": x.get("description"),
                 "tags": tags,
                 "cid": cid,
-                "created_at": time.strftime("%Y-%m-%d %H:%M",
-                                            time.localtime(x.get("created"))),
+                "created_at": datetime.fromtimestamp(x.get("created"),
+                                                     pytz.timezone('Asia/Shanghai')).strftime("%Y-%m-%d %H:%M"),
                 "created_timestamp": x.get("created")
             }
             video_list.append(video_info)

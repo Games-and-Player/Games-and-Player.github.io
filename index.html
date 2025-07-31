@@ -1150,13 +1150,14 @@
             // 为了避免 JavaScript 语法错误，使用 data 属性存储内容
             const safeTitle = escapeHtml(title);
             const safeDesc = escapeHtml(desc);
+            const safeDescWithBreaks = safeDesc.replace(/\n/g, '<br>');
             
             return `<div class="video-desc" 
                          data-title="${safeTitle}"
                          data-desc="${safeDesc}"
                          onclick="showFullDescriptionFromData(this)" 
                          title="点击查看完整描述">
-                        ${safeDesc}
+                        ${safeDescWithBreaks}
                     </div>`;
         }
         
@@ -1184,7 +1185,7 @@
         
         function showFullDescription(title, desc) {
             $('#modalTitle').text(title);
-            $('#modalDesc').text(desc);
+            $('#modalDesc').html(escapeHtml(desc).replace(/\n/g, '<br>'));
             $('#descModal').modal('show');
         }
         
