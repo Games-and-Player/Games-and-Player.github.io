@@ -1,6 +1,26 @@
 {
     "videos": [
         {
+            "aid": 114974747792891,
+            "title": "全球唯一，直连switch2的随身大屏眼镜组合",
+            "cover": "http://i2.hdslb.com/bfs/archive/b9fc5cc1a361b087479cc8a88565f04cacf06b65.jpg",
+            "desc": "NS2更改了输出协议后，之前的不少随身大屏解决方案，都需要转由HDMI输出，便携性几乎没有。\n但我最近却有幸体验了一款C口直连NS2的AR眼镜解决方案，这款由原谷歌眼镜团队开发的VITURE Pro AR眼镜加魔宝坞Pro组合，实际效果如何？\n本期节目，就来一探究竟。",
+            "tags": [
+                "随身大屏",
+                "屈光度调节",
+                "魔宝坞Pro",
+                "SWITCH  2",
+                "VITURE Pro  AR眼镜",
+                "NS2",
+                "AR眼镜",
+                "SWITCH",
+                "VITURE"
+            ],
+            "cid": 31496671227,
+            "created_at": "2025-08-06 12:00",
+            "created_timestamp": 1754452800
+        },
+        {
             "aid": 114964429806547,
             "title": "倒反天罡，微软游戏竟在PS平台大卖",
             "cover": "http://i0.hdslb.com/bfs/archive/15300cb61b6b19fa129436d869dba7557d222a96.jpg",
