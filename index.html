@@ -11,856 +11,567 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     
     <style>
+        :root {
+            --accent-color: #1a73e8;
+            --accent-color-soft: rgba(26, 115, 232, 0.12);
+            --text-color: #1f2933;
+            --muted-color: #6b7280;
+            --border-color: #e5e7eb;
+            --surface-color: #ffffff;
+            --surface-muted: #f5f7fa;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
         body {
-            font-family: 'Microsoft YaHei', Arial, sans-serif;
-            background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
-            min-height: 100vh;
-            padding: 20px 0;
             position: relative;
-            overflow-x: hidden;
+
+            font-family: 'Noto Sans SC', 'Helvetica Neue', Arial, sans-serif;
+            background-color: var(--surface-muted);
+            color: var(--text-color);
+            min-height: 100vh;
+            margin: 0;
+            padding: 32px 0;
         }
-        
+
         .container-fluid {
-            max-width: 1400px;
+            max-width: 1120px;
+            margin: 0 auto;
+            padding: 0 24px;
         }
-        
+
+        .background-mosaic {
+            position: fixed;
+            inset: 0;
+            z-index: -1;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            gap: 16px;
+            padding: 32px;
+            opacity: 0.18;
+            pointer-events: none;
+        }
+
+        .background-mosaic::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(180deg, rgba(255,255,255,0.55), rgba(245,247,250,0.8)),
+                repeating-linear-gradient(135deg, rgba(26,115,232,0.08) 0 4px, transparent 4px 12px);
+            z-index: 1;
+        }
+
+        .mosaic-tile {
+            position: relative;
+            min-height: 120px;
+            border-radius: 16px;
+            overflow: hidden;
+            background: linear-gradient(135deg, rgba(26, 115, 232, 0.2), rgba(26, 115, 232, 0.05)),
+                repeating-linear-gradient(135deg, rgba(255,255,255,0.1) 0 3px, rgba(26, 115, 232, 0.08) 3px 9px);
+        }
+
+        .mosaic-tile img {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 16px;
+            filter: saturate(0.9) brightness(0.9);
+        }
+
+        @media (max-width: 768px) {
+            .background-mosaic {
+                padding: 16px;
+                gap: 12px;
+            }
+            .mosaic-tile {
+                min-height: 100px;
+            }
+        }
+
+
         .header {
             text-align: center;
-            color: white;
-            margin-bottom: 30px;
+            margin-bottom: 32px;
         }
-        
+
         .header h1 {
-            font-size: 2.5rem;
-            margin-bottom: 10px;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
-        }
-        
-        .stats-cards {
-            display: flex;
-            justify-content: center;
-            gap: 20px;
-            margin-bottom: 30px;
-            flex-wrap: wrap;
-        }
-        
-        .stat-card {
-            background: rgba(255,255,255,0.9);
-            padding: 20px;
-            border-radius: 15px;
-            text-align: center;
-            min-width: 150px;
-            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
-            backdrop-filter: blur(10px);
-        }
-        
-        .stat-number {
+            margin: 0 0 8px;
             font-size: 2rem;
-            font-weight: bold;
-            color: #667eea;
+            font-weight: 600;
         }
-        
-        .stat-label {
-            color: #666;
-            font-size: 0.9rem;
+
+        .header p {
+            margin: 0;
+            color: var(--muted-color);
+            font-size: 1rem;
         }
-        
-        .table-container {
-            background: white;
-            border-radius: 15px;
-            padding: 25px;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.1);
-            backdrop-filter: blur(10px);
+
+        .stats-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            gap: 16px;
+            margin-bottom: 32px;
         }
-        
-        .cover-container {
-            width: 80px;
-            height: 60px;
-            position: relative;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 8px;
-            overflow: hidden;
-        }
-        
-        .video-cover {
-            width: 80px;
-            height: 60px;
-            object-fit: cover;
-            border-radius: 8px;
-            transition: all 0.3s ease;
-            cursor: pointer;
-            position: absolute;
-            top: 0;
-            left: 0;
-        }
-        
-        .video-cover:hover {
-            transform: scale(3);
-            z-index: 1000;
-        }
-        
-        .video-cover.loaded {
-            opacity: 1 !important;
-            pointer-events: auto;
-        }
-        
-        .cover-placeholder {
-            width: 80px;
-            height: 60px;
-            background: linear-gradient(135deg, #f0f0f0 0%, #e0e0e0 100%);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #999;
-            font-size: 1.5rem;
-            border-radius: 8px;
-            position: absolute;
-            top: 0;
-            left: 0;
-        }
-        
-        .lazy-loading {
-            background: linear-gradient(-45deg, #f0f0f0, #e0e0e0, #f0f0f0, #e0e0e0);
-            background-size: 400% 400%;
-            animation: shimmer 1.5s ease-in-out infinite;
-        }
-        
-        @keyframes shimmer {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
-        
-        .video-title {
-            max-width: 300px;
-            word-wrap: break-word;
-            line-height: 1.4;
-        }
-        
-        .video-title a {
-            color: #333;
-            text-decoration: none;
-            transition: color 0.3s ease;
-        }
-        
-        .video-title a:hover {
-            color: #667eea;
-            text-decoration: none;
-        }
-        
-        .video-desc {
-            max-width: 200px;
-            max-height: 60px;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            display: -webkit-box;
-            -webkit-line-clamp: 3;
-            -webkit-box-orient: vertical;
-            font-size: 0.85rem;
-            color: #666;
-            cursor: pointer;
-        }
-        
-        .video-desc:hover {
-            background: #f8f9fa;
-            padding: 5px;
-            border-radius: 5px;
-        }
-        
-        .tags-container {
-            max-width: 200px;
-        }
-        
-        .tag {
-            display: inline-block;
-            background: linear-gradient(45deg, #667eea, #764ba2);
-            color: white;
-            padding: 3px 8px;
-            margin: 2px;
+
+        .stat-card {
+            background: var(--surface-color);
+            border: 1px solid var(--border-color);
             border-radius: 12px;
-            font-size: 0.75rem;
-            white-space: nowrap;
+            padding: 16px;
         }
-        
-        .date-cell {
-            white-space: nowrap;
-            font-family: 'Courier New', monospace;
+
+        .stat-number {
+            display: block;
+            font-size: 1.8rem;
+            font-weight: 600;
+            color: var(--accent-color);
+        }
+
+        .stat-label {
+            color: var(--muted-color);
             font-size: 0.85rem;
+            margin-top: 4px;
         }
-        
-        .number-cell {
-            text-align: right;
-            font-family: 'Courier New', monospace;
-            font-weight: bold;
-        }
-        
-        #videosTable_wrapper .dataTables_filter input {
-            border-radius: 20px;
-            border: 2px solid #667eea;
-            padding: 8px 15px;
-        }
-        
-        #videosTable_wrapper .dataTables_length select {
-            border-radius: 10px;
-            border: 2px solid #667eea;
-            padding: 5px 25px 5px 8px;
-            appearance: none;
-            -webkit-appearance: none;
-            -moz-appearance: none;
-            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23667eea' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6,9 12,15 18,9'%3e%3c/polyline%3e%3c/svg%3e");
-            background-repeat: no-repeat;
-            background-position: right 6px center;
-            background-size: 14px;
-            width: 65px;
-        }
-        
-        .dataTables_wrapper .dataTables_paginate .paginate_button {
-            border-radius: 10px !important;
-        }
-        
-        .loading {
-            text-align: center;
-            padding: 50px;
-            color: #667eea;
-        }
-        
-        .loading i {
-            font-size: 3rem;
-            margin-bottom: 20px;
-            animation: spin 2s linear infinite;
-        }
-        
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-        
-        .error {
-            background: #f8d7da;
-            color: #721c24;
-            padding: 20px;
-            border-radius: 10px;
-            margin: 20px 0;
-        }
-        
-        @media (max-width: 768px) {
-            .header h1 {
-                font-size: 1.8rem;
-            }
-            
-            .stats-cards {
-                gap: 10px;
-            }
-            
-            .stat-card {
-                min-width: 120px;
-                padding: 15px;
-            }
-            
-            .table-container {
-                padding: 15px;
-            }
-            
-            .chart-container {
-                padding: 15px;
-            }
-            
-            .tag-cloud {
-                padding: 10px;
-                min-height: 200px;
-            }
-            
-            .heatmap-container {
-                padding: 10px;
-                overflow-x: auto;
-            }
-            
-            .heatmap-days {
-                grid-template-columns: repeat(53, 8px);
-                gap: 1px;
-            }
-            
-            .heatmap-day {
-                width: 8px;
-                height: 8px;
-            }
-            
-            .cloud-tag {
-                padding: 6px 12px;
-                margin: 2px;
-                font-size: 0.85rem !important;
-            }
-            
-            .chart-header {
-                flex-direction: column;
-                align-items: flex-start;
-                gap: 10px;
-            }
-            
-            .chart-header:hover {
-                padding: 10px;
-                margin: -10px;
-            }
-            
-            .collapse-btn {
-                align-self: flex-end;
-                margin-top: -40px;
-            }
-        }
-        
-        /* 模态框样式 */
-        .modal-backdrop {
-            background: rgba(0,0,0,0.8);
-        }
-        
-        .modal-content {
-            border-radius: 15px;
-            overflow: hidden;
-        }
-        
-        .modal-header {
-            background: linear-gradient(45deg, #667eea, #764ba2);
-            color: white;
-        }
-        
-        .full-desc {
-            max-height: 300px;
-            overflow-y: auto;
-            line-height: 1.6;
-        }
-        
-        /* 图表容器样式 */
+
+        .table-container,
         .chart-container {
-            background: white;
-            border-radius: 15px;
-            padding: 25px;
-            margin-bottom: 30px;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.1);
-            backdrop-filter: blur(10px);
+            background: var(--surface-color);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 32px;
         }
-        
+
+        .chart-container.collapsible .chart-header {
+            margin-bottom: 16px;
+        }
+
         .chart-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 25px;
             cursor: pointer;
             user-select: none;
-            transition: all 0.3s ease;
         }
-        
+
         .chart-header:hover {
-            background: rgba(102, 126, 234, 0.05);
-            border-radius: 10px;
-            padding: 10px;
-            margin: -10px -10px 15px -10px;
+            color: var(--accent-color);
         }
-        
-        .header-content {
-            text-align: left;
-            flex: 1;
-        }
-        
+
         .chart-header h3 {
-            color: #667eea;
-            margin-bottom: 10px;
-            font-size: 1.5rem;
-            margin: 0 0 5px 0;
-        }
-        
-        .chart-header p {
-            color: #666;
             margin: 0;
-            font-size: 0.9rem;
+            font-size: 1.3rem;
         }
-        
+
+        .chart-header p {
+            margin: 4px 0 0;
+            font-size: 0.9rem;
+            color: var(--muted-color);
+        }
+
         .collapse-btn {
-            color: #667eea;
-            font-size: 1.2rem;
-            transition: transform 0.3s ease;
-            padding: 10px;
-            border-radius: 50%;
-            display: flex;
+            display: inline-flex;
             align-items: center;
             justify-content: center;
-            width: 40px;
-            height: 40px;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            color: var(--muted-color);
+            transition: background-color 0.2s ease, color 0.2s ease;
         }
-        
+
         .collapse-btn:hover {
-            background: rgba(102, 126, 234, 0.1);
+            background-color: var(--accent-color-soft);
+            color: var(--accent-color);
         }
-        
+
         .collapsible .chart-content,
         .collapsible .tag-cloud {
-            transition: all 0.5s ease;
-            overflow: hidden;
+            transition: max-height 0.3s ease, opacity 0.3s ease, padding 0.3s ease;
         }
-        
+
         .collapsible.collapsed .chart-content,
         .collapsible.collapsed .tag-cloud {
             max-height: 0;
+            opacity: 0;
             padding-top: 0;
             padding-bottom: 0;
-            opacity: 0;
+            pointer-events: none;
         }
-        
+
         .collapsible.collapsed .collapse-btn i {
             transform: rotate(180deg);
         }
-        
-        .collapsible.collapsed .chart-header {
-            margin-bottom: 0;
+
+        .video-title {
+            max-width: 320px;
         }
-        
-        .chart-content {
+
+        .video-title a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        .video-title a:hover {
+            color: var(--accent-color);
+        }
+
+        .cover-container {
+            width: 80px;
+            height: 60px;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            overflow: hidden;
             position: relative;
+            background: var(--surface-muted);
+        }
+
+        .video-cover {
             width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.2s ease;
+            cursor: pointer;
         }
-        
-        .chart-content:has(canvas) {
-            height: 400px;
+
+        .video-cover:hover {
+            transform: scale(1.75);
+            z-index: 10;
         }
-        
-        /* 标签云样式 */
-        .tag-cloud {
-            min-height: 300px;
-            padding: 20px;
+
+        .cover-placeholder {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--muted-color);
+            font-size: 1.4rem;
+            background: var(--surface-muted);
+        }
+
+        .video-desc {
+            max-width: 220px;
+            max-height: 60px;
+            overflow: hidden;
+            font-size: 0.85rem;
+            color: var(--muted-color);
+            cursor: pointer;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            transition: background-color 0.2s ease, color 0.2s ease;
+        }
+
+        .video-desc:hover {
+            background: var(--surface-muted);
+            border-radius: 6px;
+        }
+
+        .video-desc.expanded {
+            max-height: none;
+            overflow: visible;
+            -webkit-line-clamp: unset;
+            color: var(--text-color);
+            background: var(--surface-muted);
+            border-radius: 6px;
+        }
+
+        .tags-container {
+            max-width: 220px;
+        }
+
+        .tag {
+            display: inline-block;
+            background: var(--accent-color-soft);
+            color: var(--accent-color);
+            padding: 4px 10px;
+            border-radius: 999px;
+            margin: 2px;
+            font-size: 0.75rem;
+        }
+
+        .tag-more {
+            cursor: pointer;
+        }
+
+        #videosTable_wrapper .dataTables_filter input,
+        #videosTable_wrapper .dataTables_length select {
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 6px 12px;
+            background: var(--surface-color);
+        }
+
+        .loading {
             text-align: center;
-            line-height: 1.8;
+            padding: 48px 0;
+            color: var(--muted-color);
+        }
+
+        .loading i {
+            font-size: 2.5rem;
+            margin-bottom: 12px;
+        }
+
+        .error {
+            border-radius: 12px;
+            padding: 16px;
+            background: #fee2e2;
+            color: #b91c1c;
+        }
+
+        .tag-cloud {
+            min-height: 220px;
             display: flex;
             flex-wrap: wrap;
+            gap: 8px;
             justify-content: center;
-            align-items: flex-start;
-            gap: 10px;
-            width: 100%;
-            box-sizing: border-box;
+            padding: 16px;
         }
-        
-        .collapsible.collapsed .chart-content {
-            min-height: 0 !important;
-        }
-        
+
         .tag-cloud-loading {
             display: flex;
             flex-direction: column;
             align-items: center;
-            color: #667eea;
-            font-size: 1.1rem;
+            gap: 8px;
+            color: var(--muted-color);
         }
-        
+
         .tag-cloud-loading i {
-            font-size: 2rem;
-            margin-bottom: 10px;
+            font-size: 1.6rem;
         }
-        
+
         .cloud-tag {
-            display: inline-block;
-            padding: 8px 16px;
-            margin: 4px;
-            border-radius: 25px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 6px 14px;
+            border-radius: 999px;
+            border: 1px solid transparent;
+            background: var(--surface-muted);
+            color: var(--text-color);
+            font-size: 0.85rem;
             cursor: pointer;
-            transition: all 0.3s ease;
-            font-weight: 500;
-            border: 2px solid transparent;
-            text-decoration: none;
-            color: white;
-            position: relative;
-            overflow: hidden;
+            transition: all 0.2s ease;
         }
-        
-        .cloud-tag::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
-            transition: left 0.5s;
-        }
-        
+
         .cloud-tag:hover {
-            transform: translateY(-3px) scale(1.05);
-            box-shadow: 0 8px 25px rgba(0,0,0,0.2);
-            border-color: rgba(255,255,255,0.3);
+            border-color: var(--accent-color);
+            color: var(--accent-color);
         }
-        
-        .cloud-tag:hover::before {
-            left: 100%;
-        }
-        
+
         .cloud-tag.active {
-            background: #fff !important;
-            color: #667eea !important;
-            border-color: #667eea;
-            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+            background: var(--accent-color);
+            color: #ffffff;
+            border-color: var(--accent-color);
         }
-        
+
         .cloud-tag.filtered {
-            opacity: 0.3;
-            transform: scale(0.9);
+            opacity: 0.35;
         }
-        
-        /* 标签大小等级 */
-        .cloud-tag.size-1 { font-size: 0.8rem; }
-        .cloud-tag.size-2 { font-size: 0.9rem; }
-        .cloud-tag.size-3 { font-size: 1.0rem; }
-        .cloud-tag.size-4 { font-size: 1.1rem; }
-        .cloud-tag.size-5 { font-size: 1.3rem; }
-        .cloud-tag.size-6 { font-size: 1.5rem; }
-        .cloud-tag.size-7 { font-size: 1.7rem; }
-        .cloud-tag.size-8 { font-size: 2.0rem; }
-        
-        /* 标签颜色等级 */
-        .cloud-tag.heat-1 { background: linear-gradient(45deg, #b3d9ff, #87ceeb); }
-        .cloud-tag.heat-2 { background: linear-gradient(45deg, #87ceeb, #5dade2); }
-        .cloud-tag.heat-3 { background: linear-gradient(45deg, #5dade2, #3498db); }
-        .cloud-tag.heat-4 { background: linear-gradient(45deg, #3498db, #2980b9); }
-        .cloud-tag.heat-5 { background: linear-gradient(45deg, #2980b9, #667eea); }
-        .cloud-tag.heat-6 { background: linear-gradient(45deg, #667eea, #764ba2); }
-        .cloud-tag.heat-7 { background: linear-gradient(45deg, #764ba2, #8e44ad); }
-        .cloud-tag.heat-8 { background: linear-gradient(45deg, #8e44ad, #9b59b6); }
-        
+
+        .cloud-tag.size-1 { font-size: 0.75rem; }
+        .cloud-tag.size-2 { font-size: 0.8rem; }
+        .cloud-tag.size-3 { font-size: 0.9rem; }
+        .cloud-tag.size-4 { font-size: 1rem; }
+        .cloud-tag.size-5 { font-size: 1.2rem; }
+        .cloud-tag.size-6 { font-size: 1.35rem; }
+        .cloud-tag.size-7 { font-size: 1.5rem; }
+        .cloud-tag.size-8 { font-size: 1.7rem; }
+
+        .cloud-tag.heat-1 { background: var(--surface-muted); }
+        .cloud-tag.heat-2 { background: rgba(26, 115, 232, 0.12); color: var(--accent-color); }
+        .cloud-tag.heat-3 { background: rgba(26, 115, 232, 0.18); color: var(--accent-color); }
+        .cloud-tag.heat-4 { background: rgba(26, 115, 232, 0.24); color: var(--accent-color); }
+        .cloud-tag.heat-5 { background: rgba(26, 115, 232, 0.3); color: #ffffff; }
+        .cloud-tag.heat-6 { background: rgba(26, 115, 232, 0.4); color: #ffffff; }
+        .cloud-tag.heat-7 { background: rgba(26, 115, 232, 0.5); color: #ffffff; }
+        .cloud-tag.heat-8 { background: rgba(26, 115, 232, 0.6); color: #ffffff; }
+
         .tag-stats {
-            margin-top: 15px;
-            padding: 15px;
-            background: rgba(102, 126, 234, 0.1);
-            border-radius: 10px;
+            width: 100%;
+            text-align: center;
+            color: var(--muted-color);
             font-size: 0.9rem;
-            color: #666;
+            margin-top: 16px;
         }
-        
-        /* 热力日历样式 */
+
+        .tag-stats a {
+            color: var(--accent-color);
+            text-decoration: none;
+        }
+
+        .tag-stats a:hover {
+            text-decoration: underline;
+        }
+
         .heatmap-container {
-            padding: 20px;
             overflow-x: auto;
         }
-        
-        .heatmap-container::-webkit-scrollbar {
-            width: 8px;
-        }
-        
-        .heatmap-container::-webkit-scrollbar-track {
-            background: #f1f1f1;
-            border-radius: 4px;
-        }
-        
-        .heatmap-container::-webkit-scrollbar-thumb {
-            background: #667eea;
-            border-radius: 4px;
-        }
-        
-        .heatmap-container::-webkit-scrollbar-thumb:hover {
-            background: #5a6fd8;
-        }
-        
-        .heatmap-loading {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            color: #667eea;
-            font-size: 1.1rem;
-            padding: 50px;
-        }
-        
-        .heatmap-loading i {
-            font-size: 2rem;
-            margin-bottom: 10px;
-        }
-        
+
         .heatmap-calendar {
             display: flex;
             flex-direction: column;
-            gap: 15px;
+            gap: 24px;
         }
-        
+
         .heatmap-legend {
-            display: flex;
+            display: inline-flex;
             align-items: center;
-            justify-content: center;
             gap: 10px;
-            font-size: 0.9rem;
-            color: #666;
-            margin-bottom: 15px;
+            font-size: 0.85rem;
+            color: var(--muted-color);
         }
-        
-        .heatmap-legend-item {
-            display: flex;
-            align-items: center;
-            gap: 5px;
-        }
-        
+
         .heatmap-year {
-            margin-bottom: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
         }
-        
+
         .heatmap-year-title {
-            font-size: 1.1rem;
-            font-weight: bold;
-            color: #667eea;
-            margin-bottom: 10px;
-            text-align: center;
+            font-weight: 600;
+            color: var(--muted-color);
+            font-size: 0.95rem;
         }
-        
+
         .heatmap-months {
             display: grid;
             grid-template-columns: repeat(12, 1fr);
-            gap: 3px;
-            margin-bottom: 5px;
-            text-align: center;
-            font-size: 0.8rem;
-            color: #888;
+            gap: 2px;
+            font-size: 0.7rem;
+            color: var(--muted-color);
         }
-        
+
         .heatmap-days {
             display: grid;
             grid-template-columns: repeat(53, 1fr);
             gap: 2px;
         }
-        
+
         .heatmap-day {
             width: 12px;
             height: 12px;
             border-radius: 2px;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            position: relative;
+            background: var(--surface-muted);
+            transition: transform 0.1s ease, border 0.1s ease;
         }
-        
+
         .heatmap-day:hover {
             transform: scale(1.2);
-            border: 2px solid #667eea;
-            z-index: 10;
+            border: 1px solid var(--accent-color);
         }
-        
-        .heatmap-day.selected {
-            border: 2px solid #ff6b6b;
-            box-shadow: 0 0 8px rgba(255, 107, 107, 0.5);
-        }
-        
+
         .heatmap-day.has-videos {
             cursor: pointer;
         }
-        
-        .heatmap-day.has-videos:hover {
-            border-color: #667eea;
+
+        .heatmap-day.level-0 { background: #e5e7eb; }
+        .heatmap-day.level-1 { background: #cfe1fd; }
+        .heatmap-day.level-2 { background: #99c0fb; }
+        .heatmap-day.level-3 { background: #659df6; }
+        .heatmap-day.level-4 { background: #1a73e8; }
+
+        .heatmap-day.selected {
+            outline: 2px solid var(--accent-color);
         }
-        
-        .heatmap-day.level-0 {
-            background: #ebedf0;
-        }
-        
-        .heatmap-day.level-1 {
-            background: #c6e48b;
-        }
-        
-        .heatmap-day.level-2 {
-            background: #7bc96f;
-        }
-        
-        .heatmap-day.level-3 {
-            background: #239a3b;
-        }
-        
-        .heatmap-day.level-4 {
-            background: #196127;
-        }
-        
+
         .heatmap-tooltip {
             position: absolute;
-            background: rgba(0,0,0,0.8);
-            color: white;
+            background: var(--surface-color);
+            color: var(--text-color);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
             padding: 8px 12px;
-            border-radius: 6px;
             font-size: 0.85rem;
+            box-shadow: 0 8px 16px rgba(15, 23, 42, 0.08);
             pointer-events: none;
-            z-index: 9999;
-            white-space: nowrap;
             opacity: 0;
-            transition: opacity 0.2s ease;
-            max-width: 200px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            transition: opacity 0.15s ease;
+            z-index: 1000;
         }
-        
+
         .heatmap-tooltip.show {
             opacity: 1;
         }
-        
+
         .heatmap-stats {
-            text-align: center;
-            margin-top: 15px;
-            padding: 10px;
-            background: rgba(102, 126, 234, 0.1);
-            border-radius: 8px;
+            border-top: 1px solid var(--border-color);
+            padding-top: 16px;
+            color: var(--muted-color);
             font-size: 0.9rem;
-            color: #666;
         }
-        
-        .heatmap-year-nav {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 15px;
-            margin-bottom: 20px;
-            padding: 15px;
-            background: rgba(102, 126, 234, 0.05);
-            border-radius: 10px;
+
+        .heatmap-stats-filter {
+            margin-top: 8px;
         }
-        
-        .year-nav-button {
-            background: #667eea;
-            color: white;
-            border: none;
-            padding: 8px 12px;
-            border-radius: 6px;
-            font-size: 0.9rem;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            min-width: 40px;
+
+        .heatmap-stats strong {
+            color: var(--text-color);
         }
-        
-        .year-nav-button:hover {
-            background: #5a6fd8;
-            transform: translateY(-1px);
+
+        .heatmap-stats a {
+            color: var(--accent-color);
+            text-decoration: none;
         }
-        
-        .year-nav-button:disabled {
-            background: #ccc;
-            cursor: not-allowed;
-            transform: none;
+
+        .heatmap-stats a:hover {
+            text-decoration: underline;
         }
-        
-        .year-nav-current {
-            font-size: 1.1rem;
-            font-weight: bold;
-            color: #667eea;
-            min-width: 60px;
+
+        .heatmap-stats-hint {
+            font-size: 0.8rem;
+            margin-top: 4px;
         }
-        
-        .year-nav-select {
-            background: white;
-            border: 2px solid #667eea;
-            border-radius: 6px;
-            padding: 6px 10px;
-            font-size: 0.9rem;
-            color: #667eea;
-            cursor: pointer;
-            outline: none;
+
+        .lazy-loading {
+            animation: pulse 1.6s ease-in-out infinite;
         }
-        
-        .year-nav-select:focus {
-            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+
+        @keyframes pulse {
+            0%, 100% { opacity: 0.4; }
+            50% { opacity: 0.9; }
         }
-        
-        /* 全屏背景图片墙样式 */
-        .background-gallery {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            z-index: -1;
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-            grid-template-rows: repeat(auto-fill, 120px);
-            gap: 8px;
-            padding: 20px;
-            filter: blur(1.5px) brightness(0.5) contrast(1.2);
-            opacity: 0.3;
-            overflow: hidden;
-            animation: breathe 12s ease-in-out infinite;
-        }
-        
-        .background-gallery-item {
-            width: 180px;
-            height: 120px;
-            border-radius: 8px;
-            background: linear-gradient(135deg, rgba(255,255,255,0.1), rgba(255,255,255,0.05));
-            background-size: cover;
-            background-position: center;
-            animation: itemBreath 12s ease-in-out infinite;
-            transition: all 0.3s ease;
-        }
-        
-        .background-gallery-item:nth-child(odd) {
-            animation-delay: -10s;
-        }
-        
-        .background-gallery-item:nth-child(3n) {
-            animation-delay: -5s;
-        }
-        
-        .background-gallery-item:nth-child(4n) {
-            animation-delay: -15s;
-        }
-        
-        .background-gallery-item.loaded-cover {
-            box-shadow: 0 0 20px rgba(0,0,0,0.3);
-            border: 1px solid rgba(255,255,255,0.1);
-        }
-        
-        /* 全屏背景呼吸效果 */
-        @keyframes breathe {
-            0%, 100% { 
-                opacity: 0.25;
-                transform: scale(1);
+
+        @media (max-width: 768px) {
+            body {
+                padding: 24px 0;
             }
-            50% { 
-                opacity: 0.35;
-                transform: scale(1.01);
+
+            .container-fluid {
+                padding: 0 16px;
             }
-        }
-        
-        /* 个体项目呼吸效果 */
-        @keyframes itemBreath {
-            0%, 100% { 
-                transform: scale(1);
-                opacity: 1;
+
+            .chart-container,
+            .table-container {
+                padding: 20px;
             }
-            25% { 
-                transform: scale(1.05);
-                opacity: 0.8;
+
+            .stats-cards {
+                grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
             }
-            50% { 
-                transform: scale(0.95);
-                opacity: 1.2;
-            }
-            75% { 
-                transform: scale(1.02);
-                opacity: 0.9;
-            }
-        }
-        
-        /* 添加微妙的装饰效果 */
-        body::before {
-            content: '';
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            z-index: -3;
-            background-image: 
-                radial-gradient(circle at 20% 80%, rgba(102, 126, 234, 0.05) 0%, transparent 50%),
-                radial-gradient(circle at 80% 20%, rgba(118, 75, 162, 0.05) 0%, transparent 50%);
-            animation: gradientShift 20s ease-in-out infinite;
-        }
-        
-        @keyframes gradientShift {
-            0%, 100% { filter: hue-rotate(0deg); }
-            50% { filter: hue-rotate(15deg); }
         }
     </style>
 </head>
 <body>
-    <!-- 全屏背景图片墙 -->
-    <div class="background-gallery" id="backgroundGallery">
-        <!-- 背景图片将通过JavaScript动态添加 -->
+    <div class="background-mosaic">
+        <div class="mosaic-tile"></div>
+        <div class="mosaic-tile"></div>
+        <div class="mosaic-tile"></div>
+        <div class="mosaic-tile"></div>
+        <div class="mosaic-tile"></div>
+        <div class="mosaic-tile"></div>
+        <div class="mosaic-tile"></div>
+        <div class="mosaic-tile"></div>
+        <div class="mosaic-tile"></div>
+        <div class="mosaic-tile"></div>
     </div>
-    
+
     <div class="container-fluid">
         <!-- 头部 -->
         <div class="header">
@@ -984,32 +695,11 @@
         </div>
     </div>
     
-    <!-- 描述详情模态框 -->
-    <div class="modal fade" id="descModal" tabindex="-1">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">视频详情</h5>
-                    <button type="button" class="close text-white" data-dismiss="modal">
-                        <span>&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <h6><strong>标题：</strong></h6>
-                    <p id="modalTitle"></p>
-                    <h6><strong>完整描述：</strong></h6>
-                    <div id="modalDesc" class="full-desc"></div>
-                </div>
-            </div>
-        </div>
-    </div>
-
     <!-- JavaScript 库 -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.0/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/datatables/1.10.21/js/jquery.dataTables.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/datatables/1.10.21/js/dataTables.bootstrap4.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
     
     <script>
         $(document).ready(function() {
@@ -1017,8 +707,6 @@
             loadCollapseStates();
             // 加载视频数据
             loadVideoData();
-            // 初始化背景图片墙
-            initBackgroundGallery();
         });
         
         function loadVideoData() {
@@ -1036,6 +724,7 @@
                     createHeatmapCalendar(videos);
                     createTagCloud(videos);
                     initializeTable(videos);
+                    appendMosaicCovers();
                     $('#loading').hide();
                     $('#videosTable').show();
                 })
@@ -1069,7 +758,7 @@
             const tableData = videos.map(video => [
                 formatCover(video.cover),
                 formatTitle(video.title, video.aid),
-                formatDescription(video.desc, video.title),
+                formatDescription(video.desc),
                 formatTags(video.tags),
                 formatDate(video.created_at, video.created_timestamp),
                 video.aid || '',
@@ -1098,15 +787,11 @@
                 drawCallback: function() {
                     // 重新绑定事件和初始化懒加载
                     bindEvents();
-                    // 延迟初始化懒加载，确保DOM已完全渲染
-                    setTimeout(function() {
-                        initLazyLoading();
-                    }, 100);
-                },
-                initComplete: function() {
-                    // DataTables 初始化完成后，如果有当前显示年份，进行筛选
-                    if (currentDisplayYear) {
-                        filterTableByYear(currentDisplayYear);
+                    // 在空闲时间初始化懒加载，降低重绘压力
+                    if ('requestIdleCallback' in window) {
+                        requestIdleCallback(initLazyLoading);
+                    } else {
+                        requestAnimationFrame(initLazyLoading);
                     }
                 }
             });
@@ -1144,21 +829,47 @@
                     </div>`;
         }
         
-        function formatDescription(desc, title) {
+        function formatDescription(desc) {
             if (!desc) return '<span class="text-muted">无描述</span>';
             
-            // 为了避免 JavaScript 语法错误，使用 data 属性存储内容
-            const safeTitle = escapeHtml(title);
             const safeDesc = escapeHtml(desc);
             const safeDescWithBreaks = safeDesc.replace(/\n/g, '<br>');
             
             return `<div class="video-desc" 
-                         data-title="${safeTitle}"
-                         data-desc="${safeDesc}"
-                         onclick="showFullDescriptionFromData(this)" 
-                         title="点击查看完整描述">
+                         onclick="toggleDescription(this)" 
+                         title="点击展开或收起描述">
                         ${safeDescWithBreaks}
                     </div>`;
+        }
+        
+        function appendMosaicCovers() {
+            const mosaicTiles = document.querySelectorAll('.mosaic-tile');
+            if (!mosaicTiles.length) return;
+            const videosWithCovers = (window.videosData || []).filter(v => v.cover);
+            if (!videosWithCovers.length) return;
+            const covers = shuffleAndSlice(videosWithCovers, mosaicTiles.length);
+            mosaicTiles.forEach((tile, index) => {
+                const video = covers[index % covers.length];
+                const img = document.createElement('img');
+                const coverUrl = video.cover.startsWith('//') ? 'https:' + video.cover : video.cover;
+                img.src = coverUrl;
+                img.loading = 'lazy';
+                img.referrerPolicy = 'no-referrer';
+                img.crossOrigin = 'anonymous';
+                img.onerror = () => {
+                    img.remove();
+                };
+                tile.appendChild(img);
+            });
+        }
+
+        function shuffleAndSlice(source, limit) {
+            const arr = source.slice();
+            for (let i = arr.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [arr[i], arr[j]] = [arr[j], arr[i]];
+            }
+            return arr.slice(0, limit);
         }
         
         function formatTags(tags) {
@@ -1183,18 +894,12 @@
             return '<span class="text-muted">未知</span>';
         }
         
-        function showFullDescription(title, desc) {
-            $('#modalTitle').text(title);
-            $('#modalDesc').html(escapeHtml(desc).replace(/\n/g, '<br>'));
-            $('#descModal').modal('show');
+        function toggleDescription(element) {
+            element.classList.toggle('expanded');
+            const expanded = element.classList.contains('expanded');
+            element.setAttribute('title', expanded ? '点击收起描述' : '点击展开描述');
         }
-        
-        function showFullDescriptionFromData(element) {
-            const title = element.getAttribute('data-title');
-            const desc = element.getAttribute('data-desc');
-            showFullDescription(title, desc);
-        }
-        
+
         function showImageModal(imageUrl) {
             const modalImage = document.getElementById('modalImage');
             const errorDiv = modalImage.nextElementSibling;
@@ -1299,80 +1004,116 @@
             // 封面悬停效果已在CSS中实现
         }
         
+        const mosaicTiles = document.querySelectorAll('.mosaic-tile');
+        if (mosaicTiles.length) {
+            const sampleImages = (window.videosData || []).slice(0, 12).filter(v => v.cover);
+            mosaicTiles.forEach((tile, index) => {
+                const video = sampleImages[index % sampleImages.length];
+                if (video) {
+                    const img = document.createElement('img');
+                    const coverUrl = video.cover.startsWith('//') ? 'https:' + video.cover : video.cover;
+                    img.src = coverUrl;
+                    img.loading = 'lazy';
+                    tile.appendChild(img);
+                }
+            });
+        }
+
+        let lazyImageObserver = null;
+
         function initLazyLoading() {
-            // 使用 Intersection Observer 实现图片懒加载
-            if ('IntersectionObserver' in window) {
-                const imageObserver = new IntersectionObserver((entries, observer) => {
-                    entries.forEach(entry => {
-                        if (entry.isIntersecting) {
-                            const img = entry.target;
-                            const container = img.parentElement;
-                            const placeholder = container ? container.querySelector('.cover-placeholder') : null;
-                            
-                            // 显示加载动画
-                            if (placeholder) {
-                                placeholder.classList.add('lazy-loading');
-                            }
-                            
-                            // 加载图片
-                            const imageSrc = img.getAttribute('data-src');
-                            
-                            if (imageSrc) {
-                                img.src = imageSrc;
-                                
-                                img.onload = function() {
-                                    img.style.opacity = '1';
-                                    img.style.pointerEvents = 'auto';
-                                    img.classList.add('loaded');
-                                    if (placeholder) {
-                                        placeholder.style.display = 'none';
-                                    }
-                                };
-                                
-                                img.onerror = function() {
-                                    img.style.display = 'none';
-                                    if (placeholder) {
-                                        placeholder.innerHTML = '<i class="fas fa-image-slash"></i>';
-                                        placeholder.classList.remove('lazy-loading');
-                                    }
-                                };
-                            }
-                            
-                            observer.unobserve(img);
-                        }
-                    });
-                }, {
-                    root: null,
-                    rootMargin: '50px',
-                    threshold: 0.1
-                });
-                
-                // 观察所有懒加载图片
-                const lazyImages = document.querySelectorAll('.lazy-image');
+            const lazyImages = document.querySelectorAll('.lazy-image');
+            if (lazyImages.length === 0) {
+                return;
+            }
+
+            if (!('IntersectionObserver' in window)) {
                 lazyImages.forEach(img => {
-                    imageObserver.observe(img);
-                });
-                
-            } else {
-                // 不支持 IntersectionObserver 时的降级方案
-                document.querySelectorAll('.lazy-image').forEach(img => {
-                    const placeholder = img.parentElement.querySelector('.cover-placeholder');
+                    if (img.dataset.lazyAttached === 'true') {
+                        return;
+                    }
+                    img.dataset.lazyAttached = 'true';
+                    const container = img.parentElement;
+                    const placeholder = container ? container.querySelector('.cover-placeholder') : null;
                     const imageSrc = img.getAttribute('data-src');
-                    
-                    if (imageSrc) {
-                        img.src = imageSrc;
+                    if (!imageSrc) {
+                        return;
+                    }
+
+                    img.src = imageSrc;
+                    img.onload = function() {
                         img.style.opacity = '1';
                         img.style.pointerEvents = 'auto';
                         img.classList.add('loaded');
                         if (placeholder) {
                             placeholder.style.display = 'none';
                         }
-                    }
+                    };
+
+                    img.onerror = function() {
+                        img.style.display = 'none';
+                        if (placeholder) {
+                            placeholder.innerHTML = '<i class="fas fa-image-slash"></i>';
+                            placeholder.classList.remove('lazy-loading');
+                        }
+                    };
+                });
+                return;
+            }
+
+            if (!lazyImageObserver) {
+                lazyImageObserver = new IntersectionObserver((entries, observer) => {
+                    entries.forEach(entry => {
+                        if (!entry.isIntersecting) {
+                            return;
+                        }
+
+                        const img = entry.target;
+                        const container = img.parentElement;
+                        const placeholder = container ? container.querySelector('.cover-placeholder') : null;
+
+                        if (placeholder) {
+                            placeholder.classList.add('lazy-loading');
+                        }
+
+                        const imageSrc = img.getAttribute('data-src');
+                        if (imageSrc) {
+                            img.src = imageSrc;
+                            img.onload = function() {
+                                img.style.opacity = '1';
+                                img.style.pointerEvents = 'auto';
+                                img.classList.add('loaded');
+                                if (placeholder) {
+                                    placeholder.style.display = 'none';
+                                }
+                            };
+                            img.onerror = function() {
+                                img.style.display = 'none';
+                                if (placeholder) {
+                                    placeholder.innerHTML = '<i class="fas fa-image-slash"></i>';
+                                    placeholder.classList.remove('lazy-loading');
+                                }
+                            };
+                        }
+
+                        observer.unobserve(img);
+                    });
+                }, {
+                    root: null,
+                    rootMargin: '50px',
+                    threshold: 0.1
                 });
             }
+
+            lazyImages.forEach(img => {
+                if (img.dataset.lazyAttached === 'true') {
+                    return;
+                }
+                img.dataset.lazyAttached = 'true';
+                lazyImageObserver.observe(img);
+            });
         }
         
-        let currentDisplayYear = null;
         let availableYears = [];
         let heatmapDailyData = {};
         let heatmapMaxCount = 0;
@@ -1390,40 +1131,26 @@
             heatmapDailyData = dailyData;
             availableYears = getYearsFromData(dailyData);
             heatmapMaxCount = Math.max(...Object.values(dailyData));
-            
-            // 默认显示最新年份
-            currentDisplayYear = availableYears[availableYears.length - 1];
-            
+
             renderHeatmapCalendar();
-            
-            // 如果 DataTables 已经初始化，立即进行筛选
-            if ($.fn.DataTable.isDataTable('#videosTable')) {
-                filterTableByYear(currentDisplayYear);
-            }
         }
         
         function renderHeatmapCalendar() {
             const container = document.getElementById('heatmapCalendar');
-            
+
             let heatmapHTML = '<div class="heatmap-calendar">';
-            
-            // 添加年份导航
-            heatmapHTML += createYearNavigation();
-            
-            // 添加图例
             heatmapHTML += createHeatmapLegend();
-            
-            // 显示当前年份的热力图
-            heatmapHTML += createYearHeatmap(currentDisplayYear, heatmapDailyData, heatmapMaxCount);
-            
-            // 添加统计信息（仅当前年份）
-            heatmapHTML += createCurrentYearStats();
-            
+
+            const yearsToRender = [...availableYears].sort((a, b) => b - a);
+            yearsToRender.forEach(year => {
+                heatmapHTML += createYearHeatmap(year, heatmapDailyData, heatmapMaxCount);
+            });
+
+            heatmapHTML += createHeatmapStats(heatmapDailyData, heatmapMaxCount);
             heatmapHTML += '</div>';
-            
+
             container.innerHTML = heatmapHTML;
-            
-            // 将tooltip添加到body，避免容器限制
+
             let tooltip = document.getElementById('heatmapTooltip');
             if (!tooltip) {
                 tooltip = document.createElement('div');
@@ -1431,86 +1158,10 @@
                 tooltip.className = 'heatmap-tooltip';
                 document.body.appendChild(tooltip);
             }
-            
-            // 绑定事件
+
             bindHeatmapEvents();
-        }
-        
-        function createYearNavigation() {
-            const currentIndex = availableYears.indexOf(currentDisplayYear);
-            const hasPrev = currentIndex > 0;
-            const hasNext = currentIndex < availableYears.length - 1;
-            
-            return `
-                <div class="heatmap-year-nav">
-                    <button class="year-nav-button" 
-                            onclick="changeYear('prev')" 
-                            ${!hasPrev ? 'disabled' : ''}>
-                        ← 上一年
-                    </button>
-                    
-                    <div class="year-nav-current">${currentDisplayYear}年</div>
-                    
-                    <select class="year-nav-select" onchange="changeYear('select', this.value)">
-                        ${availableYears.map(year => 
-                            `<option value="${year}" ${year === currentDisplayYear ? 'selected' : ''}>${year}年</option>`
-                        ).join('')}
-                    </select>
-                    
-                    <button class="year-nav-button" 
-                            onclick="changeYear('next')" 
-                            ${!hasNext ? 'disabled' : ''}>
-                        下一年 →
-                    </button>
-                </div>
-            `;
-        }
-        
-        function createCurrentYearStats() {
-            const currentYearData = Object.entries(heatmapDailyData)
-                .filter(([dateKey]) => dateKey.startsWith(currentDisplayYear + '-'))
-                .reduce((acc, [dateKey, count]) => {
-                    acc[dateKey] = count;
-                    return acc;
-                }, {});
-            
-            const totalVideos = Object.values(currentYearData).reduce((sum, count) => sum + count, 0);
-            const activeDays = Object.values(currentYearData).filter(count => count > 0).length;
-            const maxCount = Math.max(...Object.values(currentYearData), 0);
-            
-            return `
-                <div class="heatmap-stats">
-                    <strong>${currentDisplayYear}年统计：</strong>
-                    共有 ${activeDays} 天发布了视频，总计 ${totalVideos} 个视频，
-                    最高单日发布 ${maxCount} 个视频
-                    ${currentDateFilter ? `<br><strong>当前筛选：</strong>${formatDisplayDate(currentDateFilter)} <a href="javascript:clearDateFilter()" style="color: #667eea; text-decoration: none;">[清除筛选]</a>` : ''}
-                    <br><strong>表格筛选：</strong>仅显示${currentDisplayYear}年的视频 <a href="javascript:clearYearFilter()" style="color: #667eea; text-decoration: none;">[显示所有年份]</a>
-                    <br><small style="color: #999;">💡 点击有视频的日期方块可筛选当天发布的视频</small>
-                </div>
-            `;
-        }
-        
-        function changeYear(direction, selectedYear) {
-            const currentIndex = availableYears.indexOf(currentDisplayYear);
-            
-            if (direction === 'prev' && currentIndex > 0) {
-                currentDisplayYear = availableYears[currentIndex - 1];
-            } else if (direction === 'next' && currentIndex < availableYears.length - 1) {
-                currentDisplayYear = availableYears[currentIndex + 1];
-            } else if (direction === 'select' && selectedYear) {
-                currentDisplayYear = parseInt(selectedYear);
-            }
-            
-            // 清除当前的筛选状态
-            if (currentDateFilter) {
-                clearDateFilter();
-            }
-            
-            // 重新渲染
-            renderHeatmapCalendar();
-            
-            // 过滤表格显示当前年份的数据
-            filterTableByYear(currentDisplayYear);
+            updateHeatmapSelection();
+            updateDateFilterStats();
         }
         
         function processDailyData(videos) {
@@ -1642,17 +1293,19 @@
         }
         
         function createHeatmapStats(dailyData, maxCount) {
-            const totalDays = Object.keys(dailyData).length;
             const totalVideos = Object.values(dailyData).reduce((sum, count) => sum + count, 0);
             const activeDays = Object.values(dailyData).filter(count => count > 0).length;
-            
+            const busiestCount = maxCount || 0;
+
+            const filterInfo = currentDateFilter
+                ? `<div class="heatmap-stats-filter">当前筛选：${formatDisplayDate(currentDateFilter)} (${dailyData[currentDateFilter] || 0} 个视频) <a href="javascript:clearDateFilter()">清除筛选</a></div>`
+                : '<div class="heatmap-stats-hint">提示：点击任意有颜色的日期可筛选当天投稿</div>';
+
             return `
                 <div class="heatmap-stats">
                     <strong>活跃统计：</strong>
-                    共有 ${activeDays} 天发布了视频，总计 ${totalVideos} 个视频，
-                    最高单日发布 ${maxCount} 个视频
-                    ${currentDateFilter ? `<br><strong>当前筛选：</strong>${formatDisplayDate(currentDateFilter)} <a href="javascript:clearDateFilter()" style="color: #667eea; text-decoration: none;">[清除筛选]</a>` : ''}
-                    <br><small style="color: #999;">💡 点击有视频的日期方块可筛选当天发布的视频</small>
+                    ${activeDays} 天有投稿，共 ${totalVideos} 个视频，最高单日 ${busiestCount} 个
+                    ${filterInfo}
                 </div>
             `;
         }
@@ -1719,14 +1372,10 @@
             
             currentDateFilter = date;
             
-            // 清除标签筛选和年份筛选
+            // 清除标签筛选
             if (currentTagFilter) {
                 clearTagFilter();
             }
-            if (currentYearFilter) {
-                currentYearFilter = null;
-            }
-            
             // 更新视觉状态
             updateHeatmapSelection();
             updateDateFilterStats();
@@ -1737,13 +1386,7 @@
             currentDateFilter = null;
             updateHeatmapSelection();
             updateDateFilterStats();
-            
-            // 恢复年份筛选
-            if (currentDisplayYear) {
-                filterTableByYear(currentDisplayYear);
-            } else {
-                filterTableByDate();
-            }
+            filterTableByDate();
         }
         
         function updateHeatmapSelection() {
@@ -1764,16 +1407,10 @@
         
         function updateDateFilterStats() {
             const statsElement = document.querySelector('.heatmap-stats');
-            if (statsElement && currentDateFilter) {
-                const originalContent = statsElement.innerHTML.split('<br><strong>当前筛选：')[0];
-                const count = document.querySelector(`[data-date="${currentDateFilter}"]`).getAttribute('data-count');
-                
-                statsElement.innerHTML = `${originalContent}<br><strong>当前筛选：</strong>${formatDisplayDate(currentDateFilter)} (${count} 个视频) <a href="javascript:clearDateFilter()" style="color: #667eea; text-decoration: none;">[清除筛选]</a><br><small style="color: #999;">💡 点击有视频的日期方块可筛选当天发布的视频</small>`;
-            } else if (statsElement) {
-                // 重新生成当前年份的统计信息
-                const newStats = createCurrentYearStats();
-                statsElement.outerHTML = newStats;
+            if (!statsElement) {
+                return;
             }
+            statsElement.outerHTML = createHeatmapStats(heatmapDailyData, heatmapMaxCount);
         }
         
         function filterTableByDate() {
@@ -1803,8 +1440,6 @@
         
         let currentTagFilter = null;
         let currentDateFilter = null;
-        let currentYearFilter = null;
-        let originalTableData = null;
         
         function createTagCloud(videos) {
             const tagFrequency = calculateTagFrequency(videos);
@@ -1837,7 +1472,7 @@
                     <strong>标签统计：</strong>共 ${tagFrequency.length} 个标签，
                     最热门：${tagFrequency[0].tag} (${tagFrequency[0].count} 次)，
                     最冷门：${tagFrequency[tagFrequency.length - 1].tag} (${tagFrequency[tagFrequency.length - 1].count} 次)
-                    ${currentTagFilter ? `<br><strong>当前筛选：</strong>${currentTagFilter} <a href="javascript:clearTagFilter()" style="color: #667eea; text-decoration: none;">[清除筛选]</a>` : ''}
+                    ${currentTagFilter ? `<br><strong>当前筛选：</strong>${currentTagFilter} <a href="javascript:clearTagFilter()" style="color: var(--accent-color); text-decoration: none;">[清除筛选]</a>` : ''}
                 </div>
             `;
             
@@ -1878,12 +1513,9 @@
         function filterByTag(tag) {
             currentTagFilter = currentTagFilter === tag ? null : tag;
             
-            // 清除日期筛选和年份筛选
+            // 清除日期筛选
             if (currentDateFilter) {
                 clearDateFilter();
-            }
-            if (currentYearFilter) {
-                currentYearFilter = null;
             }
             
             document.querySelectorAll('.cloud-tag').forEach(tagElement => {
@@ -1914,13 +1546,12 @@
             
             // 更新标签统计
             updateTagStats();
-            
-            // 恢复年份筛选
-            if (currentDisplayYear) {
-                filterTableByYear(currentDisplayYear);
-            } else {
-                filterTableByTag();
+            const statsElement = document.querySelector('.tag-stats');
+            if (statsElement) {
+                statsElement.innerHTML = statsElement.innerHTML.split('<br>')[0];
             }
+            
+            filterTableByTag();
         }
         
         function updateTagStats() {
@@ -1930,7 +1561,7 @@
                 const count = tagElement ? tagElement.getAttribute('data-count') : 0;
                 
                 const originalContent = statsElement.innerHTML.split('<br>')[0];
-                statsElement.innerHTML = `${originalContent}<br><strong>当前筛选：</strong>${currentTagFilter} (${count} 个视频) <a href="javascript:clearTagFilter()" style="color: #667eea; text-decoration: none;">[清除筛选]</a>`;
+                statsElement.innerHTML = `${originalContent}<br><strong>当前筛选：</strong>${currentTagFilter} (${count} 个视频) <a href="javascript:clearTagFilter()" style="color: var(--accent-color); text-decoration: none;">[清除筛选]</a>`;
             }
         }
         
@@ -1952,34 +1583,6 @@
                 table.columns().search(''); // 清除所有列的搜索
                 table.column(3).search(currentTagFilter, false, false).draw();
             }
-        }
-        
-        function filterTableByYear(year) {
-            // 检查 DataTables 是否已经初始化
-            if (!$.fn.DataTable.isDataTable('#videosTable')) {
-                console.log('DataTables 未初始化，跳过年份筛选');
-                return;
-            }
-            
-            const table = $('#videosTable').DataTable();
-            
-            if (year === null) {
-                currentYearFilter = null;
-                // 清除所有列的搜索
-                table.search('').columns().search('').draw();
-            } else {
-                currentYearFilter = year;
-                // 清除全局搜索
-                table.search('');
-                // 只在时间列（第4列，索引为4）进行搜索
-                table.columns().search(''); // 清除所有列的搜索
-                table.column(4).search(`${year}年|${year}-`, true, false).draw();
-            }
-        }
-        
-        function clearYearFilter() {
-            currentYearFilter = null;
-            filterTableByYear(null);
         }
         
         function toggleChart(chartType) {
@@ -2048,131 +1651,6 @@
                       .replace(/'/g, '&#039;');
         }
         
-        function initBackgroundGallery() {
-            const gallery = document.getElementById('backgroundGallery');
-            
-            if (!gallery) {
-                return;
-            }
-            
-            // 创建全屏背景
-            createBackground(gallery);
-            
-            // 延迟加载封面图片
-            setTimeout(() => {
-                if (window.videosData) {
-                    loadBackgroundCovers(gallery);
-                }
-            }, 3000); // 等待主要内容加载完成
-        }
-        
-        function createBackground(gallery) {
-            // 计算全屏背景的项目数量
-            const itemSize = 120 + 8; // 尺寸 + gap
-            const containerWidth = window.innerWidth - 40; // 减去padding
-            const containerHeight = window.innerHeight - 40;
-            const columns = Math.floor(containerWidth / itemSize);
-            const rows = Math.floor(containerHeight / itemSize);
-            const totalItems = columns * rows;
-            
-            // 创建几何图案项目
-            for (let i = 0; i < totalItems; i++) {
-                const item = document.createElement('div');
-                item.className = 'background-gallery-item';
-                
-                // 添加不同的几何图案
-                const patterns = [
-                    'linear-gradient(45deg, rgba(102, 126, 234, 0.15), rgba(118, 75, 162, 0.15))',
-                    'linear-gradient(135deg, rgba(255, 119, 198, 0.12), rgba(120, 200, 255, 0.12))',
-                    'radial-gradient(circle, rgba(255, 255, 255, 0.08), transparent)',
-                    'linear-gradient(90deg, transparent 30%, rgba(255,255,255,0.06) 50%, transparent 70%)',
-                    'linear-gradient(0deg, transparent 30%, rgba(255,255,255,0.05) 50%, transparent 70%)'
-                ];
-                
-                const pattern = patterns[i % patterns.length];
-                item.style.background = pattern;
-                
-                // 添加随机延迟
-                item.style.animationDelay = `-${Math.random() * 20}s`;
-                
-                gallery.appendChild(item);
-            }
-        }
-        
-        function loadBackgroundCovers(gallery) {
-            if (!window.videosData || window.videosData.length === 0) {
-                return;
-            }
-            
-            // 获取所有有封面的视频并按时间排序
-            const videosWithCovers = window.videosData
-                .filter(video => video.cover)
-                .sort((a, b) => (b.created_timestamp || 0) - (a.created_timestamp || 0));
-            
-            if (videosWithCovers.length === 0) return;
-            
-            // 准备图片池：最多120张
-            const maxImages = Math.min(120, videosWithCovers.length);
-            const halfCount = Math.floor(maxImages / 2);
-            
-            // 前50%从最新的视频中随机选取
-            const recentVideos = videosWithCovers.slice(0, Math.floor(videosWithCovers.length / 2));
-            const selectedRecent = shuffleArray(recentVideos).slice(0, halfCount);
-            
-            // 后50%从最早的视频中随机选取
-            const oldVideos = videosWithCovers.slice(Math.floor(videosWithCovers.length / 2));
-            const selectedOld = shuffleArray(oldVideos).slice(0, maxImages - halfCount);
-            
-            // 合并并随机打乱
-            const finalImagePool = shuffleArray([...selectedRecent, ...selectedOld]);
-            
-            // 为所有项目随机分配封面
-            const items = gallery.querySelectorAll('.background-gallery-item');
-            items.forEach((item, index) => {
-                const video = finalImagePool[index % finalImagePool.length];
-                loadCoverToItem(item, video);
-            });
-        }
-        
-        // 数组随机打乱函数
-        function shuffleArray(array) {
-            const shuffled = [...array];
-            for (let i = shuffled.length - 1; i > 0; i--) {
-                const j = Math.floor(Math.random() * (i + 1));
-                [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
-            }
-            return shuffled;
-        }
-        
-        function loadCoverToItem(item, video) {
-            if (!item || !video.cover) return;
-            
-            // 处理封面URL
-            const coverUrl = video.cover.startsWith('//') ? 'https:' + video.cover : video.cover;
-            
-            // 创建img元素
-            const img = document.createElement('img');
-            img.style.width = '100%';
-            img.style.height = '100%';
-            img.style.objectFit = 'cover';
-            img.style.borderRadius = '8px';
-            img.crossOrigin = 'anonymous';
-            img.referrerPolicy = 'no-referrer';
-            
-            img.onload = function() {
-                // 加载成功，替换几何图案
-                item.innerHTML = '';
-                item.appendChild(img);
-                item.classList.add('loaded-cover');
-            };
-            
-            img.onerror = function() {
-                // 加载失败，保持几何图案
-            };
-            
-            // 设置图片源
-            img.src = coverUrl;
-        }
     </script>
 </body>
 </html>
