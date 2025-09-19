@@ -1,6 +1,27 @@
 {
     "videos": [
         {
+            "aid": 115225483350174,
+            "title": "混乱不堪，Steam大战反色情组织事件",
+            "cover": "http://i1.hdslb.com/bfs/archive/0b9ca2858629b81308e5407844b53a4bdfb1162f.jpg",
+            "desc": "今年年初，以一款叫做no mercy的游戏为导火索，反色情组织和steam等游戏销售平台开战。\n而很快，以visa为代表的支付平台也被迫卷入，此后混战不断，愈演愈烈。\n本期节目，复盘这个正在进行中的事件，以便大家跟上进度。",
+            "tags": [
+                "整点电子榨菜",
+                "游戏杂谈",
+                "steam",
+                "collective shout",
+                "反色情组织",
+                "游戏文化",
+                "成人",
+                "游戏平台",
+                "支付平台",
+                "itch.io"
+            ],
+            "cid": 32467652424,
+            "created_at": "2025-09-19 12:00",
+            "created_timestamp": 1758254400
+        },
+        {
             "aid": 115214360057679,
             "title": "遛鸟少年沉迷马车世界后，我有所思",
             "cover": "http://i1.hdslb.com/bfs/archive/f51f837456b2a0835149ecaab73932fdb7fb83da.jpg",
