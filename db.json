@@ -1,6 +1,27 @@
 {
     "videos": [
         {
+            "aid": 115315459496011,
+            "title": "XGP再次大幅涨价，而Costco选择下架xbox",
+            "cover": "http://i2.hdslb.com/bfs/archive/af8e423b09769b2b25b5101ebc03b53398da6d36.jpg",
+            "desc": "两条关联有冲突的新闻，一则是xgp再次大幅涨价，挑战玩家承受极限，二则是costco这间全球连锁会员制超市，宣布停止xbox硬件销售，库存清理完毕后不再进货。\n这说明微软的xgp得罪了传统零售渠道，但涨价又得罪用户。微软到底在想什么？\n本期节目，我们就来聊聊这个话题。",
+            "tags": [
+                "整点电子榨菜",
+                "游戏杂谈",
+                "微软",
+                "XBOX",
+                "游戏文化",
+                "PGP",
+                "Costco",
+                "XGP",
+                "业界分析",
+                "订阅制"
+            ],
+            "cid": 32834847122,
+            "created_at": "2025-10-06 12:00",
+            "created_timestamp": 1759723200
+        },
+        {
             "aid": 115298648726730,
             "title": "EA签下巨额卖身契，凸显寡头抱团或成趋势",
             "cover": "http://i1.hdslb.com/bfs/archive/6a541279fdb176195133ee958e17d9e83494fd26.jpg",
