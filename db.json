@@ -1,6 +1,27 @@
 {
     "videos": [
         {
+            "aid": 115344618364387,
+            "title": "金摇杆奖投票开始，来看看我的选择吧",
+            "cover": "http://i0.hdslb.com/bfs/archive/3835dfae2a3cab7ed70da2e3ac16c03f75af3487.jpg",
+            "desc": "游戏界的大众选择奖——金摇杆，目前开始投票啦！\n本期节目，就给大家看看我的投票选择，以及为何做此选择。",
+            "tags": [
+                "整点电子榨菜",
+                "游戏杂谈",
+                "steam",
+                "奖项",
+                "NS",
+                "年度最佳",
+                "游戏文化",
+                "xbox",
+                "ps5",
+                "金摇杆"
+            ],
+            "cid": 32947830866,
+            "created_at": "2025-10-10 12:00",
+            "created_timestamp": 1760068800
+        },
+        {
             "aid": 115333310451843,
             "title": "在这美丽的湖边，我又早蟹了",
             "cover": "http://i1.hdslb.com/bfs/archive/9fdba0e7bad31d785255f1c0b6d681e367cee94d.jpg",
