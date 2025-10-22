@@ -1,6 +1,27 @@
 {
     "videos": [
         {
+            "aid": 115412079549788,
+            "title": "持续运营游戏的终局悖论：好故事=坏生意？",
+            "cover": "http://i0.hdslb.com/bfs/archive/dbd6ea7466b91b695ba1eef6434476f8d47fa4be.jpg",
+            "desc": "《命运2》的final shape资料片，收束了10年的故事线，算是给玩家一个交代，但反而令致日活用户大幅下降。\n所以，尝试说一个完整的故事，反而会令持续运营游戏生意受阻？\n面对这样的困境，是否有突破的方法？本期节目，我们就来聊聊这个话题。",
+            "tags": [
+                "整点电子榨菜",
+                "游戏杂谈",
+                "剧情",
+                "FF14",
+                "steam",
+                "游戏文化",
+                "命运2",
+                "业界分析",
+                "ongoing",
+                "live service"
+            ],
+            "cid": 33272434147,
+            "created_at": "2025-10-22 12:00",
+            "created_timestamp": 1761105600
+        },
+        {
             "aid": 115400603866477,
             "title": "狂人已逝，恩怨随风，但传奇永不灭",
             "cover": "http://i0.hdslb.com/bfs/archive/daafbf5a6697cca5cb82cc23eb64f8d09e79e4c1.jpg",
