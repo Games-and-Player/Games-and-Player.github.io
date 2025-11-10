@@ -1,6 +1,27 @@
 {
     "videos": [
         {
+            "aid": 115517994048241,
+            "title": "再度延期，GTA 6为何如此难产？",
+            "cover": "http://i0.hdslb.com/bfs/archive/9a02ab69bfb7a9b4bc90c8cd744804eb41eb7fe9.jpg",
+            "desc": "GTA 6再次宣布延期。\n作为r星投入巨大，调动超过3000人规模的团队全力开发的大作，GTA 6为何如此难产？\n本期节目，我们就来聊聊这个话题。",
+            "tags": [
+                "整点电子榨菜",
+                "开发",
+                "游戏杂谈",
+                "R星",
+                "grand theft auto 6",
+                "2077",
+                "GTA6",
+                "游戏文化",
+                "rockstar",
+                "延期"
+            ],
+            "cid": 33847446376,
+            "created_at": "2025-11-10 12:00",
+            "created_timestamp": 1762747200
+        },
+        {
             "aid": 115502424792325,
             "title": "NS2神速破千万，但前路仍漫漫",
             "cover": "http://i1.hdslb.com/bfs/archive/097504309c4ea27e1c0fca27c1c820ff35b2f3b4.jpg",
