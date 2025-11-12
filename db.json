@@ -1,6 +1,27 @@
 {
     "videos": [
         {
+            "aid": 115530090487076,
+            "title": "部落还是联盟，趣谈玩家的选择",
+            "cover": "http://i1.hdslb.com/bfs/archive/5ae3d4cdb18adfc59bf93b34ca9f7e584765ecbc.jpg",
+            "desc": "在这个游戏极大丰富的年代，玩家也拥有多种多样的选择。\n哪个平台？简单还是困难？部落还是联盟？键鼠还是手柄？\n而玩家做出不同选择，背后是否有什么可以说道说道的呢？\n本期节目，我们就来聊聊这个话题。",
+            "tags": [
+                "整点电子榨菜",
+                "游戏杂谈",
+                "XBOX",
+                "STEAM",
+                "游戏文化",
+                "PS5",
+                "NS2",
+                "DQ",
+                "2077",
+                "趣谈"
+            ],
+            "cid": 33909706550,
+            "created_at": "2025-11-12 12:00",
+            "created_timestamp": 1762920000
+        },
+        {
             "aid": 115517994048241,
             "title": "再度延期，GTA 6为何如此难产？",
             "cover": "http://i0.hdslb.com/bfs/archive/9a02ab69bfb7a9b4bc90c8cd744804eb41eb7fe9.jpg",
