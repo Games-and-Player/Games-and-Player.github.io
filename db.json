@@ -1,6 +1,27 @@
 {
     "videos": [
         {
+            "aid": 115542337788616,
+            "title": "valve再战客厅，steam新主机承载野心",
+            "cover": "http://i2.hdslb.com/bfs/archive/d3107d2f8daccd03a5afae06db32a66d2b3e42ad.jpg",
+            "desc": "valve推出全新版本的混合形态设备，复活steam machine再战客厅。\n但这背后所争夺的，并非单纯的客厅游戏控制权，而是承载着更大的野心。\n本期节目，我们就来聊聊这个话题。",
+            "tags": [
+                "整点电子榨菜",
+                "PC",
+                "游戏杂谈",
+                "微软",
+                "steam",
+                "steam machine",
+                "游戏文化",
+                "主机",
+                "Valve",
+                "业界分析"
+            ],
+            "cid": 33976291148,
+            "created_at": "2025-11-14 12:00",
+            "created_timestamp": 1763092800
+        },
+        {
             "aid": 115530090487076,
             "title": "部落还是联盟，趣谈玩家的选择",
             "cover": "http://i1.hdslb.com/bfs/archive/5ae3d4cdb18adfc59bf93b34ca9f7e584765ecbc.jpg",
