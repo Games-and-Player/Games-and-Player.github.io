@@ -1,6 +1,27 @@
 {
     "videos": [
         {
+            "aid": 115637464800888,
+            "title": "steam新主机，不搞价格补贴原因分析",
+            "cover": "http://i1.hdslb.com/bfs/archive/79b2612a548ae0145309f0a8b51a3e99e57f17a9.jpg",
+            "desc": "长久以来，新主机为求快速铺开，亏本开售是常态，后期再以软件收入弥补，向规模要效益。\n那手握steam的valve，为什么不在价格上补贴steam machine，低价开售呢？\n本期节目，就来分析一下背后的原因。",
+            "tags": [
+                "整点电子榨菜",
+                "游戏杂谈",
+                "价格补贴",
+                "steam machine",
+                "主机生态",
+                "亏本销售",
+                "主机",
+                "游戏文化",
+                "valve",
+                "业界分析"
+            ],
+            "cid": 34385235919,
+            "created_at": "2025-12-01 12:00",
+            "created_timestamp": 1764561600
+        },
+        {
             "aid": 115620150647479,
             "title": "如龙钥匙卡二连发，性能表现大不同",
             "cover": "http://i0.hdslb.com/bfs/archive/82e7791d5275817f78aab5bb11c63dee221f9773.jpg",
