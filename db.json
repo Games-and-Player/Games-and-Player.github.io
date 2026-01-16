@@ -1,6 +1,25 @@
 {
     "videos": [
         {
+            "aid": 115898484528698,
+            "title": "我也成了剃刀党，但VR游戏却难普及",
+            "cover": "http://i0.hdslb.com/bfs/archive/536ca8c3d6f671aa32ca73907b65fac5a4242814.jpg",
+            "desc": "为了让汤米谢尔比帮帮我点烟，我买了一款VR游戏。\n游戏的沉浸感确实不错，但是,VR游戏却为什么难以普及呢？\n本期节目，我们就来变玩边聊聊，这个话题。",
+            "tags": [
+                "整点电子榨菜",
+                "游戏杂谈",
+                "VR",
+                "VR游戏",
+                "steam",
+                "游戏文化",
+                "peaky blinders",
+                "剃刀帮"
+            ],
+            "cid": 35400187978,
+            "created_at": "2026-01-16 12:00",
+            "created_timestamp": 1768536000
+        },
+        {
             "aid": 115886790810230,
             "title": "一镜到底，聊聊实体书这个东西本身",
             "cover": "http://i2.hdslb.com/bfs/archive/d6efbed81c42bc4fed6cb45311ad4c24a4828fdf.jpg",
