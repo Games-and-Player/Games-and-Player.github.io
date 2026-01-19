@@ -1,6 +1,26 @@
 {
     "videos": [
         {
+            "aid": 115915161081921,
+            "title": "客厅不是steam的天下，但它可以站稳脚跟",
+            "cover": "http://i1.hdslb.com/bfs/archive/c28e8b1b0db882fc6f5fcacd5453abe3a22f769d.jpg",
+            "desc": "维尔福携新款 Steam Machine 再战客厅已成定局。2015 年尝试失利后，G 胖卷土重来，核心考量是补全生态链。此次能否成功尚无定论，本期便探讨：新尝试中，Steam OS 能否在客厅站稳脚跟，拿下 15% 以上的市场份额？",
+            "tags": [
+                "整点电子榨菜",
+                "游戏杂谈",
+                "steam os",
+                "steam machine",
+                "steam deck",
+                "主机",
+                "游戏文化",
+                "valve",
+                "业界分析"
+            ],
+            "cid": 35461662222,
+            "created_at": "2026-01-19 12:00",
+            "created_timestamp": 1768795200
+        },
+        {
             "aid": 115898484528698,
             "title": "我也成了剃刀党，但VR游戏却难普及",
             "cover": "http://i0.hdslb.com/bfs/archive/536ca8c3d6f671aa32ca73907b65fac5a4242814.jpg",
