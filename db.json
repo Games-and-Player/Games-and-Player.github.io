@@ -1,6 +1,27 @@
 {
     "videos": [
         {
+            "aid": 116056626566631,
+            "title": "卡死的不是教学关，而是游戏媒体的专业性",
+            "cover": "http://i2.hdslb.com/bfs/archive/da01816e5fea6ffd21ec399106d27a476ee4871d.jpg",
+            "desc": "一则2017 年的旧闻最近再度翻热：GamesBeat 主编 Dean Takahashi 在《茶杯头》教学关卡里卡关，成为游戏圈的“黑历史”。这不仅是手残的笑料，更是对一个缺乏敬畏心的主编是否配得上行业门面的质疑。\n乙巳蛇年的最后一期节目，我们就来聊聊这个话题。",
+            "tags": [
+                "整点电子榨菜",
+                "游戏杂谈",
+                "搞笑",
+                "奇闻",
+                "dean",
+                "gamesbeat",
+                "玩家",
+                "游戏文化",
+                "茶杯头",
+                "游戏媒体"
+            ],
+            "cid": 36007576615,
+            "created_at": "2026-02-13 12:00",
+            "created_timestamp": 1770955200
+        },
+        {
             "aid": 116039916589388,
             "title": "独自一个人过年，也要支棱起来",
             "cover": "http://i1.hdslb.com/bfs/archive/f563aab004cf2d4c96ac730f26f4c8a824b7138c.jpg",
