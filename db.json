@@ -1,6 +1,27 @@
 {
     "videos": [
         {
+            "aid": 116092932463923,
+            "title": "终于有空聊聊，这次炸裂的索尼state of play",
+            "cover": "http://i0.hdslb.com/bfs/archive/7a1fea20c1a403673e557f16dac705e234cef4a8.jpg",
+            "desc": "终于忙完了，可以聊聊这次颇为炸裂的索尼直面会，state of play的观后感。",
+            "tags": [
+                "整点电子榨菜",
+                "索尼",
+                "合金装备",
+                "生化危机",
+                "战神",
+                "游戏杂谈",
+                "state of play",
+                "圣莫妮卡",
+                "游戏文化",
+                "ps5"
+            ],
+            "cid": 36147890056,
+            "created_at": "2026-02-20 12:00",
+            "created_timestamp": 1771560000
+        },
+        {
             "aid": 116082429925221,
             "title": "马年大吉，新年第一天，聊聊我的生日感悟",
             "cover": "http://i1.hdslb.com/bfs/archive/697c3ce313836e0a4bd8b8d61bc656b6105780d6.jpg",
