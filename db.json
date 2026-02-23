@@ -1,6 +1,27 @@
 {
     "videos": [
         {
+            "aid": 116112662470133,
+            "title": "买来没多久后，索尼宣布关闭了蓝点工作室",
+            "cover": "http://i0.hdslb.com/bfs/archive/8003ed438237714b190a85227575fb4425c32992.jpg",
+            "desc": "索尼突然宣布，关闭了之前收购而来还没有太久的蓝点工作室。\n那么亏不亏？又是什么原因？本期节目，我们就来聊聊这个话题。",
+            "tags": [
+                "上B站看播客",
+                "游戏杂谈",
+                "索尼",
+                "bluepoint",
+                "工作室",
+                "游戏文化",
+                "PS5",
+                "收购",
+                "remake",
+                "业界分析"
+            ],
+            "cid": 36209361158,
+            "created_at": "2026-02-23 12:00",
+            "created_timestamp": 1771819200
+        },
+        {
             "aid": 116092932463923,
             "title": "终于有空聊聊，这次炸裂的索尼state of play",
             "cover": "http://i0.hdslb.com/bfs/archive/7a1fea20c1a403673e557f16dac705e234cef4a8.jpg",
