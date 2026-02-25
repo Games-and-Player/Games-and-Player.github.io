@@ -1,6 +1,27 @@
 {
     "videos": [
         {
+            "aid": 116124003999430,
+            "title": "主机业务边缘化，从菲尔大佬退休说开去",
+            "cover": "http://i2.hdslb.com/bfs/archive/3edcf4b98d03b3b75178671500478f288a97797c.jpg",
+            "desc": "菲尔大佬宣布退休，这并不令人意外，因为显然xbox主机业务已经被微软边缘化，这和菲尔的愿景背道而驰。\n本期早餐车，就从phil Spencer的退休说开去。",
+            "tags": [
+                "上B站看播客",
+                "AI",
+                "游戏杂谈",
+                "XBOX",
+                "phil Spencer",
+                "Asha Sharma",
+                "Sarah bond",
+                "主机",
+                "游戏文化",
+                "业界分析"
+            ],
+            "cid": 36248881675,
+            "created_at": "2026-02-25 07:30",
+            "created_timestamp": 1771975800
+        },
+        {
             "aid": 116118047953111,
             "title": "如龙极3棒极了，我的春节游戏汇报",
             "cover": "http://i1.hdslb.com/bfs/archive/ce6a087a7ec1f17af188d4b497e46266e2be2f50.jpg",
