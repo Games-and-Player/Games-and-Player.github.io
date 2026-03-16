@@ -1,6 +1,27 @@
 {
     "videos": [
         {
+            "aid": 116232216909697,
+            "title": "兼容steam，是新xbox的救命稻草抑或致命毒药？",
+            "cover": "http://i2.hdslb.com/bfs/archive/ef461e003b3b3edbdf87050ba7fdb13e8c698eaa.jpg",
+            "desc": "再GDC游戏节上，XBOX副总裁Jason，分享了更多次世代主机helix的信息。\n虽然官方有意回避，但目前看来，helix大概率支持steam。\n本期早餐车，带来新的相关分析。",
+            "tags": [
+                "把兴趣玩出名堂",
+                "XBOX",
+                "微软",
+                "GDC",
+                "PC",
+                "游戏杂谈",
+                "steam",
+                "游戏文化",
+                "次世代",
+                "业界分析"
+            ],
+            "cid": 36713529462,
+            "created_at": "2026-03-16 07:30",
+            "created_timestamp": 1773617400
+        },
+        {
             "aid": 116215506804394,
             "title": "IP独占已过时，体验的独占才是主机未来",
             "cover": "http://i2.hdslb.com/bfs/archive/3db65ee91816d78f2ea1c445cee7700e83134b65.jpg",
