@@ -1,6 +1,25 @@
 {
     "videos": [
         {
+            "aid": 116282934498945,
+            "title": "NS2或推可换电池版本，令我想起了往昔",
+            "cover": "http://i1.hdslb.com/bfs/archive/0aecc0432fb2cfce2d1806d1cddee3b4425611f3.jpg",
+            "desc": "据日经报道，任天堂或为政策合规，在欧盟推出用户可轻松自行更换电池的版本。\n这则新闻，把我的记忆拉回了那个电子产品可以随意更换电池的年代。\n本期早餐车，我们就来聊聊这个话题。",
+            "tags": [
+                "上B站看播客",
+                "回忆",
+                "任天堂",
+                "游戏杂谈",
+                "欧盟",
+                "电池",
+                "游戏文化",
+                "ns2"
+            ],
+            "cid": 36934586042,
+            "created_at": "2026-03-25 07:30",
+            "created_timestamp": 1774395000
+        },
+        {
             "aid": 116278186483675,
             "title": "悦己之道，关于我为什么不买典藏版游戏",
             "cover": "http://i0.hdslb.com/bfs/archive/bdfcb68a641ed74bbdd35ad7a0cf8bc074dcba5c.jpg",
