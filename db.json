@@ -1,6 +1,27 @@
 {
     "videos": [
         {
+            "aid": 116312160345546,
+            "title": "大崩溃再临？DOOM大佬放出悲观论调",
+            "cover": "http://i1.hdslb.com/bfs/archive/93220f24dc987cb054a63c196b6eeaca53fdb566.jpg",
+            "desc": "在全球资本“all in AI”的浪潮下，游戏产业成为最鲜明的缩影：资金撤回、裁员潮、AA 级团队的消失，构成了一个正在重塑的行业版图。曾经创造《Doom》的传奇人物 John Romero 与其妻子 Brenda Romero，今日发出了关于行业的悲观论调。\n本期早餐车，我们就来聊聊这个话题。",
+            "tags": [
+                "上B站看播客",
+                "游戏杂谈",
+                "行业冲击",
+                "约翰罗梅罗",
+                "DOOM",
+                "游戏文化",
+                "2A",
+                "业界分析",
+                "雅达利大崩溃",
+                "结构调整"
+            ],
+            "cid": 37072210294,
+            "created_at": "2026-03-30 07:30",
+            "created_timestamp": 1774827000
+        },
+        {
             "aid": 116294544268742,
             "title": "游戏劳役化，本质是厂商和玩家的双向奔赴",
             "cover": "http://i1.hdslb.com/bfs/archive/15c057b1883763f0e8ccdeaea124a36fc0201e4a.jpg",
