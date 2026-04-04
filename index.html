@@ -131,6 +131,43 @@
             color: var(--accent-color);
         }
 
+        .stat-note {
+            font-size: 0.65rem;
+            color: #999;
+            margin-top: 4px;
+        }
+
+        .deleted-badge {
+            display: inline-block;
+            padding: 1px 6px;
+            font-size: 0.7rem;
+            background: #dc3545;
+            color: #fff !important;
+            border-radius: 3px;
+            margin-left: 6px;
+            text-decoration: none !important;
+            vertical-align: middle;
+        }
+
+        .video-title.deleted > a:not(.reupload-badge) {
+            color: #999 !important;
+        }
+
+        .reupload-badge {
+            display: inline-block;
+            padding: 1px 6px;
+            font-size: 0.7rem;
+            background: #28a745;
+            color: #fff !important;
+            border-radius: 3px;
+            margin-left: 6px;
+            text-decoration: none !important;
+            vertical-align: middle;
+        }
+        .reupload-badge:hover {
+            background: #218838;
+        }
+
         .stat-label {
             color: var(--muted-color);
             font-size: 0.85rem;
@@ -597,6 +634,11 @@
                 <div class="stat-number" id="timeSpan">-</div>
                 <div class="stat-label">时间跨度(年)</div>
             </div>
+            <div class="stat-card">
+                <div class="stat-number"><span id="reuploadCount">-</span>/<span id="deletedCount">-</span></div>
+                <div class="stat-label">已补档/已删除</div>
+                <div class="stat-note">已删除指已找到封面等元信息的删除视频数量</div>
+            </div>
         </div>
 
         <!-- 标签云 -->
@@ -748,16 +790,21 @@
             const timeSpanYears = timestamps.length > 0 ? 
                 Math.round((Math.max(...timestamps) - Math.min(...timestamps)) / (365 * 24 * 3600)) : 0;
             
+            const reuploadCount = videos.filter(v => v.reupload_aid).length;
+            const deletedCount = videos.filter(v => v.is_available === false || v.status_code === -1).length;
+
             $('#totalVideos').text(totalVideos.toLocaleString());
             $('#totalTags').text(uniqueTags.toLocaleString());
             $('#avgLength').text(avgTitleLength);
             $('#timeSpan').text(timeSpanYears);
+            $('#reuploadCount').text(reuploadCount);
+            $('#deletedCount').text(deletedCount);
         }
         
         function initializeTable(videos) {
             const tableData = videos.map(video => [
                 formatCover(video.cover),
-                formatTitle(video.title, video.aid),
+                formatTitle(video.title, video.aid, video.reupload_aid, video.is_available === false || video.status_code === -1),
                 formatDescription(video.desc),
                 formatTags(video.tags),
                 formatDate(video.created_at, video.created_timestamp),
@@ -820,12 +867,21 @@
                     </div>`;
         }
         
-        function formatTitle(title, aid) {
+        function formatTitle(title, aid, reuploadAid, isDeleted) {
             if (!title) return '<span class="text-muted">无标题</span>';
-            
+
             const bilibiliUrl = `https://www.bilibili.com/video/av${aid}`;
-            return `<div class="video-title">
-                        <a href="${bilibiliUrl}" target="_blank" title="在B站打开">${escapeHtml(title)}</a>
+            const deletedClass = isDeleted ? ' deleted' : '';
+            let badges = '';
+            if (isDeleted) {
+                badges += ' <span class="deleted-badge">已删除</span>';
+            }
+            if (reuploadAid) {
+                const reuploadUrl = `https://www.bilibili.com/video/av${reuploadAid}`;
+                badges += ` <a href="${reuploadUrl}" target="_blank" class="reupload-badge" title="已补档，点击查看">补档</a>`;
+            }
+            return `<div class="video-title${deletedClass}">
+                        <a href="${bilibiliUrl}" target="_blank" title="在B站打开">${escapeHtml(title)}</a>${badges}
                     </div>`;
         }
         
