@@ -137,19 +137,24 @@
             margin-top: 4px;
         }
 
-        .deleted-badge {
+        .status-badge {
             display: inline-block;
             padding: 1px 6px;
             font-size: 0.7rem;
-            background: #dc3545;
             color: #fff !important;
             border-radius: 3px;
             margin-left: 6px;
             text-decoration: none !important;
             vertical-align: middle;
         }
+        .status-badge.deleted {
+            background: #dc3545;
+        }
+        .status-badge.self-visible {
+            background: #e0a800;
+        }
 
-        .video-title.deleted > a:not(.reupload-badge) {
+        .video-title.unavailable > a:not(.reupload-badge) {
             color: #999 !important;
         }
 
@@ -791,7 +796,7 @@
                 Math.round((Math.max(...timestamps) - Math.min(...timestamps)) / (365 * 24 * 3600)) : 0;
             
             const reuploadCount = videos.filter(v => v.reupload_aid).length;
-            const deletedCount = videos.filter(v => v.is_available === false || v.status_code === -1).length;
+            const deletedCount = videos.filter(v => v.status_code === 62002 || v.status_code === 62012).length;
 
             $('#totalVideos').text(totalVideos.toLocaleString());
             $('#totalTags').text(uniqueTags.toLocaleString());
@@ -804,7 +809,7 @@
         function initializeTable(videos) {
             const tableData = videos.map(video => [
                 formatCover(video.cover),
-                formatTitle(video.title, video.aid, video.reupload_aid, video.is_available === false || video.status_code === -1),
+                formatTitle(video.title, video.aid, video.reupload_aid, video.status_code),
                 formatDescription(video.desc),
                 formatTags(video.tags),
                 formatDate(video.created_at, video.created_timestamp),
@@ -867,20 +872,22 @@
                     </div>`;
         }
         
-        function formatTitle(title, aid, reuploadAid, isDeleted) {
+        function formatTitle(title, aid, reuploadAid, statusCode) {
             if (!title) return '<span class="text-muted">无标题</span>';
 
             const bilibiliUrl = `https://www.bilibili.com/video/av${aid}`;
-            const deletedClass = isDeleted ? ' deleted' : '';
+            const isUnavailable = statusCode === 62002 || statusCode === 62012;
             let badges = '';
-            if (isDeleted) {
-                badges += ' <span class="deleted-badge">已删除</span>';
+            if (statusCode === 62002) {
+                badges += ' <span class="status-badge deleted">已删除</span>';
+            } else if (statusCode === 62012) {
+                badges += ' <span class="status-badge self-visible">仅自见</span>';
             }
             if (reuploadAid) {
                 const reuploadUrl = `https://www.bilibili.com/video/av${reuploadAid}`;
                 badges += ` <a href="${reuploadUrl}" target="_blank" class="reupload-badge" title="已补档，点击查看">补档</a>`;
             }
-            return `<div class="video-title${deletedClass}">
+            return `<div class="video-title${isUnavailable ? ' unavailable' : ''}">
                         <a href="${bilibiliUrl}" target="_blank" title="在B站打开">${escapeHtml(title)}</a>${badges}
                     </div>`;
         }
