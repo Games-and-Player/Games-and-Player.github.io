@@ -45,7 +45,11 @@ if __name__ == '__main__':
                 "cid": cid,
                 "created_at": datetime.fromtimestamp(x.get("created"),
                                                      pytz.timezone('Asia/Shanghai')).strftime("%Y-%m-%d %H:%M"),
-                "created_timestamp": x.get("created")
+                "created_timestamp": x.get("created"),
+                "status_code": 0,
+                "status_description": "OK",
+                "is_available": True,
+                "status_check_time": datetime.now(pytz.timezone('Asia/Shanghai')).strftime("%Y-%m-%dT%H:%M:%S")
             }
             video_list.append(video_info)
         pn += 1
