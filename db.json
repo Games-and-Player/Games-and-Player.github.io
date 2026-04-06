@@ -1,6 +1,31 @@
 {
     "videos": [
         {
+            "aid": 116351234479229,
+            "title": "看了半场银河，聊聊人生的未尽之美",
+            "cover": "http://i0.hdslb.com/bfs/archive/5c5570f5d46ce8c35b08d6b884a4bf62b081c646.jpg",
+            "desc": "带米乐去看马里奥银河大电影，却也因为米乐，不得不中途离场。\n这场没有看完的电影，让我想到那些没能通关的游戏，以及人生中的，未尽之美。\n本期早餐车，我们就来聊聊这个话题。",
+            "tags": [
+                "上B站看播客",
+                "任天堂",
+                "莎木",
+                "游戏杂谈",
+                "半场电影",
+                "未尽之美",
+                "马里奥银河",
+                "人生感悟",
+                "游戏文化",
+                "马里奥大电影"
+            ],
+            "cid": 37257610488,
+            "created_at": "2026-04-06 07:30",
+            "created_timestamp": 1775431800,
+            "status_code": 0,
+            "status_description": "OK",
+            "is_available": true,
+            "status_check_time": "2026-04-06T14:04:38"
+        },
+        {
             "aid": 116338634790051,
             "title": "馄饨与锅贴，聊聊GTA4最近的一则趣闻",
             "cover": "http://i0.hdslb.com/bfs/archive/abbacfe9a0fb2f1e8cc795978cfe07a166044e75.jpg",
