@@ -1,6 +1,31 @@
 {
     "videos": [
         {
+            "aid": 116356888401311,
+            "title": "曾颇火爆F-ZERO，为何会被任天堂选择冷藏",
+            "cover": "http://i2.hdslb.com/bfs/archive/71ec31ba542311a0db3660446b2a45b68c62368f.jpg",
+            "desc": "曾经也是几百万销量级别的热门IP，超高速赛车游戏F-ZERO系列，为何如今却被任天堂雪藏，久久没有推出正统续作？\n本期早餐车，我们就来聊聊这个话题。",
+            "tags": [
+                "上B站看播客",
+                "游戏杂谈",
+                "任天堂",
+                "赛车游戏",
+                "SFC",
+                "NGC",
+                "游戏文化",
+                "N64",
+                "怀旧游戏",
+                "F ZERO"
+            ],
+            "cid": 37284741155,
+            "created_at": "2026-04-07 07:30",
+            "created_timestamp": 1775518200,
+            "status_code": 0,
+            "status_description": "OK",
+            "is_available": true,
+            "status_check_time": "2026-04-07T13:51:41"
+        },
+        {
             "aid": 116351234479229,
             "title": "看了半场银河，聊聊人生的未尽之美",
             "cover": "http://i0.hdslb.com/bfs/archive/5c5570f5d46ce8c35b08d6b884a4bf62b081c646.jpg",
