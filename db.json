@@ -1,6 +1,31 @@
 {
     "videos": [
         {
+            "aid": 116367424492914,
+            "title": "PS6爆料频发，汇总与分析",
+            "cover": "http://i2.hdslb.com/bfs/archive/02a5200f9a820cb42c8be970d936fdeef75a163b.jpg",
+            "desc": "目前ps6各方爆料频发，其中也包括次世代掌机canis，其中不少看似可信度颇高。\n本期早餐车，便来汇总分析一番。",
+            "tags": [
+                "上B站看播客",
+                "掌机",
+                "游戏杂谈",
+                "索尼",
+                "性能",
+                "爆料",
+                "游戏文化",
+                "次世代",
+                "价格",
+                "ps6"
+            ],
+            "cid": 37328716814,
+            "created_at": "2026-04-09 07:30",
+            "created_timestamp": 1775691000,
+            "status_code": 0,
+            "status_description": "OK",
+            "is_available": true,
+            "status_check_time": "2026-04-09T13:53:49"
+        },
+        {
             "aid": 116356888401311,
             "title": "曾颇火爆F-ZERO，为何会被任天堂选择冷藏",
             "cover": "http://i2.hdslb.com/bfs/archive/71ec31ba542311a0db3660446b2a45b68c62368f.jpg",
