@@ -1,6 +1,31 @@
 {
     "videos": [
         {
+            "aid": 116373363626356,
+            "title": "续作的诅咒，游戏角色与能力剥夺",
+            "cover": "http://i2.hdslb.com/bfs/archive/dc00b234552216c2a2d03de90823f00c8e860783.jpg",
+            "desc": "每一部优秀的游戏续作，都始于一场对角色的能力剥夺。\n本期早餐车，我们聊聊设计师如何通过各种手法，将前作主角强行能力清空，以及为何必须如此。",
+            "tags": [
+                "上B站看视频播客",
+                "暗黑破坏神",
+                "游戏杂谈",
+                "战神",
+                "能力剥夺",
+                "power reset",
+                "游戏文化",
+                "主角",
+                "系列作品",
+                "游戏系统"
+            ],
+            "cid": 37357618767,
+            "created_at": "2026-04-10 07:30",
+            "created_timestamp": 1775777400,
+            "status_code": 0,
+            "status_description": "OK",
+            "is_available": true,
+            "status_check_time": "2026-04-10T14:04:54"
+        },
+        {
             "aid": 116367424492914,
             "title": "PS6爆料频发，汇总与分析",
             "cover": "http://i2.hdslb.com/bfs/archive/02a5200f9a820cb42c8be970d936fdeef75a163b.jpg",
