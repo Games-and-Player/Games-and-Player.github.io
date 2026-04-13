@@ -1,6 +1,31 @@
 {
     "videos": [
         {
+            "aid": 116389704635517,
+            "title": "纷繁复杂，博德之门系列的版权变迁",
+            "cover": "http://i0.hdslb.com/bfs/archive/8ead6c571ed0c1aefc0ffe4b75a12c2412342fea.jpg",
+            "desc": "博德之门3和前作之间相隔多年，其中一个重要的原因，便是围绕着多间公司之间的版权过渡与纠纷。\n从玩家角度来看，这团乱麻倒也是颇为有趣。\n本期早餐车，我们就来聊聊这个话题。",
+            "tags": [
+                "上B站看播客",
+                "游戏杂谈",
+                "游戏文化",
+                "博德之门",
+                "雅达利",
+                "bioware",
+                "威世智",
+                "infogrames",
+                "拉瑞安",
+                "beamdog"
+            ],
+            "cid": 37437243727,
+            "created_at": "2026-04-13 07:30",
+            "created_timestamp": 1776036600,
+            "status_code": 0,
+            "status_description": "OK",
+            "is_available": true,
+            "status_check_time": "2026-04-13T14:24:07"
+        },
+        {
             "aid": 116389352314799,
             "title": "微蒸烤炸一体机，凯度助我大快朵颐",
             "cover": "http://i1.hdslb.com/bfs/archive/a0c320a474efc88d680002a76f57775862375ba1.jpg",
