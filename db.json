@@ -1,6 +1,31 @@
 {
     "videos": [
         {
+            "aid": 116397019501964,
+            "title": "MGS电影再重启，难产二十年到底为什么？",
+            "cover": "http://i1.hdslb.com/bfs/archive/e75a48852e746be7b25edbf1236912dca7b54e3b.jpg",
+            "desc": "近日，索尼影业宣布更换MGS大电影的导演。\n这部电影从2006年宣布，到如今足足难产了二十年，这到底是什么情况？\n本期早餐车，我们就来聊聊这部命途多舛的游戏改编电影。",
+            "tags": [
+                "上B站看播客",
+                "游戏杂谈",
+                "电影",
+                "索尼",
+                "小岛秀夫",
+                "合金装备",
+                "科乐美",
+                "游戏文化",
+                "死神来了",
+                "金刚骷髅岛"
+            ],
+            "cid": 37473223982,
+            "created_at": "2026-04-14 07:30",
+            "created_timestamp": 1776123000,
+            "status_code": 0,
+            "status_description": "OK",
+            "is_available": true,
+            "status_check_time": "2026-04-14T14:06:42"
+        },
+        {
             "aid": 116389704635517,
             "title": "纷繁复杂，博德之门系列的版权变迁",
             "cover": "http://i0.hdslb.com/bfs/archive/8ead6c571ed0c1aefc0ffe4b75a12c2412342fea.jpg",
