@@ -1,6 +1,31 @@
 {
     "videos": [
         {
+            "aid": 116435506434452,
+            "title": "DEMO杀销量？厂商态度两极分化",
+            "cover": "http://i1.hdslb.com/bfs/archive/7bd45585617fc251148633bae6d22f1de26fd70c.jpg",
+            "desc": "现在的 3A 大作越来越“吝啬”提供 Demo，而独立游戏虽然愿意给demo，很多也会在发售后迅速下架demo 。这背后又是出于何种考量？\n本期早餐车，我们就来聊聊这个话题。",
+            "tags": [
+                "上B站看播客",
+                "游戏杂谈",
+                "独立游戏",
+                "蔡格尼克效应",
+                "试玩版",
+                "游戏文化",
+                "3A",
+                "demo",
+                "宣发",
+                "业界分析"
+            ],
+            "cid": 37657118332,
+            "created_at": "2026-04-21 07:30",
+            "created_timestamp": 1776727800,
+            "status_code": 0,
+            "status_description": "OK",
+            "is_available": true,
+            "status_check_time": "2026-04-21T14:09:51"
+        },
+        {
             "aid": 116429819091035,
             "title": "40岁的陈姓摄影师，重出江湖后的奇幻冒险",
             "cover": "http://i1.hdslb.com/bfs/archive/fe9b802d000f46493ec4ad2f6c1ff2a8a8055dcf.jpg",
