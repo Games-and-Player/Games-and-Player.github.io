@@ -1,6 +1,31 @@
 {
     "videos": [
         {
+            "aid": 116441630252387,
+            "title": "高概念，为何在3A游戏中极为罕见？",
+            "cover": "http://i0.hdslb.com/bfs/archive/ebec7ec48cab9525aafb8fe0a0a7a1f7573866ff.jpg",
+            "desc": "在影院，一个极简的 What-if 设定，就可能引爆全球票房，这就是高概念的威力。\n但在游戏界，为什么 3A 大作宁愿在平庸的故事里堆砌画质，也不敢尝试一个颠覆性的设定？\n本期早餐车，我们就来聊聊这个话题。",
+            "tags": [
+                "上B站看播客",
+                "独立游戏",
+                "游戏杂谈",
+                "高概念",
+                "低概念",
+                "影视作品",
+                "3A",
+                "游戏文化",
+                "业界分析",
+                "游戏宣发"
+            ],
+            "cid": 37686805376,
+            "created_at": "2026-04-22 07:30",
+            "created_timestamp": 1776814200,
+            "status_code": 0,
+            "status_description": "OK",
+            "is_available": true,
+            "status_check_time": "2026-04-22T14:07:04"
+        },
+        {
             "aid": 116435506434452,
             "title": "DEMO杀销量？厂商态度两极分化",
             "cover": "http://i1.hdslb.com/bfs/archive/7bd45585617fc251148633bae6d22f1de26fd70c.jpg",
