@@ -1,6 +1,31 @@
 {
     "videos": [
         {
+            "aid": 116446763948581,
+            "title": "XGP降价了，但COD首发进入的承诺没了",
+            "cover": "http://i0.hdslb.com/bfs/archive/b462256364d90272b4f98c9862915e3eaf275d26.jpg",
+            "desc": "XGP宣布降价。\n但COD首发入池的承诺，也随之没了。这是微软与过去政策决裂。\n本期早餐车，深入分析这一事件。",
+            "tags": [
+                "上B站看播客",
+                "索尼",
+                "微软",
+                "游戏杂谈",
+                "使命召唤",
+                "游戏文化",
+                "PGP",
+                "xbox",
+                "XGP",
+                "业界分析"
+            ],
+            "cid": 37711252332,
+            "created_at": "2026-04-23 07:30",
+            "created_timestamp": 1776900600,
+            "status_code": 0,
+            "status_description": "OK",
+            "is_available": true,
+            "status_check_time": "2026-04-23T14:14:05"
+        },
+        {
             "aid": 116441630252387,
             "title": "高概念，为何在3A游戏中极为罕见？",
             "cover": "http://i0.hdslb.com/bfs/archive/ebec7ec48cab9525aafb8fe0a0a7a1f7573866ff.jpg",
