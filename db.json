@@ -1,6 +1,31 @@
 {
     "videos": [
         {
+            "aid": 116452350825962,
+            "title": "破碎的真相，为何游戏碎片化叙事会流行？",
+            "cover": "http://i1.hdslb.com/bfs/archive/3ef212abf69f55676a55f24fe636b73103cd28e2.jpg",
+            "desc": "从ps1时代开始，线性叙事的电影化游戏渐而流行。\n但最近几年，我们注意到的一个变化则是，碎片化叙事的游戏开始越来越多。\n本期早餐车，我们就来聊聊这背后的考量与变化。",
+            "tags": [
+                "上B站看播客",
+                "游戏杂谈",
+                "魂系列",
+                "步行模拟",
+                "游戏电影化",
+                "游戏文化",
+                "沉浸式戏剧",
+                "线性叙事",
+                "肉鸽游戏",
+                "碎片化叙事"
+            ],
+            "cid": 37742575950,
+            "created_at": "2026-04-24 07:30",
+            "created_timestamp": 1776987000,
+            "status_code": 0,
+            "status_description": "OK",
+            "is_available": true,
+            "status_check_time": "2026-04-24T14:18:13"
+        },
+        {
             "aid": 116446763948581,
             "title": "XGP降价了，但COD首发进入的承诺没了",
             "cover": "http://i0.hdslb.com/bfs/archive/b462256364d90272b4f98c9862915e3eaf275d26.jpg",
