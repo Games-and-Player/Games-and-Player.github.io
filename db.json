@@ -1,6 +1,30 @@
 {
     "videos": [
         {
+            "aid": 116469648071985,
+            "title": "专一与多情，不同玩家的态度与人生智慧",
+            "cover": "http://i2.hdslb.com/bfs/archive/dd8b20d4a66c84d19304b6b623dff1ef7b8bfc6b.jpg",
+            "desc": "为什么有人能守着一款二十年前的单机游戏，一玩就是一辈子？ \n又为什么，有人通关即分手，绝不回头，像浪子一样告别？\n本期早餐车，我们就来聊聊这两种不同态度的，殊途同归。",
+            "tags": [
+                "上B站看播客",
+                "暗黑2",
+                "游戏杂谈",
+                "怀旧",
+                "实况足球",
+                "通关",
+                "坚守",
+                "玩家",
+                "游戏文化"
+            ],
+            "cid": 37840946415,
+            "created_at": "2026-04-27 07:30",
+            "created_timestamp": 1777246200,
+            "status_code": 0,
+            "status_description": "OK",
+            "is_available": true,
+            "status_check_time": "2026-04-27T14:37:52"
+        },
+        {
             "aid": 116452350825962,
             "title": "破碎的真相，为何游戏碎片化叙事会流行？",
             "cover": "http://i1.hdslb.com/bfs/archive/3ef212abf69f55676a55f24fe636b73103cd28e2.jpg",
