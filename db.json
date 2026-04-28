@@ -1,6 +1,31 @@
 {
     "videos": [
         {
+            "aid": 116475905970472,
+            "title": "几则D加密新闻，让我想起了往昔趣事",
+            "cover": "http://i0.hdslb.com/bfs/archive/55ddf6dfcb86b723612023a3db317bcbe7f6a532.jpg",
+            "desc": "最近连续传出一条D加密的相关新闻，魔道之争还在继续。\n但这些新闻，却让我想起了自己的正版受害者往事。\n本期早餐车，我们就来聊聊这个话题。",
+            "tags": [
+                "上B站看播客",
+                "游戏杂谈",
+                "steam",
+                "反盗版",
+                "往事",
+                "破解",
+                "游戏文化",
+                "明星志愿3",
+                "DENOVO",
+                "STARFORCE"
+            ],
+            "cid": 37875810372,
+            "created_at": "2026-04-28 07:30",
+            "created_timestamp": 1777332600,
+            "status_code": 0,
+            "status_description": "OK",
+            "is_available": true,
+            "status_check_time": "2026-04-28T14:39:01"
+        },
+        {
             "aid": 116469648071985,
             "title": "专一与多情，不同玩家的态度与人生智慧",
             "cover": "http://i2.hdslb.com/bfs/archive/dd8b20d4a66c84d19304b6b623dff1ef7b8bfc6b.jpg",
