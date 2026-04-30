@@ -1,6 +1,31 @@
 {
     "videos": [
         {
+            "aid": 116487633375697,
+            "title": "GTA6宣发始动，从3A游戏的宣发费用聊开去",
+            "cover": "http://i0.hdslb.com/bfs/archive/18e6c37a662a846932321ce13695496c5976c772.jpg",
+            "desc": "根据R星方面消息，GTA 6的宣发将会全面启动。\n本期早餐车，就从这个话题聊聊3A游戏的宣发费用，以及GTA 6的各种情况。",
+            "tags": [
+                "上B站看播客",
+                "R星",
+                "COD",
+                "光环",
+                "游戏杂谈",
+                "产宣比",
+                "游戏文化",
+                "GTA6",
+                "2077",
+                "业界分析"
+            ],
+            "cid": 37944098991,
+            "created_at": "2026-04-30 07:30",
+            "created_timestamp": 1777505400,
+            "status_code": 0,
+            "status_description": "OK",
+            "is_available": true,
+            "status_check_time": "2026-04-30T14:35:56"
+        },
+        {
             "aid": 116482197493094,
             "title": "游戏的时差，玩家群体的失散与团圆",
             "cover": "http://i2.hdslb.com/bfs/archive/363cdd58be0ad5b20a7c6695002257137b27deb5.jpg",
