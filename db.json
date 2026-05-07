@@ -1,6 +1,31 @@
 {
     "videos": [
         {
+            "aid": 116526757712238,
+            "title": "steam手柄卖爆，我却看到自媒体的内卷",
+            "cover": "http://i2.hdslb.com/bfs/archive/b3e5e6286bcec8773e7c76a8441ad7680f2242a7.jpg",
+            "desc": "Steam手柄2代溢价翻倍！\n1300元的“流量入场券”背后，是自媒体重演4090式的军备竞赛。\n我拒绝支付这份流量税，因为真正伟大的设计，不该只存在于疯狂的48小时。\n本期早餐车，我们就来聊聊这个话题。",
+            "tags": [
+                "上B站看播客",
+                "游戏杂谈",
+                "手柄",
+                "steam",
+                "steam machine",
+                "游戏文化",
+                "流量",
+                "自媒体",
+                "溢价",
+                "valve"
+            ],
+            "cid": 38129764064,
+            "created_at": "2026-05-07 07:30",
+            "created_timestamp": 1778110200,
+            "status_code": 0,
+            "status_description": "OK",
+            "is_available": true,
+            "status_check_time": "2026-05-07T14:46:52"
+        },
+        {
             "aid": 116521741458330,
             "title": "沉迷微信小游戏，耽误我假期的游戏计划",
             "cover": "http://i0.hdslb.com/bfs/archive/47e4d30b562ebbdaae94a5bfa155441acb06b660.jpg",
