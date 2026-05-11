@@ -1,6 +1,31 @@
 {
     "videos": [
         {
+            "aid": 116549977447847,
+            "title": "NS2官宣涨价，AI吃内存，老任决定吃用户",
+            "cover": "http://i2.hdslb.com/bfs/archive/7846e0591d541445a9c2b6c89031fcc8d8d9a62c.jpg",
+            "desc": "NS2官宣涨价。\n在AI吃内存产能，导致成本上涨的情况下，任天堂为了应对股东，决定吃用户。\n本期早餐车，我们就来全方位的聊聊这个话题。",
+            "tags": [
+                "上B站看播客",
+                "任天堂",
+                "游戏杂谈",
+                "NS2",
+                "存储",
+                "游戏文化",
+                "涨价",
+                "内存",
+                "PS5",
+                "业界分析"
+            ],
+            "cid": 38236783759,
+            "created_at": "2026-05-11 07:30",
+            "created_timestamp": 1778455800,
+            "status_code": 0,
+            "status_description": "OK",
+            "is_available": true,
+            "status_check_time": "2026-05-11T15:51:33"
+        },
+        {
             "aid": 116532730404165,
             "title": "身体不适，让我想起当年装病打游戏的往事",
             "cover": "http://i1.hdslb.com/bfs/archive/940490454fbfe25634dc8d41a672dd2d7a28376a.jpg",
