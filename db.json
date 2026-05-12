@@ -1,6 +1,50 @@
 {
     "videos": [
         {
+            "aid": 116555648143851,
+            "title": "异于天堂，彰显如龙IP规模升级的野心",
+            "cover": "http://i1.hdslb.com/bfs/archive/932bf9dcc3025e200423d956779e8552ecbd0962.jpg",
+            "desc": "如龙组新作《异于天堂》，五个时代，五座城池，彰显世嘉对于升级如龙ip规模的野心。\n本期早餐车，我们就来聊聊这个话题。",
+            "tags": [
+                "上B站看播客",
+                "游戏杂谈",
+                "世嘉",
+                "人中之龙",
+                "stanger than heaven",
+                "游戏文化",
+                "前传",
+                "大河",
+                "东城会",
+                "XGP"
+            ],
+            "cid": 38256905169,
+            "created_at": "2026-05-12 07:30",
+            "created_timestamp": 1778542200,
+            "status_code": 0,
+            "status_description": "OK",
+            "is_available": true,
+            "status_check_time": "2026-05-12T14:44:10"
+        },
+        {
+            "aid": 116556939925625,
+            "title": "夜深了，聊聊今天的小插曲",
+            "cover": "http://i0.hdslb.com/bfs/archive/33813bfa7854275e0f5395381955c3a922dcfb34.jpg",
+            "desc": "深夜小插曲，聊聊为什么删掉了一期节目。",
+            "tags": [
+                "人文",
+                "深夜",
+                "心理",
+                "闲聊"
+            ],
+            "cid": 38266801900,
+            "created_at": "2026-05-12 00:50",
+            "created_timestamp": 1778518247,
+            "status_code": 0,
+            "status_description": "OK",
+            "is_available": true,
+            "status_check_time": "2026-05-12T14:44:10"
+        },
+        {
             "aid": 116549977447847,
             "title": "NS2官宣涨价，AI吃内存，老任决定吃用户",
             "cover": "http://i2.hdslb.com/bfs/archive/7846e0591d541445a9c2b6c89031fcc8d8d9a62c.jpg",
