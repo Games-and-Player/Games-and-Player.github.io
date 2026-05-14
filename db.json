@@ -1,6 +1,31 @@
 {
     "videos": [
         {
+            "aid": 116567241137638,
+            "title": "创造贞子的男人，提出了世界的终极疑问",
+            "cover": "http://i2.hdslb.com/bfs/archive/7d48dd0aa51c6c529126df00d45f7c44f2aef762.jpg",
+            "desc": "创造了贞子的铃木光司去世了。\n但他还是留下了一个关于这个世界的终极疑问，那就是，我们是否生活在一个虚拟的世界中呢？\n本期早餐车，我们就顺着铃木光司的作品聊开去。",
+            "tags": [
+                "上B站看播客",
+                "游戏杂谈",
+                "贞子",
+                "科幻",
+                "恐怖",
+                "恐怖游戏",
+                "铃木光司",
+                "日常恐怖",
+                "游戏文化",
+                "虚拟世界"
+            ],
+            "cid": 38306451165,
+            "created_at": "2026-05-14 07:30",
+            "created_timestamp": 1778715000,
+            "status_code": 0,
+            "status_description": "OK",
+            "is_available": true,
+            "status_check_time": "2026-05-14T14:50:31"
+        },
+        {
             "aid": 116561486553074,
             "title": "反英雄，个人机关算尽，也抵不住时代的风",
             "cover": "http://i2.hdslb.com/bfs/archive/7b392c273eb11ce7d0ed14fd0de3b20c931a35c4.jpg",
