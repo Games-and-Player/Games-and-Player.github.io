@@ -1,6 +1,31 @@
 {
     "videos": [
         {
+            "aid": 116595057759450,
+            "title": "INMO GO3，第三代智能眼镜都能做什么？",
+            "cover": "http://i2.hdslb.com/bfs/archive/f69afc8fa948e0a0fc3acec58a24b28b31bc083b.jpg",
+            "desc": "最近一直在思考，大模型爆发的时代，我们到底需要什么样的物理硬件？是一台活在手机里的语音助手，还是一个能把信息无缝叠映在视线前方的“平显”？\n这期视频，我试着把这副 INMO GO3 彻底融入了我的日常创作流程。我们不聊花哨的参数，只聊真实感受。",
+            "tags": [
+                "科技猎手",
+                "人工智能",
+                "INMO",
+                "影目",
+                "INMO影目",
+                "INMOGO3",
+                "翻译机",
+                "智能硬件",
+                "智能眼镜",
+                "520礼物"
+            ],
+            "cid": 38424413124,
+            "created_at": "2026-05-19 07:30",
+            "created_timestamp": 1779147000,
+            "status_code": 0,
+            "status_description": "OK",
+            "is_available": true,
+            "status_check_time": "2026-05-19T15:53:42"
+        },
+        {
             "aid": 116590360138827,
             "title": "周末鏖战地平线6，米乐也跟着沉迷了",
             "cover": "http://i1.hdslb.com/bfs/archive/42f81611b6a359e12a7c6a079f4b5224d1f65c21.jpg",
