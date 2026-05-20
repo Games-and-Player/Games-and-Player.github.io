@@ -1,6 +1,31 @@
 {
     "videos": [
         {
+            "aid": 116599033961953,
+            "title": "持续运营，究竟是行业良药还是毒药？",
+            "cover": "http://i1.hdslb.com/bfs/archive/84f4bf3d06d6bb6658914bed9b3f654a42266d24.jpg",
+            "desc": "最近资深媒体人Rob Fahey有一篇文章，直指持续运营游戏让业界集体宿醉。\n并举出索尼和世嘉为失败案例代表。\n我个人对此观点颇有异议，本期早餐车，就来聊聊这个话题。",
+            "tags": [
+                "上B站看播客",
+                "索尼",
+                "游戏杂谈",
+                "世嘉",
+                "Rob Fahey",
+                "游戏文化",
+                "BUNGIE",
+                "卡普空",
+                "行业分析",
+                "持续运营游戏"
+            ],
+            "cid": 38437978353,
+            "created_at": "2026-05-20 07:30",
+            "created_timestamp": 1779233400,
+            "status_code": 0,
+            "status_description": "OK",
+            "is_available": true,
+            "status_check_time": "2026-05-20T15:53:08"
+        },
+        {
             "aid": 116595057759450,
             "title": "INMO GO3，第三代智能眼镜都能做什么？",
             "cover": "http://i2.hdslb.com/bfs/archive/f69afc8fa948e0a0fc3acec58a24b28b31bc083b.jpg",
