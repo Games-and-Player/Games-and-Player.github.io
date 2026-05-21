@@ -1,6 +1,31 @@
 {
     "videos": [
         {
+            "aid": 116606013414133,
+            "title": "重温MU后，我发现自己又了破坏旧梦",
+            "cover": "http://i2.hdslb.com/bfs/archive/e0e3a3fb39748e762f42ea3f3694d0e2d9f1d0fd.jpg",
+            "desc": "最近当年我一度沉迷的网游，奇迹MU，似乎复活了。\n于是我重温了一下，然后，不出意外的，旧梦碎了一地。\n是什么驱动我们一次次刻舟求剑？本期早餐车，就来聊聊这个话题。",
+            "tags": [
+                "上B站看播客",
+                "青春",
+                "网游",
+                "回忆",
+                "游戏杂谈",
+                "奇迹MU",
+                "游戏文化",
+                "网吧",
+                "刻舟求剑",
+                "重温旧梦"
+            ],
+            "cid": 38472715355,
+            "created_at": "2026-05-21 07:30",
+            "created_timestamp": 1779319800,
+            "status_code": 0,
+            "status_description": "OK",
+            "is_available": true,
+            "status_check_time": "2026-05-21T16:00:27"
+        },
+        {
             "aid": 116599033961953,
             "title": "持续运营，究竟是行业良药还是毒药？",
             "cover": "http://i1.hdslb.com/bfs/archive/84f4bf3d06d6bb6658914bed9b3f654a42266d24.jpg",
