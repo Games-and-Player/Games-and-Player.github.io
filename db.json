@@ -1,6 +1,31 @@
 {
     "videos": [
         {
+            "aid": 116611466008657,
+            "title": "回归独占，索尼确认停止单机3A移植PC",
+            "cover": "http://i2.hdslb.com/bfs/archive/15147b5510d378287d5bcb31f1302003aacfb3ed.jpg",
+            "desc": "经由多方消息正式，索尼已经确定回顾独占策略，停止向PC平台移植叙事向单人3A作品。\n本期早餐车，我们就来聊聊这个话题。",
+            "tags": [
+                "上B站看播客",
+                "索尼",
+                "游戏杂谈",
+                "steam",
+                "PS5",
+                "PS6",
+                "独占",
+                "游戏文化",
+                "xbox",
+                "业界分析"
+            ],
+            "cid": 38496568479,
+            "created_at": "2026-05-22 07:30",
+            "created_timestamp": 1779406200,
+            "status_code": 0,
+            "status_description": "OK",
+            "is_available": true,
+            "status_check_time": "2026-05-22T15:51:18"
+        },
+        {
             "aid": 116606013414133,
             "title": "重温MU后，我发现自己又了破坏旧梦",
             "cover": "http://i2.hdslb.com/bfs/archive/e0e3a3fb39748e762f42ea3f3694d0e2d9f1d0fd.jpg",
