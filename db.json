@@ -1,6 +1,31 @@
 {
     "videos": [
         {
+            "aid": 116629216238543,
+            "title": "虚幻的童年，车迟国与错误的游戏回忆",
+            "cover": "http://i1.hdslb.com/bfs/archive/5bcdfc277e13f5dea7fe47ab71188d20bee8fc19.jpg",
+            "desc": "86版西游记没有下油锅，金龟子没配过机器猫，林克不叫塞尔达。\n在万物皆可数字化的时代，玩家也难免，会用执念和错觉，在记忆的废墟里联合发明过去。\n本期早餐车，我们就来聊聊这个话题。",
+            "tags": [
+                "上B站看播客",
+                "游戏杂谈",
+                "童年",
+                "回忆",
+                "魂斗罗",
+                "艾尔登法环",
+                "虚构记忆",
+                "曼德拉效用",
+                "游戏文化",
+                "king"
+            ],
+            "cid": 38579274504,
+            "created_at": "2026-05-25 07:30",
+            "created_timestamp": 1779665400,
+            "status_code": 0,
+            "status_description": "OK",
+            "is_available": true,
+            "status_check_time": "2026-05-25T16:37:54"
+        },
+        {
             "aid": 116611466008657,
             "title": "回归独占，索尼确认停止单机3A移植PC",
             "cover": "http://i2.hdslb.com/bfs/archive/15147b5510d378287d5bcb31f1302003aacfb3ed.jpg",
