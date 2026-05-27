@@ -1,6 +1,26 @@
 {
     "videos": [
         {
+            "aid": 116640490459607,
+            "title": "消光大佬：玩家的建议常常错，但情绪却不会错",
+            "cover": "http://i0.hdslb.com/bfs/archive/055ded1ce506a31a19b562bc0f2eefcbc709ca52.jpg",
+            "desc": "2026年5月，刚刚卸任《消逝的光芒》系列负责人的 Tymon Smektała，在 Digital Dragons 大会上抛出了一个让全行业震动的观点：“玩家给出的具体修改方案，非常频繁地给出错误答案；但在面对‘感受’时，粉丝永远是对的。”\n本期早餐车，我们就来聊聊这个话题。",
+            "tags": [
+                "游戏杂谈",
+                "消逝的光芒",
+                "Tymon Smektała",
+                "digital dragon 2026",
+                "游戏文化"
+            ],
+            "cid": 38627445535,
+            "created_at": "2026-05-27 07:30",
+            "created_timestamp": 1779838200,
+            "status_code": 0,
+            "status_description": "OK",
+            "is_available": true,
+            "status_check_time": "2026-05-27T16:09:36"
+        },
+        {
             "aid": 116635574803207,
             "title": "艺术是相通的，游戏玩家的给《阿嫲的情书》观后感",
             "cover": "http://i1.hdslb.com/bfs/archive/04c7d4500ebec08a977a1c1e09d4e06297cc2a45.jpg",
