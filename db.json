@@ -1,6 +1,31 @@
 {
     "videos": [
         {
+            "aid": 116645859497297,
+            "title": "人生单机论，每一座山都有独特的风景",
+            "cover": "http://i2.hdslb.com/bfs/archive/a6e66390ce1261cd84be4806d238a42c45026f4a.jpg",
+            "desc": "最近玩耀西新作，六个世界打完后，原来是伪通关，竟然还有四个世界。\n由此，我产生了一些人生与单机游戏相似之处的感悟。\n本期早餐车，我们就来聊聊这个话题。",
+            "tags": [
+                "上B站看播客",
+                "单机游戏",
+                "游戏杂谈",
+                "steam",
+                "耀西不可思议图鉴",
+                "游戏文化",
+                "经历",
+                "人生感悟",
+                "游戏感悟",
+                "杂记"
+            ],
+            "cid": 38655495599,
+            "created_at": "2026-05-28 07:30",
+            "created_timestamp": 1779924600,
+            "status_code": 0,
+            "status_description": "OK",
+            "is_available": true,
+            "status_check_time": "2026-05-28T16:08:23"
+        },
+        {
             "aid": 116640490459607,
             "title": "消光大佬：玩家的建议常常错，但情绪却不会错",
             "cover": "http://i0.hdslb.com/bfs/archive/055ded1ce506a31a19b562bc0f2eefcbc709ca52.jpg",
