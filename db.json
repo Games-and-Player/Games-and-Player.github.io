@@ -1,6 +1,31 @@
 {
     "videos": [
         {
+            "aid": 116651479536840,
+            "title": "老树新芽，巫师3为何突然公布新DLC？",
+            "cover": "http://i2.hdslb.com/bfs/archive/aba311429e4b0f53a561aba18b1c7ccba61d6ef4.jpg",
+            "desc": "在巫师3发售10多年后，并且续作已经公布的情况下，CDPR为何突然宣布了巫师3的新DLC？\n本期早餐车，我们就来聊聊这个操作背后的考量。",
+            "tags": [
+                "上B站看播客",
+                "游戏杂谈",
+                "巫师3",
+                "DLC",
+                "ARPG",
+                "Fool's theory",
+                "游戏文化",
+                "CDPR",
+                "巫师4",
+                "witcher 3"
+            ],
+            "cid": 38672008604,
+            "created_at": "2026-05-29 07:30",
+            "created_timestamp": 1780011000,
+            "status_code": 0,
+            "status_description": "OK",
+            "is_available": true,
+            "status_check_time": "2026-05-29T16:05:33"
+        },
+        {
             "aid": 116645859497297,
             "title": "人生单机论，每一座山都有独特的风景",
             "cover": "http://i2.hdslb.com/bfs/archive/a6e66390ce1261cd84be4806d238a42c45026f4a.jpg",
