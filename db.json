@@ -1,6 +1,31 @@
 {
     "videos": [
         {
+            "aid": 116655757791597,
+            "title": "每个玩家，都应为自己留下一束光",
+            "cover": "http://i0.hdslb.com/bfs/archive/c6cc89396820a97c8c150743b1723981e4f186db.jpg",
+            "desc": "从小时候，掌机还没有背光的年代开始，玩家就一直在逐光。\n而如今，灯火通明的房间里，我们仍在为了最佳的光感体验而努力，为自己努力留下一束专属的光。\n本期节目，我们就来聊聊这个话题。",
+            "tags": [
+                "上B站看播客",
+                "回忆",
+                "掌机",
+                "桌面",
+                "游戏杂谈",
+                "screenbar halo 2",
+                "游戏文化",
+                "明基",
+                "屏幕灯",
+                "桌面美学"
+            ],
+            "cid": 38688392737,
+            "created_at": "2026-05-30 12:00",
+            "created_timestamp": 1780113600,
+            "status_code": 0,
+            "status_description": "OK",
+            "is_available": true,
+            "status_check_time": "2026-05-30T14:52:38"
+        },
+        {
             "aid": 116651479536840,
             "title": "老树新芽，巫师3为何突然公布新DLC？",
             "cover": "http://i2.hdslb.com/bfs/archive/aba311429e4b0f53a561aba18b1c7ccba61d6ef4.jpg",
