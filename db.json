@@ -1,6 +1,31 @@
 {
     "videos": [
         {
+            "aid": 116669414381526,
+            "title": "新作登录NS2，COD系列重回任天堂主机",
+            "cover": "http://i2.hdslb.com/bfs/archive/aab7073e2b07b7775a3317d8baf4f4a682da97f4.jpg",
+            "desc": "随着新作《现代战争4》确认同步登录NS2，这也意味着，阔别13年后，COD系列重回任系平台。\n但是，总有玩家会担心，NS2版本效能表现会如何？是否会有内容的阉割？\n本期早餐车，我们就来聊聊这个话题。",
+            "tags": [
+                "上B站看播客",
+                "游戏杂谈",
+                "使命召唤",
+                "微软",
+                "任天堂",
+                "digital legends",
+                "动视",
+                "游戏文化",
+                "NS2",
+                "IW"
+            ],
+            "cid": 38748948820,
+            "created_at": "2026-06-01 07:30",
+            "created_timestamp": 1780270200,
+            "status_code": 0,
+            "status_description": "OK",
+            "is_available": true,
+            "status_check_time": "2026-06-01T17:33:01"
+        },
+        {
             "aid": 116655757791597,
             "title": "每个玩家，都应为自己留下一束光",
             "cover": "http://i0.hdslb.com/bfs/archive/c6cc89396820a97c8c150743b1723981e4f186db.jpg",
