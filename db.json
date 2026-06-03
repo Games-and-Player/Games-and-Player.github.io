@@ -1,6 +1,31 @@
 {
     "videos": [
         {
+            "aid": 116680604784384,
+            "title": "王道的转移，浅谈游戏叙事风格的转变",
+            "cover": "http://i0.hdslb.com/bfs/archive/9d57f3d95517b7e8674dd3e2b3b9a6e8c2f45f4b.jpg",
+            "desc": "为什么现在的游戏越来越精美，却越来越少见到“直冲云霄”的王道燃点？\n这不是编剧退步，而是一场由商业决策与媒介进化导致的“王道转移”。\n本期早餐车，我们就来聊聊这个话题。",
+            "tags": [
+                "上B站看播客",
+                "龙珠",
+                "游戏杂谈",
+                "叙事风格",
+                "数值驱动",
+                "平铺世界",
+                "王道",
+                "游戏文化",
+                "开放世界",
+                "异度神剑2"
+            ],
+            "cid": 38801245791,
+            "created_at": "2026-06-03 07:30",
+            "created_timestamp": 1780443000,
+            "status_code": 0,
+            "status_description": "OK",
+            "is_available": true,
+            "status_check_time": "2026-06-03T17:00:55"
+        },
+        {
             "aid": 116674447547098,
             "title": "耀西新作，好玩又不太好玩的奇妙体验",
             "cover": "http://i2.hdslb.com/bfs/archive/8439b0be8e624787ec8762498d7d37a58572272c.jpg",
