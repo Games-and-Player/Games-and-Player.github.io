@@ -1,6 +1,56 @@
 {
     "videos": [
         {
+            "aid": 116691610637831,
+            "title": "批判之战，青春里那不能反锁的房间",
+            "cover": "http://i2.hdslb.com/bfs/archive/84b2cd2d8306bf5e1adb90a7afe06e7c67970a54.jpg",
+            "desc": "食色，性也。\n当年，我们青春里那间不能反锁的房间，是一场和家长之间关于批判的斗智斗勇。\n本期早餐车，我们就来聊聊这个话题。",
+            "tags": [
+                "上B站看视频播客",
+                "青春",
+                "回忆",
+                "游戏杂谈",
+                "游戏文化",
+                "批判",
+                "往事",
+                "欲望",
+                "趣谈",
+                "羞羞的游戏"
+            ],
+            "cid": 38852889867,
+            "created_at": "2026-06-05 07:30",
+            "created_timestamp": 1780615800,
+            "status_code": 0,
+            "status_description": "OK",
+            "is_available": true,
+            "status_check_time": "2026-06-05T16:13:45"
+        },
+        {
+            "aid": 116685487151637,
+            "title": "眼里乾坤，NS2好搭档，超高亮度的随身大屏",
+            "cover": "http://i1.hdslb.com/bfs/archive/2f91a28d2d2a8cb7a8db0d775c140216340e63ec.jpg",
+            "desc": "谁说在户外就只能弓着背、低着头看掌机反光的小屏幕？带上 VITURE Beast XR眼镜，把 174 吋的私人 IMAX 影院和哈曼音响一起塞进口袋。在阳光下轻轻一滑开启 9 级变色调光，无惧烈日，躺在露营椅上平视前方，天地就是你的游戏背景，随时随地给你的 NS2 升个“豪华客厅舱”！",
+            "tags": [
+                "万物研究所",
+                "游戏杂谈",
+                "随身大屏",
+                "XR眼镜",
+                "VITUREBeast",
+                "AR眼镜",
+                "科技产品",
+                "NS2",
+                "游戏文化",
+                "VITURE"
+            ],
+            "cid": 38825754811,
+            "created_at": "2026-06-04 19:00",
+            "created_timestamp": 1780570800,
+            "status_code": 0,
+            "status_description": "OK",
+            "is_available": true,
+            "status_check_time": "2026-06-05T16:13:46"
+        },
+        {
             "aid": 116686409766818,
             "title": "令人满意！索尼直面会观后感",
             "cover": "http://i0.hdslb.com/bfs/archive/dc70da2b81a3ab67d0d5dd8ea27b50604900002c.jpg",
