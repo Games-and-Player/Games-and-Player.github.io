@@ -1,6 +1,29 @@
 {
     "videos": [
         {
+            "aid": 116701005878348,
+            "title": "当直觉撞上机械，玩家福至心灵的那一刻",
+            "cover": "http://i1.hdslb.com/bfs/archive/cab071fdf74b589778a916eb5373085cd1b3dd67.jpg",
+            "desc": "从《忍龙》断肢到《欧卡》巡航，我们在游戏里流连忘返，到底在追求什么？抛开冰冷的参数报菜名，从老玩家的真实感悟出发，聊聊那一秒的“福至心灵”，以及极致性能的手柄，如何成为治愈精神内耗的解药。",
+            "tags": [
+                "游戏杂谈",
+                "飞智黑武士5PRO",
+                "黑武士5PRO",
+                "无线手柄",
+                "游戏文化",
+                "动作游戏",
+                "飞智",
+                "飞智手柄"
+            ],
+            "cid": 38896795987,
+            "created_at": "2026-06-07 12:00",
+            "created_timestamp": 1780804800,
+            "status_code": 0,
+            "status_description": "OK",
+            "is_available": true,
+            "status_check_time": "2026-06-07T15:59:32"
+        },
+        {
             "aid": 116691610637831,
             "title": "批判之战，青春里那不能反锁的房间",
             "cover": "http://i2.hdslb.com/bfs/archive/84b2cd2d8306bf5e1adb90a7afe06e7c67970a54.jpg",
