@@ -1,6 +1,31 @@
 {
     "videos": [
         {
+            "aid": 116708035597356,
+            "title": "两种重制，当维罗妮卡遇上最终幻想",
+            "cover": "http://i0.hdslb.com/bfs/archive/fafc7334e59a879143f8759f8accc708de21d93b.jpg",
+            "desc": "同一个夏日游戏展，两个2027年的顶级remake，卡普空用维罗妮卡拧紧螺丝，SE则用ff7r3掀翻命运棋盘。当两种不同风格的重制碰在一起，难免令人充满期待。\n本期早餐车，我们就来聊聊这个话题。",
+            "tags": [
+                "上B站看播客",
+                "游戏杂谈",
+                "最终幻想7",
+                "生化危机",
+                "启示录",
+                "游戏文化",
+                "维罗妮卡",
+                "remake",
+                "游戏重制",
+                "SGF"
+            ],
+            "cid": 38933564939,
+            "created_at": "2026-06-08 07:30",
+            "created_timestamp": 1780875000,
+            "status_code": 0,
+            "status_description": "OK",
+            "is_available": true,
+            "status_check_time": "2026-06-08T17:00:05"
+        },
+        {
             "aid": 116701005878348,
             "title": "当直觉撞上机械，玩家福至心灵的那一刻",
             "cover": "http://i1.hdslb.com/bfs/archive/cab071fdf74b589778a916eb5373085cd1b3dd67.jpg",
