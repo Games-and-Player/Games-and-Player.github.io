@@ -1,6 +1,31 @@
 {
     "videos": [
         {
+            "aid": 116713773339845,
+            "title": "战争机器，回归独占但思路需破局",
+            "cover": "http://i0.hdslb.com/bfs/archive/9c29d1ee017f17fc2be51bf4d5809b6100465b4c.jpg",
+            "desc": "在次世代主机彻底PC化的今天，“回归独占”也能只是微软的时间差策略，而战争机器系列，曾统治时代的“多巴胺遭遇战公式”，或许，也需要思路的转变与创新。\n本期早餐车，我们就来聊聊这个话题。",
+            "tags": [
+                "上B站看播客",
+                "游戏杂谈",
+                "微软",
+                "XBOX",
+                "事变日",
+                "独占",
+                "GOW",
+                "游戏文化",
+                "战争机器",
+                "多巴胺"
+            ],
+            "cid": 38955125548,
+            "created_at": "2026-06-09 07:30",
+            "created_timestamp": 1780961400,
+            "status_code": 0,
+            "status_description": "OK",
+            "is_available": true,
+            "status_check_time": "2026-06-09T15:57:53"
+        },
+        {
             "aid": 116708035597356,
             "title": "两种重制，当维罗妮卡遇上最终幻想",
             "cover": "http://i0.hdslb.com/bfs/archive/fafc7334e59a879143f8759f8accc708de21d93b.jpg",
