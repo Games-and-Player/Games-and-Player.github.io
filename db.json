@@ -1,6 +1,28 @@
 {
     "videos": [
         {
+            "aid": 116720853389820,
+            "title": "6月9日任天堂直面会回放",
+            "cover": "http://i2.hdslb.com/bfs/archive/131d9a0237d98798df24473d521dfe2547b4d7e1.jpg",
+            "desc": "6月9日任天堂直面会直播回放，给错过的朋友体验当时的快乐。",
+            "tags": [
+                "任天堂",
+                "塞尔达传说",
+                "异度之刃",
+                "王国之心",
+                "游戏杂谈",
+                "直播录像",
+                "任天堂直面会"
+            ],
+            "cid": 38992020070,
+            "created_at": "2026-06-10 07:30",
+            "created_timestamp": 1781047800,
+            "status_code": 0,
+            "status_description": "OK",
+            "is_available": true,
+            "status_check_time": "2026-06-10T16:13:43"
+        },
+        {
             "aid": 116713773339845,
             "title": "战争机器，回归独占但思路需破局",
             "cover": "http://i0.hdslb.com/bfs/archive/9c29d1ee017f17fc2be51bf4d5809b6100465b4c.jpg",
