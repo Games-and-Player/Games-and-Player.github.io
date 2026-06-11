@@ -1,6 +1,31 @@
 {
     "videos": [
         {
+            "aid": 116725483902870,
+            "title": "第三条路径，分析时之笛重制的进化可能",
+            "cover": "http://i1.hdslb.com/bfs/archive/290a8b4683cc64b2e7e3f6d09733d36203f3779e.jpg",
+            "desc": "重制《时之笛》，面对这座无法逾越的图腾，老任究竟会选择卡普空式的“结构重组”，还是 SE 式的“解构重创”？\n或许，老任将走上一条前所未有的“第三条路”，为时之笛remake带来全新的进化可能。\n本期早餐车，我们就来聊聊这个话题。",
+            "tags": [
+                "上B站看播客",
+                "游戏杂谈",
+                "塞尔达传说",
+                "任天堂",
+                "NS2",
+                "游戏文化",
+                "时之笛",
+                "remake",
+                "旷野之息",
+                "业界分析"
+            ],
+            "cid": 39011420689,
+            "created_at": "2026-06-11 07:30",
+            "created_timestamp": 1781134200,
+            "status_code": 0,
+            "status_description": "OK",
+            "is_available": true,
+            "status_check_time": "2026-06-11T16:51:51"
+        },
+        {
             "aid": 116720853389820,
             "title": "6月9日任天堂直面会回放",
             "cover": "http://i2.hdslb.com/bfs/archive/131d9a0237d98798df24473d521dfe2547b4d7e1.jpg",
