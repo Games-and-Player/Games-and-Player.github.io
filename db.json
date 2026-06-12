@@ -1,6 +1,31 @@
 {
     "videos": [
         {
+            "aid": 116729845913743,
+            "title": "晴雨人生，我在老游戏中寻找宁静",
+            "cover": "http://i2.hdslb.com/bfs/archive/fa8aec15ddc1155201cb1b39f6dd10df57314837.jpg",
+            "desc": "今天户外一镜到底，和大家聊聊，我如何在最近的重压之下，在老游戏中寻到内心的宁静。",
+            "tags": [
+                "上B站看播客",
+                "游戏杂谈",
+                "人生",
+                "高考",
+                "街机游戏",
+                "户外",
+                "怀旧游戏",
+                "老游戏",
+                "游戏文化",
+                "大观园"
+            ],
+            "cid": 39029179844,
+            "created_at": "2026-06-12 07:30",
+            "created_timestamp": 1781220600,
+            "status_code": 0,
+            "status_description": "OK",
+            "is_available": true,
+            "status_check_time": "2026-06-12T16:39:01"
+        },
+        {
             "aid": 116725483902870,
             "title": "第三条路径，分析时之笛重制的进化可能",
             "cover": "http://i1.hdslb.com/bfs/archive/290a8b4683cc64b2e7e3f6d09733d36203f3779e.jpg",
