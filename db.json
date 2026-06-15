@@ -1,6 +1,31 @@
 {
     "videos": [
         {
+            "aid": 116748535731653,
+            "title": "入侵日常，为何伪记录风格大行其道",
+            "cover": "http://i0.hdslb.com/bfs/archive/fc64ad64b67ff0d74ad0246f2e99d44bae3a8150.jpg",
+            "desc": "周末玩了几个最近很火的半ARG游戏，并以此感到，席卷全网的伪纪录流行，也当然自有其原因。\n本期早餐车，我们就来解构这场入侵日常的叙事魔力。",
+            "tags": [
+                "上B站看播客",
+                "赛博侦探",
+                "悬疑",
+                "游戏杂谈",
+                "恐怖",
+                "大学生登山失踪事件",
+                "诡异广告调查事件",
+                "游戏文化",
+                "第四面墙",
+                "ARG"
+            ],
+            "cid": 39115948451,
+            "created_at": "2026-06-15 07:30",
+            "created_timestamp": 1781479800,
+            "status_code": 0,
+            "status_description": "OK",
+            "is_available": true,
+            "status_check_time": "2026-06-15T18:29:52"
+        },
+        {
             "aid": 116729845913743,
             "title": "晴雨人生，我在老游戏中寻找宁静",
             "cover": "http://i2.hdslb.com/bfs/archive/fa8aec15ddc1155201cb1b39f6dd10df57314837.jpg",
