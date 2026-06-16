@@ -1,6 +1,31 @@
 {
     "videos": [
         {
+            "aid": 116753417901874,
+            "title": "自负盈亏，微软终止XBOX无限资金支持",
+            "cover": "http://i0.hdslb.com/bfs/archive/8079c956fbae2ef84ce4f09886733254a2f4f5d9.jpg",
+            "desc": "微软正式确认，终止对于Xbox的无限资金支持，Xbox被迫自负盈亏。\n本期早餐车，我们就来聊聊这个话题。",
+            "tags": [
+                "上B站看播客",
+                "微软",
+                "游戏杂谈",
+                "烧钱",
+                "游戏文化",
+                "独占",
+                "HELIX",
+                "xbox",
+                "XGP",
+                "业界分析"
+            ],
+            "cid": 39140002394,
+            "created_at": "2026-06-16 07:30",
+            "created_timestamp": 1781566200,
+            "status_code": 0,
+            "status_description": "OK",
+            "is_available": true,
+            "status_check_time": "2026-06-16T17:32:06"
+        },
+        {
             "aid": 116748535731653,
             "title": "入侵日常，为何伪记录风格大行其道",
             "cover": "http://i0.hdslb.com/bfs/archive/fc64ad64b67ff0d74ad0246f2e99d44bae3a8150.jpg",
