@@ -1,6 +1,31 @@
 {
     "videos": [
         {
+            "aid": 116759239660890,
+            "title": "千金买骨，为何业界巨额收购频暴雷？",
+            "cover": "http://i1.hdslb.com/bfs/archive/2d254c916678ced185cf0fd5993cfb77889584c8.jpg",
+            "desc": "世嘉吃下Rivio数亿减值、Xbox陷入大锅饭与大逃杀死结、索尼被Bungie反向吞噬。为何近几年的天价收购频暴雷？\n本期早餐车，我们就来聊聊这个话题。",
+            "tags": [
+                "上B站看播客",
+                "微软",
+                "索尼",
+                "游戏杂谈",
+                "世嘉",
+                "rivio",
+                "棒鸡",
+                "游戏文化",
+                "收购",
+                "业界分析"
+            ],
+            "cid": 39161300046,
+            "created_at": "2026-06-17 07:30",
+            "created_timestamp": 1781652600,
+            "status_code": 0,
+            "status_description": "OK",
+            "is_available": true,
+            "status_check_time": "2026-06-17T17:07:38"
+        },
+        {
             "aid": 116753417901874,
             "title": "自负盈亏，微软终止XBOX无限资金支持",
             "cover": "http://i0.hdslb.com/bfs/archive/8079c956fbae2ef84ce4f09886733254a2f4f5d9.jpg",
