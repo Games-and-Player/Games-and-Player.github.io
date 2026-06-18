@@ -1,6 +1,31 @@
 {
     "videos": [
         {
+            "aid": 116765195509717,
+            "title": "边吃粽子，边趣谈玩家的一个习惯",
+            "cover": "http://i1.hdslb.com/bfs/archive/fa21b6529f2d222f1e9e27ace5b4811e6639a936.jpg",
+            "desc": "本期早餐车，我们一边吃粽子，一边趣谈玩家的一个习惯，那就是，关于游戏下线时一些奇怪的仪式。",
+            "tags": [
+                "上B站看播客",
+                "粽子",
+                "网络游戏",
+                "强迫症",
+                "搞笑",
+                "游戏杂谈",
+                "吃播",
+                "端午",
+                "下线",
+                "游戏文化"
+            ],
+            "cid": 39192562356,
+            "created_at": "2026-06-18 07:30",
+            "created_timestamp": 1781739000,
+            "status_code": 0,
+            "status_description": "OK",
+            "is_available": true,
+            "status_check_time": "2026-06-18T16:53:26"
+        },
+        {
             "aid": 116759239660890,
             "title": "千金买骨，为何业界巨额收购频暴雷？",
             "cover": "http://i1.hdslb.com/bfs/archive/2d254c916678ced185cf0fd5993cfb77889584c8.jpg",
