@@ -807,7 +807,8 @@
             "status_code": 0,
             "status_description": "OK",
             "is_available": true,
-            "status_check_time": "2026-05-11T15:51:33"
+            "status_check_time": "2026-05-11T15:51:33",
+            "reupload_aid": 116562207969365
         },
         {
             "aid": 116532730404165,
@@ -40336,7 +40337,8 @@
             "status_code": 62002,
             "status_description": "稿件不可见（已删除）",
             "is_available": false,
-            "status_check_time": "2026-04-04T15:51:12"
+            "status_check_time": "2026-04-04T15:51:12",
+            "reupload_aid": 116641077664583
         },
         {
             "aid": 20964522,
@@ -50164,7 +50166,8 @@
             "status_code": 62002,
             "status_description": "稿件不可见（已删除）",
             "is_available": false,
-            "status_check_time": "2026-04-04T15:51:12"
+            "status_check_time": "2026-04-04T15:51:12",
+            "reupload_aid": 116392523341126
         },
         {
             "aid": 10239953,
@@ -50190,7 +50193,8 @@
             "status_code": 62002,
             "status_description": "稿件不可见（已删除）",
             "is_available": false,
-            "status_check_time": "2026-04-04T15:51:12"
+            "status_check_time": "2026-04-04T15:51:12",
+            "reupload_aid": 116469648072162
         },
         {
             "aid": 10206883,
@@ -50216,7 +50220,8 @@
             "status_code": 62002,
             "status_description": "稿件不可见（已删除）",
             "is_available": false,
-            "status_check_time": "2026-04-04T15:51:12"
+            "status_check_time": "2026-04-04T15:51:12",
+            "reupload_aid": 116483304789977
         },
         {
             "aid": 10180309,
@@ -50241,7 +50246,8 @@
             "status_code": 62002,
             "status_description": "稿件不可见（已删除）",
             "is_available": false,
-            "status_check_time": "2026-04-04T15:51:12"
+            "status_check_time": "2026-04-04T15:51:12",
+            "reupload_aid": 116562308633850
         },
         {
             "aid": 10177849,
@@ -50267,7 +50273,8 @@
             "status_code": 62002,
             "status_description": "稿件不可见（已删除）",
             "is_available": false,
-            "status_check_time": "2026-04-04T15:51:12"
+            "status_check_time": "2026-04-04T15:51:12",
+            "reupload_aid": 116488572901951
         },
         {
             "aid": 10153899,
@@ -50293,7 +50300,8 @@
             "status_code": 62002,
             "status_description": "稿件不可见（已删除）",
             "is_available": false,
-            "status_check_time": "2026-04-04T15:51:12"
+            "status_check_time": "2026-04-04T15:51:12",
+            "reupload_aid": 116488556058466
         },
         {
             "aid": 10131647,
@@ -50397,7 +50405,8 @@
             "status_code": 62002,
             "status_description": "稿件不可见（已删除）",
             "is_available": false,
-            "status_check_time": "2026-04-04T15:51:12"
+            "status_check_time": "2026-04-04T15:51:12",
+            "reupload_aid": 116562291855525
         },
         {
             "aid": 10046705,
@@ -50448,7 +50457,8 @@
             "status_code": 62002,
             "status_description": "稿件不可见（已删除）",
             "is_available": false,
-            "status_check_time": "2026-04-04T15:51:12"
+            "status_check_time": "2026-04-04T15:51:12",
+            "reupload_aid": 116562291855393
         },
         {
             "aid": 10014593,
@@ -50500,7 +50510,8 @@
             "status_code": 62002,
             "status_description": "稿件不可见（已删除）",
             "is_available": false,
-            "status_check_time": "2026-04-04T15:51:12"
+            "status_check_time": "2026-04-04T15:51:12",
+            "reupload_aid": 116562040197383
         },
         {
             "aid": 9908596,
@@ -50525,7 +50536,8 @@
             "status_code": 62002,
             "status_description": "稿件不可见（已删除）",
             "is_available": false,
-            "status_check_time": "2026-04-04T15:51:12"
+            "status_check_time": "2026-04-04T15:51:12",
+            "reupload_aid": 116469581026413
         },
         {
             "aid": 9860671,
@@ -50824,7 +50836,8 @@
             "status_code": 62002,
             "status_description": "稿件不可见（已删除）",
             "is_available": false,
-            "status_check_time": "2026-04-04T15:51:12"
+            "status_check_time": "2026-04-04T15:51:12",
+            "reupload_aid": 116578347654984
         },
         {
             "aid": 7654611,
@@ -50842,7 +50855,8 @@
             "status_code": 62002,
             "status_description": "稿件不可见（已删除）",
             "is_available": false,
-            "status_check_time": "2026-04-04T15:51:12"
+            "status_check_time": "2026-04-04T15:51:12",
+            "reupload_aid": 116392506496172
         },
         {
             "aid": 7646782,
