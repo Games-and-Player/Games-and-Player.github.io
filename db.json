@@ -1,6 +1,31 @@
 {
     "videos": [
         {
+            "aid": 116787056221942,
+            "title": "十三年的风雪，终于照亮罪恶都市的霓虹",
+            "cover": "http://i1.hdslb.com/bfs/archive/6cadb1d67b2fd8487b9bf6be6b881d580c1fd4b5.jpg",
+            "desc": "GTA 6预售即将开启。我不由回忆起当初关于4代和5代的往事。\n当罪恶都市的霓虹再次亮起，曾经的少年啊，你是否准备好了，再次奔跑？\n本期早餐车，我们就来聊聊这个话题。",
+            "tags": [
+                "上B站看播客",
+                "游戏杂谈",
+                "回忆",
+                "开放世界",
+                "罪恶都市",
+                "游戏文化",
+                "预购",
+                "GTA 4",
+                "r星",
+                "GTA 6"
+            ],
+            "cid": 39284179770,
+            "created_at": "2026-06-22 07:30",
+            "created_timestamp": 1782084600,
+            "status_code": 0,
+            "status_description": "OK",
+            "is_available": true,
+            "status_check_time": "2026-06-22T17:52:21"
+        },
+        {
             "aid": 116765195509717,
             "title": "边吃粽子，边趣谈玩家的一个习惯",
             "cover": "http://i1.hdslb.com/bfs/archive/fa21b6529f2d222f1e9e27ace5b4811e6639a936.jpg",
