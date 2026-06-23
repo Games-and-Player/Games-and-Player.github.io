@@ -1,6 +1,31 @@
 {
     "videos": [
         {
+            "aid": 116793414848666,
+            "title": "流量错觉，预告片打天下何以流行",
+            "cover": "http://i0.hdslb.com/bfs/archive/2e2648246bbaea89c35cdeadecd44209d9077e7b.jpg",
+            "desc": "游戏预告片百万播放，但玩家却发现甚至官网都没建。为什么厂商越发喜欢预告片打天下？\n本期早餐车，我们就来聊聊这个话题。",
+            "tags": [
+                "上B站看播客",
+                "DEMO",
+                "预告片",
+                "游戏杂谈",
+                "游戏文化",
+                "流量",
+                "TGA",
+                "宣发",
+                "业界分析",
+                "SGF"
+            ],
+            "cid": 39314653289,
+            "created_at": "2026-06-23 07:30",
+            "created_timestamp": 1782171000,
+            "status_code": 0,
+            "status_description": "OK",
+            "is_available": true,
+            "status_check_time": "2026-06-23T15:55:29"
+        },
+        {
             "aid": 116787056221942,
             "title": "十三年的风雪，终于照亮罪恶都市的霓虹",
             "cover": "http://i1.hdslb.com/bfs/archive/6cadb1d67b2fd8487b9bf6be6b881d580c1fd4b5.jpg",
