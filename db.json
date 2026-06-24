@@ -1,6 +1,31 @@
 {
     "videos": [
         {
+            "aid": 116798649668851,
+            "title": "真不便宜，steam新机价格令人咋舌",
+            "cover": "http://i0.hdslb.com/bfs/archive/15d9429fdcf3430705152eeaf42045cfab45e42e.jpg",
+            "desc": "Steam新机破千美元起售，价格令人咋舌。其系统虽自由开放，但高价下硬件却妥协严重。\n但某种程度上，这台机器仍是可以作为steam os入侵客厅的起手式。\n本期早餐车，我们就来聊聊这个话题。",
+            "tags": [
+                "上B站看播客",
+                "游戏杂谈",
+                "steam os",
+                "steam machine",
+                "游戏文化",
+                "主机",
+                "pc",
+                "valve",
+                "htpc",
+                "业界分析"
+            ],
+            "cid": 39338446120,
+            "created_at": "2026-06-24 07:30",
+            "created_timestamp": 1782257400,
+            "status_code": 0,
+            "status_description": "OK",
+            "is_available": true,
+            "status_check_time": "2026-06-24T15:50:50"
+        },
+        {
             "aid": 116793414848666,
             "title": "流量错觉，预告片打天下何以流行",
             "cover": "http://i0.hdslb.com/bfs/archive/2e2648246bbaea89c35cdeadecd44209d9077e7b.jpg",
