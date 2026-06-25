@@ -1,6 +1,31 @@
 {
     "videos": [
         {
+            "aid": 116805007905845,
+            "title": "灵光一闪，为游戏注入灵魂的瞬间",
+            "cover": "http://i0.hdslb.com/bfs/archive/91c37d6bb372ee27ffb2787490d2518d7a1d4803.jpg",
+            "desc": "现代游戏是一场伪装成艺术的严密工程学。\n但堆料的尽头，往往只是精致的平庸。需要靠‘瞬时灵感’像闪电般击穿平庸。\n本期早餐车，我们就聊聊这个话题。",
+            "tags": [
+                "上B站看播客",
+                "模拟人生",
+                "塞尔达传说",
+                "工业",
+                "艺术",
+                "游戏杂志",
+                "灵感",
+                "游戏文化",
+                "game watch",
+                "星际拓荒"
+            ],
+            "cid": 39370884752,
+            "created_at": "2026-06-25 07:30",
+            "created_timestamp": 1782343800,
+            "status_code": 0,
+            "status_description": "OK",
+            "is_available": true,
+            "status_check_time": "2026-06-25T15:51:55"
+        },
+        {
             "aid": 116798649668851,
             "title": "真不便宜，steam新机价格令人咋舌",
             "cover": "http://i0.hdslb.com/bfs/archive/15d9429fdcf3430705152eeaf42045cfab45e42e.jpg",
