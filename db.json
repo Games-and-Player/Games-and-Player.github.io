@@ -1,6 +1,31 @@
 {
     "videos": [
         {
+            "aid": 116810074558669,
+            "title": "暗度陈仓，以防偷跑实现二手绝户",
+            "cover": "http://i0.hdslb.com/bfs/archive/e5aa3198a39efb7820a431d61523968b99f8bc5f.jpg",
+            "desc": "《GTA 6》虽然保留实体版，但内部彻底舍弃光盘改为纯数字兑换码。R星是何考量？\n本期早餐车，我们就来聊聊这个话题。",
+            "tags": [
+                "上B站看播客",
+                "游戏杂谈",
+                "游戏文化",
+                "二手",
+                "实体",
+                "xbox",
+                "r星",
+                "数字版",
+                "ps5",
+                "gta 6"
+            ],
+            "cid": 39395132936,
+            "created_at": "2026-06-26 07:30",
+            "created_timestamp": 1782430200,
+            "status_code": 0,
+            "status_description": "OK",
+            "is_available": true,
+            "status_check_time": "2026-06-26T15:59:50"
+        },
+        {
             "aid": 116805007905845,
             "title": "灵光一闪，为游戏注入灵魂的瞬间",
             "cover": "http://i0.hdslb.com/bfs/archive/91c37d6bb372ee27ffb2787490d2518d7a1d4803.jpg",
