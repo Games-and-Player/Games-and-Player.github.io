@@ -1,6 +1,30 @@
 {
     "videos": [
         {
+            "aid": 116827136987596,
+            "title": "斗室微光，出清收藏时的感慨与回忆",
+            "cover": "http://i0.hdslb.com/bfs/archive/14d62082493ea905b79d10a1a570b3d416982f05.jpg",
+            "desc": "最近持续出清游戏收藏，多少有些不舍。\n但游戏留下的美好，早已埋在心里。\n本期早餐车，我们就来聊聊这个话题。",
+            "tags": [
+                "上B站看播客",
+                "原创",
+                "回忆",
+                "游戏杂谈",
+                "感慨",
+                "游戏文化",
+                "二手",
+                "游戏收藏",
+                "中古游戏"
+            ],
+            "cid": 39478035471,
+            "created_at": "2026-06-29 07:30",
+            "created_timestamp": 1782689400,
+            "status_code": 0,
+            "status_description": "OK",
+            "is_available": true,
+            "status_check_time": "2026-06-29T17:04:24"
+        },
+        {
             "aid": 116810074558669,
             "title": "暗度陈仓，以防偷跑实现二手绝户",
             "cover": "http://i0.hdslb.com/bfs/archive/e5aa3198a39efb7820a431d61523968b99f8bc5f.jpg",
