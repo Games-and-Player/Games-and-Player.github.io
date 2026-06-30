@@ -1,6 +1,31 @@
 {
     "videos": [
         {
+            "aid": 116832740579366,
+            "title": "逼近1000刀？从PS6成本爆料看两难困境",
+            "cover": "http://i0.hdslb.com/bfs/archive/43e79df7a520c4276defa6472472094692b2ad1f.jpg",
+            "desc": "PS6物料成本惊传逼近1000美元！\n在供应链海啸下，次世代主机陷入卖高自杀、卖低破产的两难死局。\n本期早餐车，我们就来聊聊这个话题。",
+            "tags": [
+                "上B站看播客",
+                "索尼",
+                "BOM",
+                "游戏杂谈",
+                "价格补贴",
+                "steam machine",
+                "游戏文化",
+                "次世代",
+                "PS6",
+                "业界分析"
+            ],
+            "cid": 39504119999,
+            "created_at": "2026-06-30 07:30",
+            "created_timestamp": 1782775800,
+            "status_code": 0,
+            "status_description": "OK",
+            "is_available": true,
+            "status_check_time": "2026-06-30T15:58:40"
+        },
+        {
             "aid": 116827136987596,
             "title": "斗室微光，出清收藏时的感慨与回忆",
             "cover": "http://i0.hdslb.com/bfs/archive/14d62082493ea905b79d10a1a570b3d416982f05.jpg",
