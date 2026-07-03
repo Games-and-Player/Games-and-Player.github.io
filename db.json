@@ -1,6 +1,31 @@
 {
     "videos": [
         {
+            "aid": 116849786296311,
+            "title": "尘埃落定，索尼亲手终结光盘时代",
+            "cover": "http://i0.hdslb.com/bfs/archive/8b11311eaa5f9a4680a73e181103e15dcbcda579.jpg",
+            "desc": "三十年前，索尼用光盘砸碎了旧时代的铁幕，开启了属于自己的游戏帝国。\n三十年后，又是它亲手挥刀，为这个它一手缔造的时代画上了句点。\n本期早餐车，我们就来聊聊索尼为何在此节点下定决心消灭实体。",
+            "tags": [
+                "上B站看播客",
+                "游戏杂谈",
+                "索尼",
+                "游戏文化",
+                "光盘",
+                "PS6",
+                "二手",
+                "GTA 6",
+                "业界分析",
+                "实体游戏"
+            ],
+            "cid": 39588988964,
+            "created_at": "2026-07-03 07:30",
+            "created_timestamp": 1783035000,
+            "status_code": 0,
+            "status_description": "OK",
+            "is_available": true,
+            "status_check_time": "2026-07-03T15:31:12"
+        },
+        {
             "aid": 116844233037659,
             "title": "合法盗窃，当厂商开始随意删库",
             "cover": "http://i2.hdslb.com/bfs/archive/54e26461314dfbe1d0f76d3eb216168866e2b17e.jpg",
