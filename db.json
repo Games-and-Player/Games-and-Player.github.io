@@ -1,6 +1,31 @@
 {
     "videos": [
         {
+            "aid": 116866244679216,
+            "title": "孤军奋战，任天堂宣布坚守实体卡带",
+            "cover": "http://i1.hdslb.com/bfs/archive/3b304bf83bf55059f292a31d6bbc2cd3e80afc79.jpg",
+            "desc": "索尼宣布28年取消新游戏的实体光盘后，股价应声大涨。\n这也让一些玩家担心，作为御三家中硕果仅存的实体派，任天堂会否跟进全面数字化？\n本期早餐车，我们就来聊聊这个话题。",
+            "tags": [
+                "上B站看播客",
+                "任天堂",
+                "索尼",
+                "游戏杂谈",
+                "线下",
+                "卡带",
+                "游戏文化",
+                "数字版",
+                "业界分析",
+                "实体游戏"
+            ],
+            "cid": 39670254014,
+            "created_at": "2026-07-06 07:30",
+            "created_timestamp": 1783294200,
+            "status_code": 0,
+            "status_description": "OK",
+            "is_available": true,
+            "status_check_time": "2026-07-06T16:38:25"
+        },
+        {
             "aid": 116849786296311,
             "title": "尘埃落定，索尼亲手终结光盘时代",
             "cover": "http://i0.hdslb.com/bfs/archive/8b11311eaa5f9a4680a73e181103e15dcbcda579.jpg",
