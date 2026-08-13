@@ -1,6 +1,31 @@
 {
     "videos": [
         {
+            "aid": 117082301865622,
+            "title": "一粒火种，当年的雨血成长为影之刃零",
+            "cover": "http://i1.hdslb.com/bfs/archive/7262e991b3c535adac30eca813d806e483f7ddc8.jpg",
+            "desc": "谁能想到当年那款小众独立小品《雨血》，历经漫长蛰伏，终蜕变为预售登顶 Steam 榜首的《影之刃零》。一颗武侠种子，十八年生根，而今利剑出鞘。\n本期早餐车，我们就来聊聊这个话题。",
+            "tags": [
+                "上B站看播客",
+                "雨血",
+                "游戏人生",
+                "游戏杂谈",
+                "steam",
+                "感悟",
+                "预购",
+                "动作游戏",
+                "游戏文化",
+                "影之刃零"
+            ],
+            "cid": 40843939488,
+            "created_at": "2026-08-13 07:30",
+            "created_timestamp": 1786577400,
+            "status_code": 0,
+            "status_description": "OK",
+            "is_available": true,
+            "status_check_time": "2026-08-13T13:45:06"
+        },
+        {
             "aid": 117076664590228,
             "title": "重温奥德赛，从3D马聊老任的人才培养模式",
             "cover": "http://i2.hdslb.com/bfs/archive/28910f51665196b9eabf88b78bc23e7742bb2685.jpg",
