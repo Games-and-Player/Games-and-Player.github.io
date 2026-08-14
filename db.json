@@ -1,6 +1,31 @@
 {
     "videos": [
         {
+            "aid": 117087922034101,
+            "title": "匆忙年代，玩大型RPG是时间的奢侈",
+            "cover": "http://i2.hdslb.com/bfs/archive/233cc9707cf52ea5bce49fe7d7984bbbc0ffb387.jpg",
+            "desc": "匆忙年代，一切娱乐都追求即时反馈。\n偏偏大型 RPG 需要整块心神长久沉浸，这场耗时漫长的虚拟远征，是否已是时间的奢侈？\n本期早餐车，我们就来聊聊这个话题。",
+            "tags": [
+                "上B站看播客",
+                "RPG",
+                "游戏杂谈",
+                "独立游戏",
+                "时间",
+                "游戏人生",
+                "奢侈",
+                "游戏文化",
+                "慢生活",
+                "匆忙"
+            ],
+            "cid": 40875657565,
+            "created_at": "2026-08-14 07:30",
+            "created_timestamp": 1786663800,
+            "status_code": 0,
+            "status_description": "OK",
+            "is_available": true,
+            "status_check_time": "2026-08-14T13:42:40"
+        },
+        {
             "aid": 117082301865622,
             "title": "一粒火种，当年的雨血成长为影之刃零",
             "cover": "http://i1.hdslb.com/bfs/archive/7262e991b3c535adac30eca813d806e483f7ddc8.jpg",
