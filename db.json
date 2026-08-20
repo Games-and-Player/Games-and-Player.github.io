@@ -1,6 +1,31 @@
 {
     "videos": [
         {
+            "aid": 117121392648139,
+            "title": "实机遭泄露，但以此评价GTA6仍太早",
+            "cover": "http://i1.hdslb.com/bfs/archive/0d9f2c93c1e902e3cbd451a4cfab782c7e7a1510.jpg",
+            "desc": "GTA 6实机画面遭黑客组织泄露，看起来可信度很高。但仅仅凭这几分钟的画面就评价gta 6缺乏创新，显然是为时过早，有失公允。\n本期早餐车，我们就来聊聊这个话题。",
+            "tags": [
+                "上B站看播客",
+                "R星",
+                "游戏杂谈",
+                "黑客",
+                "PS5",
+                "游戏文化",
+                "泄露",
+                "实机画面",
+                "GTA6",
+                "数字版"
+            ],
+            "cid": 41060532632,
+            "created_at": "2026-08-20 07:30",
+            "created_timestamp": 1787182200,
+            "status_code": 0,
+            "status_description": "OK",
+            "is_available": true,
+            "status_check_time": "2026-08-20T12:46:21"
+        },
+        {
             "aid": 117115587662999,
             "title": "人生海海，难免遇见过去的涟漪",
             "cover": "http://i1.hdslb.com/bfs/archive/67b102770746d454b6b3fec802206ceaa660bb3e.jpg",
