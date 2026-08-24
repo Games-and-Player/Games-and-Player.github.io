@@ -1,6 +1,30 @@
 {
     "videos": [
         {
+            "aid": 117144025174505,
+            "title": "一地鸡毛，评GTA 6泄露事件新进展",
+            "cover": "http://i2.hdslb.com/bfs/archive/dab662d0cad9660beeca86ebe6e9cc6c07bd98de.jpg",
+            "desc": "GTA 6泄密事件又有新发展，一场以“抗议数字版”为名义的泄密，实则是黑客入侵 R 星印度分支、偷盗 PC 测试包发币割韭菜的闹剧，最终落得一地鸡毛。\n本期早餐车，我们就来聊聊这个话题。",
+            "tags": [
+                "游戏杂谈",
+                "R星",
+                "黑客",
+                "业界评析",
+                "cyberleek",
+                "开发版",
+                "GTA6",
+                "游戏文化",
+                "加密货币"
+            ],
+            "cid": 41186099710,
+            "created_at": "2026-08-24 07:30",
+            "created_timestamp": 1787527800,
+            "status_code": 0,
+            "status_description": "OK",
+            "is_available": true,
+            "status_check_time": "2026-08-24T12:55:27"
+        },
+        {
             "aid": 117132146908944,
             "title": "深巷的汤包店，也藏着人生的大味道",
             "cover": "http://i2.hdslb.com/bfs/archive/90cb72cc148ed4d15f8080d263e9a59e4ce9c040.jpg",
