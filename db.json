@@ -1,6 +1,6 @@
 {
     "schema_version": 2,
-    "generated_at": "2026-08-26T03:13:42+08:00",
+    "generated_at": "2026-08-26T04:54:06+08:00",
     "videos": [
         {
             "aid": 117149595080864,
@@ -70013,7 +70013,8 @@
             "cover_local": "covers/10089409.webp",
             "duration": null,
             "restored_at": null,
-            "deleted_found_at": "2026-04-04"
+            "deleted_found_at": "2026-04-04",
+            "reupload_dead_at": "2026-08-26"
         },
         {
             "aid": 10068648,
@@ -70716,8 +70717,9 @@
         "available": 1086,
         "deleted": 939,
         "self_visible": 5,
-        "reuploaded": 481,
-        "pending_reupload": 463,
+        "reuploaded": 480,
+        "pending_reupload": 464,
+        "reupload_dead": 1,
         "by_year": {
             "2016": {
                 "available": 2,
