@@ -1,0 +1,41 @@
+name: Weekly Recheck
+on:
+  schedule:
+    - cron: '5 20 * * 6'   # 北京时间每周日 04:05
+  workflow_dispatch:
+    inputs:
+      include_dead:
+        description: 同时复查已不可用的视频是否恢复
+        type: boolean
+        default: false
+jobs:
+  recheck:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: pip
+      - run: pip install -r requirements.txt
+      - name: Run recheck
+        id: recheck
+        env:
+          BILIBILI_COOKIE: ${{ secrets.BILIBILI_COOKIE }}
+        run: |
+          set -o pipefail
+          FLAGS=""
+          if [ "${{ inputs.include_dead }}" = "true" ]; then FLAGS="--include-dead"; fi
+          python scripts/recheck.py $FLAGS | tee recheck.log
+          echo "summary=$(tail -n 1 recheck.log)" >> "$GITHUB_OUTPUT"
+      - run: python scripts/validate.py
+      - name: Commit
+        run: |
+          if git diff --quiet db.json; then echo "no changes"; exit 0; fi
+          git config user.name "${{ github.actor }}"
+          git config user.email "${{ github.actor }}@users.noreply.github.com"
+          git add db.json
+          git commit -m "🔎 ${{ steps.recheck.outputs.summary }}"
+          git push
