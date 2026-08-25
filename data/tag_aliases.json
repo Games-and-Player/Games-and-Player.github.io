@@ -1,0 +1,14 @@
+{
+  "canonical": {
+    "ps4": "PS4", "ps5": "PS5", "ps3": "PS3", "psp": "PSP", "psv": "PSV",
+    "ns": "Switch", "switch": "Switch", "ns2": "Switch 2", "switch2": "Switch 2",
+    "xbox": "Xbox", "xboxone": "Xbox One", "xsx": "Xbox Series",
+    "steam": "Steam", "rpg": "RPG", "r星": "R星", "rockstar": "R星", "gta6": "GTA6",
+    "netflix": "Netflix", "b级美食": "B级美食", "游戏id": "游戏ID", "fc": "FC", "sfc": "SFC"
+  },
+  "hidden": [
+    "宋少弘", "游戏公民大会", "原创", "节目", "上B站看播客", "上B站，聊情感",
+    "游戏知识分享官", "知识分享官", "整点电子榨菜", "万物皆可游戏", "记录我的美食日常",
+    "推荐宝藏游戏", "趣味科普人文", "涨姿势"
+  ]
+}

@@ -1,0 +1,22 @@
+{
+  "series": [
+    {"slug": "wangritan",     "name": "游戏往日谈",   "pattern": "往日谈",            "fields": ["title", "desc"], "from": null,         "to": null,         "color": "#4E6E58", "blurb": "回望老主机、老游戏与业界旧事"},
+    {"slug": "jinritan",      "name": "游戏今日谈",   "pattern": "今日谈",            "fields": ["title", "desc"], "from": null,         "to": null,         "color": "#3C5A78", "blurb": "2017–2020 年的每日业界评述，大部分已从 B站 消失"},
+    {"slug": "jinxingshi",    "name": "游戏进行时",   "pattern": "进行时",            "fields": ["title", "desc"], "from": null,         "to": null,         "color": "#7A4E3A", "blurb": "边玩边聊的通关体验"},
+    {"slug": "xin-zaocanche", "name": "新游戏早餐车", "pattern": "早餐车",            "fields": ["title", "desc"], "from": "2025-01-01", "to": null,         "color": "#B7791F", "blurb": "2025 年起的每日早间节目"},
+    {"slug": "zaocanche",     "name": "游戏早餐车",   "pattern": "早餐车",            "fields": ["title", "desc"], "from": null,         "to": "2024-12-31", "color": "#8C6D2E", "blurb": "2018–2019 年的早间资讯"},
+    {"slug": "youshudu",      "name": "少弘有书读",   "pattern": "有书读",            "fields": ["title", "desc"], "from": null,         "to": null,         "color": "#5B5A8A", "blurb": "读书与文化"},
+    {"slug": "youhuashuo",    "name": "少弘有话说",   "pattern": "有话说",            "fields": ["title", "desc"], "from": null,         "to": null,         "color": "#6B7A3C", "blurb": "对某个话题的专门表态"},
+    {"slug": "xishuocongtou", "name": "电玩细说从头", "pattern": "细说从头|细看从头", "fields": ["title", "desc"], "from": null,         "to": null,         "color": "#6E5A46", "blurb": "主机与厂商的编年史"},
+    {"slug": "aidaji",        "name": "少弘爱打机",   "pattern": "爱打机",            "fields": ["title", "desc"], "from": null,         "to": null,         "color": "#A8552F", "blurb": "实机游玩"},
+    {"slug": "gongmindahui",  "name": "游戏公民大会", "pattern": "游戏公民大会",      "fields": ["title"],         "from": null,         "to": null,         "color": "#2F4B7C", "blurb": "2016–2017 年频道最初的节目"},
+    {"slug": "zhaohuaxishi",  "name": "朝花夕拾",     "pattern": "朝花夕拾",          "fields": ["title", "desc"], "from": null,         "to": null,         "color": "#7C5A70", "blurb": "旧作重温"},
+    {"slug": "baogengkuang",  "name": "游戏爆梗狂",   "pattern": "爆梗狂",            "fields": ["title", "desc"], "from": null,         "to": null,         "color": "#3F6F8C", "blurb": "梗与轶事"},
+    {"slug": "pofengqianli",  "name": "破风千里",     "pattern": "破风千里",          "fields": ["title", "desc"], "from": null,         "to": null,         "color": "#4F7F6A", "blurb": "骑行户外"},
+    {"slug": "lengzhishi",    "name": "每天一个冷知识", "pattern": "冷知识",          "fields": ["title"],         "from": null,         "to": null,         "color": "#5E8A3A", "blurb": "2018 年的短篇冷知识，几乎全部已删除"},
+    {"slug": "lianyungang",   "name": "连云港游记",   "pattern": "连云港",            "fields": ["title"],         "from": null,         "to": null,         "color": "#3E7A75", "blurb": "旅行记录"},
+    {"slug": "wuyongzhishi",  "name": "无用的知识",   "pattern": "无用的知识",        "fields": ["title", "desc"], "from": null,         "to": null,         "color": "#8A6A4E", "blurb": "无用但有趣"},
+    {"slug": "xiaoxiangsuibi","name": "小巷随笔",     "pattern": "小巷随笔",          "fields": ["title", "desc"], "from": null,         "to": null,         "color": "#9A5A44", "blurb": "街头随笔"},
+    {"slug": "mingzuobuwan",  "name": "名作补完计划", "pattern": "名作补完",          "fields": ["title", "desc"], "from": null,         "to": null,         "color": "#2C4A6B", "blurb": "补玩错过的名作"}
+  ]
+}
