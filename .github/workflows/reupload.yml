@@ -1,0 +1,31 @@
+name: Sync Reuploads
+on:
+  schedule:
+    - cron: '5 21 * * 6'   # 北京时间每周日 05:05，在巡检之后
+  workflow_dispatch:
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: pip
+      - run: pip install -r requirements.txt
+      - env:
+          BILIBILI_COOKIE: ${{ secrets.BILIBILI_COOKIE }}
+        run: |
+          set -o pipefail
+          python scripts/update_reupload.py | tee reupload.log
+      - run: python scripts/validate.py
+      - name: Commit
+        run: |
+          if git diff --quiet db.json; then echo "no changes"; exit 0; fi
+          git config user.name "${{ github.actor }}"
+          git config user.email "${{ github.actor }}@users.noreply.github.com"
+          git add db.json
+          git commit -m "🔁 更新补档信息 $(date +'%Y%m%d')"
+          git push
