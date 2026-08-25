@@ -36,7 +36,7 @@ def write_db(db: dict, path: Path = DB) -> None:
 def status_key(v: dict) -> str:
     if v["is_available"]:
         return "available"
-    if v.get("reupload_aid"):
+    if v.get("reupload_aid") and not v.get("reupload_dead_at"):
         return "backup"
     if v["status_code"] == 62012:
         return "hidden"
@@ -74,6 +74,7 @@ def recompute_metadata(videos: list[dict], last_recheck: str | None) -> dict:
         "self_visible": counts["hidden"],
         "reuploaded": counts["backup"],
         "pending_reupload": counts["lost"] + counts["hidden"],
+        "reupload_dead": sum(1 for v in videos if v.get("reupload_dead_at")),
         "by_year": dict(sorted(by_year.items())),
         "last_recheck": last_recheck,
     }

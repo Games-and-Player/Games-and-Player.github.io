@@ -1,6 +1,6 @@
 import pytest
 
-from scripts.recheck import decide, run
+from scripts.recheck import check_reuploads, decide, decide_reupload, run
 
 NOW, TODAY = "2026-08-30T04:05:00", "2026-08-30"
 
@@ -68,3 +68,33 @@ def test_run_aborts_when_too_many_unknown():
         run(videos, api, sleep=0, now=(NOW, TODAY))
     assert e.value.code == 2
     assert all(v["status_check_time"] == "2026-08-25T12:48:02" for v in videos)  # 没有写回
+
+
+def test_decide_reupload_three_outcomes():
+    assert decide_reupload(video(), {"code": 0, "data": {}}) == "alive"
+    assert decide_reupload(video(), {"code": 62002}) == "dead"
+    assert decide_reupload(video(), {"code": -352}) is None
+
+
+def test_check_reuploads_marks_dead_and_revives():
+    videos = [
+        video(aid=1, is_available=False, status_code=62002, reupload_aid=11),
+        video(aid=2, is_available=False, status_code=62002, reupload_aid=12, reupload_dead_at="2026-08-01"),
+        video(aid=3, is_available=False, status_code=62002, reupload_aid=13),
+        video(aid=4, is_available=False, status_code=62002),  # 无补档，不检查
+    ]
+    api = FakeApi({11: 62002, 12: 0, 13: -352})
+    s = check_reuploads(videos, api, sleep=0, now=(NOW, TODAY))
+    assert s["checked"] == 3 and s["new_dead"] == [1] and s["revived"] == [2] and s["unknown"] == 1
+    assert videos[0]["reupload_dead_at"] == TODAY
+    assert "reupload_dead_at" not in videos[1]
+    assert "reupload_dead_at" not in videos[2]
+
+
+def test_check_reuploads_aborts_when_too_many_unknown():
+    videos = [video(aid=i, is_available=False, status_code=62002, reupload_aid=100 + i) for i in range(60)]
+    api = FakeApi({100 + i: -352 for i in range(20)})
+    with pytest.raises(SystemExit) as e:
+        check_reuploads(videos, api, sleep=0, now=(NOW, TODAY))
+    assert e.value.code == 2
+    assert not any("reupload_dead_at" in v for v in videos)

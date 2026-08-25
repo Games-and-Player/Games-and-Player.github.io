@@ -48,3 +48,11 @@ def test_strict_mode_requires_descending_order():
 def test_real_db_passes_current_schema():
     db = json.loads(Path("db.json").read_text(encoding="utf-8"))
     assert validate(db) == []
+
+
+def test_reupload_dead_at_is_optional_and_needs_reupload_aid():
+    ok = base_video(is_available=False, status_code=62002, reupload_aid=5, reupload_dead_at="2026-08-26")
+    assert validate({"videos": [ok]}) == []
+    db = {"schema_version": 2, "videos": [base_video(bvid="BV1", is_available=False, status_code=62002,
+                                                   deleted_found_at="2026-04-04", reupload_dead_at="2026-08-26")]}
+    assert any("reupload_dead_at" in e for e in validate(db))

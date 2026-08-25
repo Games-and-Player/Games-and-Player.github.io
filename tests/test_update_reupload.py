@@ -169,3 +169,15 @@ def test_offline_needs_the_cache_file(tmp_path, monkeypatch, capsys):
 
     assert update_reupload.main(["update_reupload.py", "--offline", "--verify"]) == 1
     assert "缺少缓存" in capsys.readouterr().err
+
+
+def test_dead_reupload_is_replaced_by_a_new_upload_only():
+    videos = [dict(v) for v in VIDEOS]
+    videos[0]["reupload_aid"] = 999
+    videos[0]["reupload_dead_at"] = "2026-08-26"
+    # 合集里仍列着已死的 999：同 aid → 跳过，不清除失效标记
+    new, skip, unmatched = match_reuploads([{"aid": 999, "title": "饮料的执念 (20161224) | 附弹幕"}], videos)
+    assert (new, skip) == (0, 1) and videos[0]["reupload_dead_at"] == "2026-08-26"
+    # 新上传的 1000 → 替换并清除失效标记
+    new, skip, unmatched = match_reuploads([{"aid": 1000, "title": "饮料的执念 (20161224) | 附弹幕"}], videos)
+    assert (new, skip) == (1, 0) and videos[0]["reupload_aid"] == 1000 and "reupload_dead_at" not in videos[0]

@@ -73,10 +73,15 @@ def match_reuploads(archives: list[dict], videos: list[dict]) -> tuple[int, int,
         idx = find_original(a["title"], videos)
         if idx is None:
             unmatched.append(a["title"])
-        elif videos[idx].get("reupload_aid"):
+            continue
+        existing = videos[idx].get("reupload_aid")
+        if existing and not videos[idx].get("reupload_dead_at"):
             skip += 1
+        elif existing == a["aid"]:
+            skip += 1  # 合集里仍列着已失效的同一条
         else:
             videos[idx]["reupload_aid"] = a["aid"]
+            videos[idx].pop("reupload_dead_at", None)
             new += 1
     return new, skip, unmatched
 

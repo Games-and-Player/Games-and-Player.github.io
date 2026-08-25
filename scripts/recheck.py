@@ -1,6 +1,7 @@
-"""每周巡检：对现存视频调用 view 接口，发现删除/仅自见即标记。
-用法：python scripts/recheck.py [--include-dead] [--refresh-stats] [--sleep 0.5]
-退出码：0 正常；2 未知状态过多（风控/网络），本次不写回。
+"""每周巡检：对现存视频调用 view 接口，发现删除/仅自见即标记；再逐条巡检补档视频是否还活着。
+合集列表接口仍会列出已删除的补档，所以「补档还在不在」只能靠 view 接口一条条问。
+用法：python scripts/recheck.py [--include-dead] [--refresh-stats] [--sleep 0.5] [--skip-reuploads|--reuploads-only]
+退出码：0 正常；2 未知状态过多（风控/网络），本次不写回（两轮巡检任一放弃都不写）。
 最后一行输出摘要，供 workflow 写进提交信息。"""
 import argparse
 import json
@@ -71,25 +72,74 @@ def run(videos: list[dict], api, include_dead: bool = False, sleep: float = 0.5,
     return summary
 
 
+def decide_reupload(video: dict, resp: dict) -> str | None:
+    """补档视频存活判定：alive / dead / None（未知，不改）。"""
+    code = resp.get("code", -1)
+    if code == 0:
+        return "alive"
+    if code in GONE:
+        return "dead"
+    return None
+
+
+def check_reuploads(videos: list[dict], api, sleep: float = 0.5, now: tuple[str, str] | None = None) -> dict:
+    _, today = now or (datetime.now(TZ).strftime("%Y-%m-%dT%H:%M:%S"), datetime.now(TZ).strftime("%Y-%m-%d"))
+    targets = [v for v in videos if v.get("reupload_aid")]
+    verdicts: list[tuple[dict, str]] = []
+    unknown = 0
+    for v in targets:
+        verdict = decide_reupload(v, api.get_view(v["reupload_aid"]))
+        if verdict is None:
+            unknown += 1
+        else:
+            verdicts.append((v, verdict))
+        time.sleep(sleep + random.random() * sleep)
+    checked = len(targets)
+    if checked >= 50 and unknown / checked > UNKNOWN_LIMIT:
+        print(f"补档巡检未知状态 {unknown}/{checked} 超过 {UNKNOWN_LIMIT:.0%}，放弃写回")
+        raise SystemExit(2)
+    summary = {"checked": checked, "new_dead": [], "revived": [], "unknown": unknown}
+    for v, verdict in verdicts:
+        if verdict == "dead" and not v.get("reupload_dead_at"):
+            v["reupload_dead_at"] = today
+            summary["new_dead"].append(v["aid"])
+        elif verdict == "alive" and v.get("reupload_dead_at"):
+            v.pop("reupload_dead_at")
+            summary["revived"].append(v["aid"])
+    return summary
+
+
 def main(argv: list[str]) -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--include-dead", action="store_true")
     ap.add_argument("--refresh-stats", action="store_true")
     ap.add_argument("--sleep", type=float, default=0.5)
+    which = ap.add_mutually_exclusive_group()
+    which.add_argument("--skip-reuploads", action="store_true", help="只巡检原视频")
+    which.add_argument("--reuploads-only", action="store_true", help="只巡检补档视频")
     args = ap.parse_args(argv[1:])
     db = json.loads(DB.read_text(encoding="utf-8"))
     api = BilibiliAPI()
     api.login_with_cookie()
-    summary = run(db["videos"], api, include_dead=args.include_dead, sleep=args.sleep, refresh_stats=args.refresh_stats)
+    summary = {"checked": 0, "new_deleted": [], "restored": [], "unknown": 0}
+    if not args.reuploads_only:
+        summary = run(db["videos"], api, include_dead=args.include_dead, sleep=args.sleep,
+                      refresh_stats=args.refresh_stats)
+    reups = {"checked": 0, "new_dead": [], "revived": [], "unknown": 0}
+    if not args.skip_reuploads:
+        reups = check_reuploads(db["videos"], api, sleep=args.sleep)
     today = datetime.now(TZ).strftime("%Y-%m-%d")
     db["metadata"] = recompute_metadata(db["videos"], last_recheck=today)
     db["generated_at"] = now_iso()
     write_db(db)
+    by_aid = {v["aid"]: v for v in db["videos"]}
     for aid in summary["new_deleted"]:
-        title = next(v["title"] for v in db["videos"] if v["aid"] == aid)
-        print(f"新发现删除：av{aid} {title}")
+        print(f"新发现删除：av{aid} {by_aid[aid]['title']}")
+    for aid in reups["new_dead"]:
+        print(f"补档失效：av{by_aid[aid]['reupload_aid']} ← {by_aid[aid]['title']}")
     print(f"recheck {today}: checked={summary['checked']} +deleted={len(summary['new_deleted'])} "
-          f"+restored={len(summary['restored'])} unknown={summary['unknown']}")
+          f"+restored={len(summary['restored'])} unknown={summary['unknown']} "
+          f"reuploads={reups['checked']} +dead={len(reups['new_dead'])} +revived={len(reups['revived'])}")
     return 0
 
 

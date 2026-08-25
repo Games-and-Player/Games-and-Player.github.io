@@ -13,7 +13,7 @@ REQUIRED = {
 }
 OPTIONAL = {
     "bvid": str, "cover_local": str, "duration": int, "deleted_found_at": str,
-    "restored_at": str, "reupload_aid": int, "stat": dict,
+    "restored_at": str, "reupload_aid": int, "reupload_dead_at": str, "stat": dict,
 }
 CREATED_AT = re.compile(r"\d{4}-\d{2}-\d{2} \d{2}:\d{2}")
 
@@ -55,6 +55,8 @@ def validate(db: dict) -> list[str]:
                 errors.append(f"{aid}: cover 应为 https")
             if v.get("is_available") is False and not v.get("deleted_found_at"):
                 errors.append(f"{aid}: 不可用视频需要 deleted_found_at")
+            if v.get("reupload_dead_at") and not v.get("reupload_aid"):
+                errors.append(f"{aid}: reupload_dead_at 需要 reupload_aid")
             ts = v.get("created_timestamp", 0)
             if prev_ts is not None and ts > prev_ts:
                 errors.append(f"{aid}: 未按 created_timestamp 倒序")

@@ -66,3 +66,10 @@ def test_write_db_replaces_existing_target_and_leaves_no_tmp(tmp_path: Path):
 
 def test_now_iso_is_iso8601_with_colon_offset():
     assert re.fullmatch(r"\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\+08:00", now_iso())
+
+
+def test_dead_reupload_is_not_backup():
+    v = video(is_available=False, status_code=62002, reupload_aid=5, reupload_dead_at="2026-08-26")
+    assert status_key(v) == "lost"
+    m = recompute_metadata([v], last_recheck=None)
+    assert m["reuploaded"] == 0 and m["pending_reupload"] == 1 and m["reupload_dead"] == 1
