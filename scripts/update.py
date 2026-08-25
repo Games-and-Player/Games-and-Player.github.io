@@ -19,6 +19,13 @@ TZ = pytz.timezone("Asia/Shanghai")
 DB = Path("db.json")
 MID = "67390259"
 STAT_KEYS = ("view", "like", "coin", "favorite", "danmaku")
+API_INTERVAL = 0.5
+
+
+def paced(call, *args):
+    """每次调用 B站接口前先等 API_INTERVAL：客户端自身不限流，连打会吃 -412。"""
+    time.sleep(API_INTERVAL)
+    return call(*args)
 
 
 def make_record(item: dict, tags: list[str], cid: int, view: dict | None, now: datetime) -> dict:
@@ -52,7 +59,7 @@ def make_record(item: dict, tags: list[str], cid: int, view: dict | None, now: d
 def fetch_new(api, mid: str, known: set[int], max_pages: int = 5) -> list[dict]:
     new: list[dict] = []
     for pn in range(1, max_pages + 1):
-        res = api.get_vids(mid, str(pn))
+        res = paced(api.get_vids, mid, str(pn))
         vlist = (res.get("list") or {}).get("vlist") or []
         fresh = [x for x in vlist if x["aid"] not in known]
         new.extend(fresh)
@@ -63,26 +70,30 @@ def fetch_new(api, mid: str, known: set[int], max_pages: int = 5) -> list[dict]:
 
 def main() -> int:
     api = BilibiliAPI()
-    api.login_with_cookie()
+    if not api.login_with_cookie():
+        print("登录失败：cookie 可能已过期", file=sys.stderr)
+        return 1
     db = json.loads(DB.read_text(encoding="utf-8"))
     videos = db["videos"]
     known = {v["aid"] for v in videos}
     now = datetime.now(TZ)
     session = requests.Session()
     before = len(videos)
+    COVER_DIR.mkdir(exist_ok=True)
     for item in fetch_new(api, MID, known):
         aid = item["aid"]
-        tags = [t["tag_name"] for t in (api.get_tags(str(aid)) or {}).get("data", [])]
-        cid = (api.get_cid(str(aid)) or {}).get("data", [{}])[0].get("cid", 0)
-        record = make_record(item, tags, cid, api.get_view(aid), now)
+        tags = [t["tag_name"] for t in (paced(api.get_tags, str(aid)) or {}).get("data", [])]
+        cid = (paced(api.get_cid, str(aid)) or {}).get("data", [{}])[0].get("cid", 0)
+        record = make_record(item, tags, cid, paced(api.get_view, aid), now)
         data = fetch(record["cover"], session)
         if data:
-            COVER_DIR.mkdir(exist_ok=True)
-            (COVER_DIR / f"{aid}.webp").write_bytes(to_webp(data))
-            record["cover_local"] = f"covers/{aid}.webp"
+            try:
+                (COVER_DIR / f"{aid}.webp").write_bytes(to_webp(data))
+                record["cover_local"] = f"covers/{aid}.webp"
+            except (OSError, ValueError):
+                print(f"封面处理失败 av{aid}", file=sys.stderr)
         videos.append(record)
         print(f"新增 av{aid} {record['title']}")
-        time.sleep(0.5)
     if len(videos) == before:
         print("没有新视频")
         return 0
