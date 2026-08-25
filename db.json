@@ -1,6 +1,31 @@
 {
     "videos": [
         {
+            "aid": 117149595080864,
+            "title": "视觉霸权，聊为何玩家常常忽略音响",
+            "cover": "http://i0.hdslb.com/bfs/archive/cca3b0ba303ec8413ed50f93d1ac48e8c19a76e1.jpg",
+            "desc": "顶级显卡配百元喇叭？为何许多单机玩家舍得为画质豪掷千金，却在声音上极尽妥协？\n本期早餐车，我们就来聊聊玩家这个有趣的习惯。",
+            "tags": [
+                "上B站看播客",
+                "视觉",
+                "游戏杂谈",
+                "显卡",
+                "习惯",
+                "游戏文化",
+                "隐私",
+                "音响",
+                "玩家",
+                "听觉"
+            ],
+            "cid": 41216639204,
+            "created_at": "2026-08-25 07:30",
+            "created_timestamp": 1787614200,
+            "status_code": 0,
+            "status_description": "OK",
+            "is_available": true,
+            "status_check_time": "2026-08-25T12:48:02"
+        },
+        {
             "aid": 117144025174505,
             "title": "一地鸡毛，评GTA 6泄露事件新进展",
             "cover": "http://i2.hdslb.com/bfs/archive/dab662d0cad9660beeca86ebe6e9cc6c07bd98de.jpg",
