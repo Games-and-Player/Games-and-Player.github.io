@@ -35,6 +35,14 @@ def test_upgrade_is_idempotent(tmp_path: Path):
     assert upgrade_record(dict(once), tmp_path) == once
 
 
+def test_upgrade_coerces_legacy_string_numbers(tmp_path: Path):
+    """main 上有两条 cid/created_timestamp 存成字符串的老记录，升级必须还原成 int，且仍然幂等。"""
+    out = upgrade_record(video(cid="40814189", created_timestamp="1787295071"), tmp_path)
+    assert out["cid"] == 40814189 and isinstance(out["cid"], int)
+    assert out["created_timestamp"] == 1787295071 and isinstance(out["created_timestamp"], int)
+    assert upgrade_record(dict(out), tmp_path) == out
+
+
 def test_status_key_four_states():
     assert status_key(video()) == "available"
     assert status_key(video(is_available=False, status_code=62002, reupload_aid=5)) == "backup"

@@ -45,6 +45,9 @@ def status_key(v: dict) -> str:
 
 def upgrade_record(v: dict, cover_dir: Path) -> dict:
     out = dict(v)
+    # main 上有两条记录把 cid/created_timestamp 存成了字符串，严格校验会拒收，排序也会崩
+    out["cid"] = int(out["cid"])
+    out["created_timestamp"] = int(out["created_timestamp"])
     out["bvid"] = av2bv(out["aid"])
     out["cover"] = out["cover"].replace("http://", "https://", 1)
     if (cover_dir / f"{out['aid']}.webp").exists():

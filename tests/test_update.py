@@ -2,6 +2,7 @@ import io
 import json
 from datetime import datetime
 
+import pytest
 import pytz
 from PIL import Image
 
@@ -48,6 +49,19 @@ def test_fetch_new_paces_every_page_request(monkeypatch):
     assert len(sleeps) >= 2 and set(sleeps) == {0.5}
 
 
+def test_fetch_new_refuses_an_empty_first_page():
+    """第 1 页永远不可能为空：空了就是被风控或 cookie 失效，必须报错而不是「今天没新稿」。"""
+    with pytest.raises(SystemExit) as e:
+        fetch_new(FakeApi({1: {"list": {"vlist": []}}}), "67390259", known=set())
+    assert "风控" in str(e.value)
+
+
+def test_fetch_new_still_tolerates_an_empty_later_page():
+    """翻到底了自然会空，那是正常收尾。"""
+    pages = {1: {"list": {"vlist": [{"aid": 3}]}}, 2: {"list": {"vlist": []}}}
+    assert [i["aid"] for i in fetch_new(FakeApi(pages), "67390259", known=set())] == [3]
+
+
 class StubApi:
     """够 main() 跑完一趟的假客户端：第 1 页一条新稿，第 2 页为空。"""
 
@@ -67,10 +81,10 @@ class StubApi:
         return {"code": 0, "data": {"duration": 60, "stat": {"view": 1, "like": 0, "coin": 0, "favorite": 0, "danmaku": 0}}}
 
 
-def prepare(tmp_path, monkeypatch, api=StubApi):
+def prepare(tmp_path, monkeypatch, api=StubApi, videos=()):
     """建一个最小 v2 db，并把 update 的读写全部锁进 tmp_path。返回 (路径, 原始内容)。"""
     db_path = tmp_path / "db.json"
-    content = json.dumps({"schema_version": 2, "generated_at": "x", "videos": [], "metadata": {}},
+    content = json.dumps({"schema_version": 2, "generated_at": "x", "videos": list(videos), "metadata": {}},
                          ensure_ascii=False, indent=4)
     db_path.write_text(content, encoding="utf-8")
     monkeypatch.setattr(update, "BilibiliAPI", api)
@@ -83,13 +97,9 @@ def prepare(tmp_path, monkeypatch, api=StubApi):
 
 
 def test_main_skips_write_when_no_new_videos(tmp_path, monkeypatch, capsys):
-    """没有新稿时不重写 db.json，workflow 的 no changes 分支才会真正生效。"""
-
-    class NoNewApi(StubApi):
-        def get_vids(self, mid, pn):
-            return {}
-
-    db_path, content = prepare(tmp_path, monkeypatch, NoNewApi)
+    """第 1 页全是已知稿件时不重写 db.json，workflow 的 no changes 分支才会真正生效。"""
+    known = {"aid": ITEM["aid"], "created_timestamp": ITEM["created"]}
+    db_path, content = prepare(tmp_path, monkeypatch, videos=[known])
 
     assert update.main() == 0
     assert db_path.read_text(encoding="utf-8") == content

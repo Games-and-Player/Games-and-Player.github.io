@@ -40,6 +40,12 @@ def test_unknown_code_changes_nothing():
     assert decide(video(), {"code": -1, "message": "network"}, NOW, TODAY) is None
 
 
+def test_audit_pending_is_unknown_not_deleted():
+    """62004 稿件审核中是临时状态，几小时后就会恢复，不能当成删除写进 db。"""
+    assert decide(video(), {"code": 62004, "message": "稿件审核中"}, NOW, TODAY) is None
+    assert decide_reupload(video(), {"code": 62004}) is None
+
+
 def test_stats_only_with_flag():
     resp = {"code": 0, "data": {"stat": {"view": 5, "like": 1, "coin": 0, "favorite": 0, "danmaku": 0}}}
     assert "stat" not in decide(video(), resp, NOW, TODAY)

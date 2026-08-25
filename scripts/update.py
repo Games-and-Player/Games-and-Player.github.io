@@ -61,6 +61,8 @@ def fetch_new(api, mid: str, known: set[int], max_pages: int = 5) -> list[dict]:
     for pn in range(1, max_pages + 1):
         res = paced(api.get_vids, mid, str(pn))
         vlist = (res.get("list") or {}).get("vlist") or []
+        if pn == 1 and not vlist:
+            raise SystemExit("空列表：第 1 页不可能为空，多半被风控或 cookie 失效")
         fresh = [x for x in vlist if x["aid"] not in known]
         new.extend(fresh)
         if not vlist or len(fresh) < len(vlist):

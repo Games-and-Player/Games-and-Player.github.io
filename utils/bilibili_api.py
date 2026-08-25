@@ -125,6 +125,7 @@ class BilibiliAPI:
     def get_vids(self, mid, pn) -> dict:
         """获取用户动态信息"""
         for _ in range(5):
+            time.sleep(0.5)  # 重试之间必须留间隔，连打空间接口会吃 -412
             try:
                 wts = int(time.time())
                 params = {"mid": mid, "pn": pn, "wts": wts}

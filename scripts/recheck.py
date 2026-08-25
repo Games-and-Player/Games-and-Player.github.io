@@ -19,15 +19,16 @@ from utils.bilibili_api import BilibiliAPI  # noqa: E402
 
 TZ = pytz.timezone("Asia/Shanghai")
 DB = Path("db.json")
-GONE = {62002: "稿件不可见（已删除）", 62012: "仅UP主自己可见", -404: "啥都木有", 62004: "稿件审核中"}
+GONE = {62002: "稿件不可见（已删除）", 62012: "仅UP主自己可见", -404: "啥都木有"}
+# 62004「稿件审核中」是临时状态，按未知处理：不改动记录，等下一轮巡检
 UNKNOWN_LIMIT = 0.2
 STAT_KEYS = ("view", "like", "coin", "favorite", "danmaku")
 
 
-def decide(video: dict, resp: dict, now_iso: str, today: str, refresh_stats: bool = False) -> dict | None:
+def decide(video: dict, resp: dict, checked_at: str, today: str, refresh_stats: bool = False) -> dict | None:
     code = resp.get("code", -1)
     if code == 0:
-        changes = {"status_check_time": now_iso}
+        changes = {"status_check_time": checked_at}
         if not video["is_available"]:
             changes.update({"is_available": True, "status_code": 0, "status_description": "OK", "restored_at": today})
         if refresh_stats:
@@ -36,7 +37,7 @@ def decide(video: dict, resp: dict, now_iso: str, today: str, refresh_stats: boo
             changes["stat"]["at"] = today
         return changes
     if code in GONE:
-        changes = {"is_available": False, "status_code": code, "status_description": GONE[code], "status_check_time": now_iso}
+        changes = {"is_available": False, "status_code": code, "status_description": GONE[code], "status_check_time": checked_at}
         if not video.get("deleted_found_at"):
             changes["deleted_found_at"] = today
         return changes
@@ -45,12 +46,12 @@ def decide(video: dict, resp: dict, now_iso: str, today: str, refresh_stats: boo
 
 def run(videos: list[dict], api, include_dead: bool = False, sleep: float = 0.5,
         refresh_stats: bool = False, now: tuple[str, str] | None = None) -> dict:
-    now_iso, today = now or (datetime.now(TZ).strftime("%Y-%m-%dT%H:%M:%S"), datetime.now(TZ).strftime("%Y-%m-%d"))
+    checked_at, today = now or (datetime.now(TZ).strftime("%Y-%m-%dT%H:%M:%S"), datetime.now(TZ).strftime("%Y-%m-%d"))
     targets = [v for v in videos if v["is_available"] or include_dead]
     pending: list[tuple[dict, dict]] = []
     unknown = 0
     for v in targets:
-        change = decide(v, api.get_view(v["aid"]), now_iso, today, refresh_stats)
+        change = decide(v, api.get_view(v["aid"]), checked_at, today, refresh_stats)
         if change is None:
             unknown += 1
         else:
