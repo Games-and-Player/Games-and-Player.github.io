@@ -114,6 +114,12 @@ class BilibiliAPI:
         print(response)
         return response
 
+    def get_view(self, aid) -> dict:
+        """/x/web-interface/view：返回完整响应（code/message/data）。无需登录也可用。"""
+        url = f"https://api.bilibili.com/x/web-interface/view?aid={aid}"
+        response = self._request("get", url=url, headers=self.api_headers)
+        return response or {"code": -1, "message": "network"}
+
     def get_vids(self, mid, pn) -> dict:
         """获取用户动态信息"""
         for _ in range(5):
