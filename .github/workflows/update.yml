@@ -1,0 +1,29 @@
+name: Daily Update
+on:
+  schedule:
+    - cron: '5 4 * * *'   # 北京时间每天 12:05
+  workflow_dispatch:
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: pip
+      - run: pip install -r requirements.txt
+      - env:
+          BILIBILI_COOKIE: ${{ secrets.BILIBILI_COOKIE }}
+        run: python scripts/update.py
+      - run: python scripts/validate.py
+      - name: Commit
+        run: |
+          if git diff --quiet db.json && [ -z "$(git status --porcelain covers)" ]; then echo "no changes"; exit 0; fi
+          git config user.name "${{ github.actor }}"
+          git config user.email "${{ github.actor }}@users.noreply.github.com"
+          git add db.json covers
+          git commit -m "🤖 Auto update db.json $(date +'%Y%m%d')"
+          git push
