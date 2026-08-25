@@ -80,8 +80,10 @@ class BilibiliAPI:
         """从 cookies 中提取用户的 uid 信息"""
         return self.get_cookies().get("DedeUserID", "")
 
-    def sign_params(self, params) -> str:
-        mixin_key = self.get_mixin_key()
+    def sign_params(self, params, mixin_key: Optional[str] = None) -> str:
+        """mixin_key 不传就现取（每次都要打一趟 nav）；批量签名时取一次传进来复用。"""
+        if mixin_key is None:
+            mixin_key = self.get_mixin_key()
         filtered_params = {}
         for key, value in params.items():
             if value is not None and value != "":
