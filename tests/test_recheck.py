@@ -92,9 +92,13 @@ def test_check_reuploads_marks_dead_and_revives():
 
 
 def test_check_reuploads_aborts_when_too_many_unknown():
+    """未知过多就整批放弃：判死的不许落地，判活的也不许把已有标记清掉。"""
     videos = [video(aid=i, is_available=False, status_code=62002, reupload_aid=100 + i) for i in range(60)]
-    api = FakeApi({100 + i: -352 for i in range(20)})
+    videos[21]["reupload_dead_at"] = "2026-08-01"  # 补档 121 答 code 0，闸门放行的话这条会被"复活"
+    api = FakeApi({100 + i: -352 for i in range(20)} | {120: 62002})  # 20 条未知（33%）+ 1 条判死
     with pytest.raises(SystemExit) as e:
         check_reuploads(videos, api, sleep=0, now=(NOW, TODAY))
     assert e.value.code == 2
-    assert not any("reupload_dead_at" in v for v in videos)
+    assert "reupload_dead_at" not in videos[20]             # 判死的没写进去
+    assert videos[21]["reupload_dead_at"] == "2026-08-01"   # 判活的没被清掉
+    assert not any("reupload_dead_at" in v for i, v in enumerate(videos) if i != 21)
