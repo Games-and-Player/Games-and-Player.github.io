@@ -69,6 +69,7 @@ def main() -> int:
     known = {v["aid"] for v in videos}
     now = datetime.now(TZ)
     session = requests.Session()
+    before = len(videos)
     for item in fetch_new(api, MID, known):
         aid = item["aid"]
         tags = [t["tag_name"] for t in (api.get_tags(str(aid)) or {}).get("data", [])]
@@ -82,6 +83,9 @@ def main() -> int:
         videos.append(record)
         print(f"新增 av{aid} {record['title']}")
         time.sleep(0.5)
+    if len(videos) == before:
+        print("没有新视频")
+        return 0
     videos.sort(key=lambda v: v["created_timestamp"], reverse=True)
     db["schema_version"] = 2
     db["generated_at"] = now_iso()
