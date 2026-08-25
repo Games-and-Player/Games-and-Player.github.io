@@ -1,6 +1,7 @@
 """把 db.json 里的封面镜像为 covers/{aid}.webp（480w，质量 80）。
 用法：python scripts/mirror_covers.py [--limit N] [--all-first]
-默认已删除视频优先。可重复运行，已存在的文件跳过。"""
+默认已删除视频优先。可重复运行，已存在的文件跳过。
+--limit N：最多处理前 N 条（按排序），已存在/失败也计数。"""
 import argparse
 import io
 import json
@@ -33,7 +34,8 @@ def fetch(url: str, session) -> bytes | None:
     for attempt in range(3):
         try:
             r = session.get(url, headers=HEADERS, timeout=15)
-            if r.status_code == 200 and r.content:
+            content_type = str(r.headers.get("Content-Type", "")).lower()
+            if r.status_code == 200 and r.content and content_type.startswith("image/"):
                 return r.content
             if r.status_code == 404:
                 return None
@@ -47,10 +49,10 @@ def mirror(videos: list[dict], session, cover_dir: Path, limit: int | None = Non
            dead_first: bool = True, sleep: float = 0.2) -> dict:
     cover_dir.mkdir(exist_ok=True)
     order = sorted(videos, key=lambda v: (v["is_available"], -v["created_timestamp"])) if dead_first else list(videos)
+    if limit is not None:
+        order = order[:limit]
     result = {"ok": 0, "skip": 0, "fail": []}
     for v in order:
-        if limit is not None and result["ok"] >= limit:
-            break
         target = cover_dir / f"{v['aid']}.webp"
         if target.exists() or not v.get("cover"):
             result["skip"] += 1
@@ -59,7 +61,11 @@ def mirror(videos: list[dict], session, cover_dir: Path, limit: int | None = Non
         if data is None:
             result["fail"].append(v["aid"])
             continue
-        target.write_bytes(to_webp(data))
+        try:
+            target.write_bytes(to_webp(data))
+        except (OSError, ValueError):
+            result["fail"].append(v["aid"])
+            continue
         result["ok"] += 1
         time.sleep(sleep)
     return result
@@ -67,7 +73,7 @@ def mirror(videos: list[dict], session, cover_dir: Path, limit: int | None = Non
 
 def main(argv: list[str]) -> int:
     ap = argparse.ArgumentParser()
-    ap.add_argument("--limit", type=int, default=None)
+    ap.add_argument("--limit", type=int, default=None, help="最多处理前 N 条（按排序），已存在/失败也计数")
     ap.add_argument("--all-first", action="store_true", help="不按已删除优先")
     args = ap.parse_args(argv[1:])
     db = json.loads(Path("db.json").read_text(encoding="utf-8"))
