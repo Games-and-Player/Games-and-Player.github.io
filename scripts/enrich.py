@@ -4,6 +4,7 @@
   python scripts/enrich.py --durations  另外用 view 接口补 duration/stat（约 1600 次请求，每 50 条落盘一次，可中断续跑）"""
 import argparse
 import json
+import os
 import sys
 import time
 from datetime import datetime
@@ -18,6 +19,18 @@ from utils.bilibili_api import BilibiliAPI  # noqa: E402
 TZ = pytz.timezone("Asia/Shanghai")
 DB = Path("db.json")
 COVERS = Path("covers")
+
+
+def now_iso() -> str:
+    """当前时间，ISO 8601 带冒号时区偏移，如 2026-08-26T02:36:46+08:00。"""
+    return datetime.now(TZ).isoformat(timespec="seconds")
+
+
+def write_db(db: dict, path: Path = DB) -> None:
+    """原子落盘：先写同目录临时文件，再 os.replace 覆盖，避免中断时留下截断的 db.json。"""
+    tmp = path.with_suffix(".json.tmp")
+    tmp.write_text(json.dumps(db, ensure_ascii=False, indent=4), encoding="utf-8")
+    os.replace(tmp, path)
 
 
 def status_key(v: dict) -> str:
@@ -105,13 +118,12 @@ def main(argv: list[str]) -> int:
     last_recheck = db.get("metadata", {}).get("last_recheck")
 
     def save() -> None:
-        out = {
+        write_db({
             "schema_version": 2,
-            "generated_at": datetime.now(TZ).strftime("%Y-%m-%dT%H:%M:%S%z"),
+            "generated_at": now_iso(),
             "videos": videos,
             "metadata": recompute_metadata(videos, last_recheck),
-        }
-        DB.write_text(json.dumps(out, ensure_ascii=False, indent=4), encoding="utf-8")
+        })
 
     if args.durations:
         api = BilibiliAPI()

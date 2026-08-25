@@ -1,6 +1,8 @@
+import json
+import re
 from pathlib import Path
 
-from scripts.enrich import recompute_metadata, status_key, upgrade_record
+from scripts.enrich import now_iso, recompute_metadata, status_key, upgrade_record, write_db
 
 
 def video(**over):
@@ -51,3 +53,16 @@ def test_recompute_metadata_counts():
     assert m["reuploaded"] == 1 and m["pending_reupload"] == 1
     assert m["by_year"]["2017"] == {"available": 1, "deleted": 1}
     assert m["last_recheck"] == "2026-08-24"
+
+
+def test_write_db_replaces_existing_target_and_leaves_no_tmp(tmp_path: Path):
+    target = tmp_path / "db.json"
+    target.write_text("old", encoding="utf-8")
+    write_db({"schema_version": 2, "videos": [{"title": "游戏"}]}, target)
+    assert json.loads(target.read_text(encoding="utf-8")) == {"schema_version": 2, "videos": [{"title": "游戏"}]}
+    assert "游戏" in target.read_text(encoding="utf-8")
+    assert not (tmp_path / "db.json.tmp").exists()
+
+
+def test_now_iso_is_iso8601_with_colon_offset():
+    assert re.fullmatch(r"\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\+08:00", now_iso())
