@@ -737,7 +737,6 @@
 
         /* 热度靠 accent 底色的浓淡表达；淡底配 --ink，浓底配 --on-accent，
            两套主题下都是高对比 */
-        .cloud-tag.heat-1 { background: var(--bg); }
         .cloud-tag.heat-2 { background: rgba(var(--accent-rgb), 0.10); }
         .cloud-tag.heat-3 { background: rgba(var(--accent-rgb), 0.16); }
         .cloud-tag.heat-4 { background: rgba(var(--accent-rgb), 0.24); }
@@ -1153,10 +1152,10 @@
                          style="max-width: 100%; max-height: 70vh; border-radius: 10px;"
                          referrerpolicy="no-referrer" crossorigin="anonymous"
                          onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
-                    <div style="display: none; padding: 50px; color: #666;">
+                    <div style="display: none; padding: 50px; color: var(--ink-2);">
                         <svg class="icon" style="font-size: 3rem; margin-bottom: 15px;"><use href="#i-image-off"/></svg>
                         <p>图片加载失败</p>
-                        <small>正在尝试多种加载方式，如果仍然失败可能是网络问题</small>
+                        <small style="color: var(--ink-3);">正在尝试多种加载方式，如果仍然失败可能是网络问题</small>
                     </div>
                 </div>
             </div>
@@ -1177,6 +1176,8 @@
             bindStatusChips();
             // 绑定标签云点击
             bindTagCloud();
+            // 绑定表格行内的委托事件（标签展开、封面放大）
+            bindRowEvents();
             // 加载视频数据
             loadVideoData();
         });
@@ -1233,7 +1234,7 @@
             const active = currentStatusFilter || '';
             container.innerHTML = STATUS_CHIPS.map(chip => {
                 const count = chip.key === '' ? videos.length : counts[chip.key];
-                return `<button type="button" class="chip${chip.key === active ? ' active' : ''}" data-status="${chip.key}">${chip.label} <b class="num">${count}</b></button>`;
+                return `<button type="button" class="chip${chip.key === active ? ' active' : ''}" data-status="${chip.key}" aria-pressed="${chip.key === active}">${chip.label} <b class="num">${count}</b></button>`;
             }).join('');
         }
 
@@ -1241,8 +1242,8 @@
             $(document).on('click', '#statusChips .chip', function () {
                 const key = this.getAttribute('data-status') || '';
                 currentStatusFilter = key === '' ? null : key;
-                $('#statusChips .chip').removeClass('active');
-                $(this).addClass('active');
+                $('#statusChips .chip').removeClass('active').attr('aria-pressed', 'false');
+                $(this).addClass('active').attr('aria-pressed', 'true');
                 if ($.fn.DataTable.isDataTable('#videosTable')) {
                     $('#videosTable').DataTable().draw();
                 }
@@ -1321,7 +1322,7 @@
         
         function initializeTable(videos) {
             const tableData = videos.map(video => [
-                formatCover(video.cover, video.cover_local),
+                formatCover(video.cover, video.cover_local, video.aid),
                 formatTitle(video),
                 formatDescription(video.desc, video.aid),
                 formatTags(video.tags, video.aid),
@@ -1372,7 +1373,7 @@
             });
         }
         
-        function formatCover(coverUrl, coverLocal) {
+        function formatCover(coverUrl, coverLocal, aid) {
             if (!coverUrl) return '<span class="text-muted">无封面</span>';
 
             // 处理相对路径
@@ -1381,20 +1382,19 @@
             // 表格缩略图优先用本地镜像封面（同源、无第三方请求），没有的话才回退到 hdslb 原图
             const thumbSrc = localUrl || fullUrl;
 
-            // 添加点击事件来显示大图
-            return `<div class="cover-container">
+            // 点击放大走委托事件：容器只带 aid，封面地址由 bindRowEvents() 回查
+            // window.videosData，URL 不再拼进内联 onclick 字符串
+            return `<div class="cover-container" data-aid="${aid}">
                         <img class="video-cover lazy-image"
                              data-src="${thumbSrc}"
                              data-fallback="${localUrl ? fullUrl : ''}"
                              alt="视频封面"
                              referrerpolicy="no-referrer"
                              crossorigin="anonymous"
-                             style="opacity: 0; pointer-events: none;"
-                             onclick="showImageModal('${fullUrl}', '${localUrl}')">
-                        <div class="cover-placeholder" onclick="showImageModal('${fullUrl}', '${localUrl}')">
+                             style="opacity: 0; pointer-events: none;">
+                        <div class="cover-placeholder">
                             <svg class="icon"><use href="#i-image"/></svg>
                         </div>
-                        <span style="display:none" class="text-muted">加载失败</span>
                     </div>`;
         }
         
@@ -1432,7 +1432,7 @@
                          title="点击展开或收起描述">
                         ${safeDescWithBreaks}
                     </div>
-                    <button type="button" class="copy-btn" onclick="copyField(${aid}, 'desc', this)" title="复制完整简介"><svg class="icon"><use href="#i-copy"/></svg> 复制简介</button>`;
+                    <button type="button" class="copy-btn" onclick="copyField(${aid}, 'desc', this)" title="复制完整简介"><svg class="icon" aria-hidden="true"><use href="#i-copy"/></svg> 复制简介</button>`;
         }
         
         function appendMosaicCovers() {
@@ -1448,9 +1448,7 @@
             mosaicTiles.forEach((tile, index) => {
                 const video = covers[index % covers.length];
                 const img = document.createElement('img');
-                const rawCover = video.cover_local || video.cover;
-                const coverUrl = rawCover.startsWith('//') ? 'https:' + rawCover : rawCover;
-                img.src = coverUrl;
+                img.src = video.cover_local || video.cover;
                 img.loading = 'lazy';
                 img.referrerPolicy = 'no-referrer';
                 img.crossOrigin = 'anonymous';
@@ -1478,20 +1476,22 @@
             // 放在 .tags-container 外面，免得 showAllTags() 重写容器时把它冲掉。
             const allTagsText = escapeHtml('| ' + tags.map(tag => String(tag).trim()).filter(Boolean).join(' | ') + ' |');
 
-            return `<div class="tags-container">
+            // 展开按钮不带数据，点击时由 bindRowEvents() 用容器上的 data-aid 回查标签
+            return `<div class="tags-container" data-aid="${aid}">
                         ${tags.slice(0, 3).map(tag => `<span class="tag">${escapeHtml(tag)}</span>`).join('')}
-                        ${tags.length > 3 ? 
-                            `<span class="tag tag-more" onclick="showAllTags(this, ${JSON.stringify(tags).replace(/"/g, '&quot;')})">+${tags.length - 3}</span>` : 
-                            ''
-                        }
+                        ${tags.length > 3 ? tagMoreButton(`+${tags.length - 3}`) : ''}
                     </div>
-                    <span class="sr-only tags-all">${allTagsText}</span>
-                    <button type="button" class="copy-btn" onclick="copyField(${aid}, 'tags', this)" title="复制全部标签，以 | 分隔"><svg class="icon"><use href="#i-copy"/></svg> 复制标签</button>`;
+                    <span class="sr-only tags-all" aria-hidden="true">${allTagsText}</span>
+                    <button type="button" class="copy-btn" onclick="copyField(${aid}, 'tags', this)" title="复制全部标签，以 | 分隔"><svg class="icon" aria-hidden="true"><use href="#i-copy"/></svg> 复制标签</button>`;
+        }
+
+        function tagMoreButton(label) {
+            return `<span class="tag tag-more" role="button" tabindex="0">${escapeHtml(label)}</span>`;
         }
         
         function formatDate(createdAt, timestamp) {
             if (createdAt) {
-                return `<div class="date-cell">${createdAt}</div>`;
+                return `<div class="date-cell">${escapeHtml(createdAt)}</div>`;
             } else if (timestamp) {
                 const date = new Date(timestamp * 1000);
                 return `<div class="date-cell">${date.toLocaleDateString('zh-CN')}</div>`;
@@ -1627,21 +1627,62 @@
         }
         
         function showAllTags(element, allTags) {
-            const container = element.parentElement;
-            
+            const container = element.closest('.tags-container');
+            if (!container) return;
+            const renderTags = tags => tags.map(tag => `<span class="tag">${escapeHtml(tag)}</span>`).join('');
+
             // 如果已经展开，则收起
             if (container.classList.contains('tags-expanded')) {
                 // 恢复原始状态
-                const tags = allTags.slice(0, 3);
-                container.innerHTML = tags.map(tag => `<span class="tag">${escapeHtml(tag)}</span>`).join('') +
-                    `<span class="tag tag-more" onclick="showAllTags(this, ${JSON.stringify(allTags).replace(/"/g, '&quot;')})">+${allTags.length - 3}</span>`;
+                container.innerHTML = renderTags(allTags.slice(0, 3)) + tagMoreButton(`+${allTags.length - 3}`);
                 container.classList.remove('tags-expanded');
             } else {
                 // 展开所有标签
-                container.innerHTML = allTags.map(tag => `<span class="tag">${escapeHtml(tag)}</span>`).join('') +
-                    `<span class="tag tag-more" onclick="showAllTags(this, ${JSON.stringify(allTags).replace(/"/g, '&quot;')})">收起</span>`;
+                container.innerHTML = renderTags(allTags) + tagMoreButton('收起');
                 container.classList.add('tags-expanded');
             }
+            const next = container.querySelector('.tag-more');
+            if (next) next.focus();
+        }
+
+        // aid 在 JSON 里是数字、在 data-aid 上是字符串，统一按字符串比对
+        function videoByAid(aid) {
+            const key = String(aid);
+            return (window.videosData || []).find(v => String(v.aid) === key);
+        }
+
+        // 表格行内的委托事件：+N 展开标签、点击封面看大图。
+        // 只在 ready 时绑一次，DataTables 每次重绘出来的新行自动生效
+        function bindRowEvents() {
+            const openTags = element => {
+                const container = element.closest('.tags-container');
+                if (!container) return;
+                const video = videoByAid(container.dataset.aid);
+                showAllTags(element, (video && video.tags) || []);
+            };
+            const openCover = container => {
+                const video = videoByAid(container.dataset.aid);
+                if (!video || !video.cover) return;
+                const fullUrl = video.cover.startsWith('//') ? 'https:' + video.cover : video.cover;
+                showImageModal(fullUrl, video.cover_local || '');
+            };
+
+            $(document).on('click', '#videosTable .tag-more', function () {
+                openTags(this);
+            });
+            $(document).on('keydown', '#videosTable .tag-more', function (e) {
+                if (!isActivationKey(e)) return;
+                e.preventDefault();
+                openTags(this);
+            });
+            $(document).on('click', '#videosTable .cover-container', function () {
+                openCover(this);
+            });
+        }
+
+        // 键盘上等价于点击的按键：role="button" 的元素要自己处理 Enter / 空格
+        function isActivationKey(e) {
+            return e.key === 'Enter' || e.key === ' ' || e.key === 'Spacebar';
         }
         
         function bindEvents() {
@@ -1777,6 +1818,16 @@
             } catch (e) {
                 console.log('无法保存年份显示状态到本地存储');
             }
+
+            // 收起到最近两年时，落在被隐藏年份上的日期筛选就再也点不到了，
+            // 表格会一直停在那一天上而看不出原因，所以先清掉
+            if (!showAll && currentDateFilter) {
+                const visibleYears = [...availableYears].sort((a, b) => b - a).slice(0, RECENT_YEAR_COUNT);
+                if (!visibleYears.includes(parseInt(currentDateFilter.split('-')[0], 10))) {
+                    clearDateFilter();
+                }
+            }
+
             renderHeatmapCalendar();
         }
         
@@ -1934,9 +1985,11 @@
                 for (let col = 0; col < 53; col++) {
                     const dayData = grid[row][col];
                     if (dayData) {
+                        // 只有有投稿的日格能点，也就只有它们进 Tab 序列
+                        const focusable = dayData.count > 0 ? ' role="button" tabindex="0"' : '';
                         html += `<div class="heatmap-day day-${dayData.code}${dayData.hasVideos}" 
                                       data-date="${dayData.dateKey}" 
-                                      data-count="${dayData.count}"></div>`;
+                                      data-count="${dayData.count}"${focusable}></div>`;
                     } else {
                         html += '<div class="heatmap-day" style="opacity: 0;"></div>';
                     }
@@ -2030,6 +2083,16 @@
                     
                     if (count > 0) {
                         filterByDate(date);
+                    }
+                });
+                
+                // 键盘等价：Enter / 空格与点击同义
+                day.addEventListener('keydown', (e) => {
+                    if (!isActivationKey(e)) return;
+                    const count = parseInt(day.getAttribute('data-count'));
+                    if (count > 0) {
+                        e.preventDefault();
+                        filterByDate(day.getAttribute('data-date'));
                     }
                 });
             });
@@ -2137,6 +2200,7 @@
                 return `<span class="cloud-tag size-${sizeLevel} heat-${heatLevel}" 
                               data-tag="${escapeHtml(tag)}" 
                               data-count="${count}"
+                              role="button" tabindex="0"
                               title="${escapeHtml(tag)} (${count} 个视频)">
                             ${escapeHtml(tag)}
                         </span>`;
@@ -2283,6 +2347,11 @@
             $(document).on('click', '#tagCloud .cloud-tag', function () {
                 filterByTag(this.getAttribute('data-tag') || '');
             });
+            $(document).on('keydown', '#tagCloud .cloud-tag', function (e) {
+                if (!isActivationKey(e)) return;
+                e.preventDefault();
+                filterByTag(this.getAttribute('data-tag') || '');
+            });
         }
         
         function filterByTag(tag) {
@@ -2320,24 +2389,26 @@
                 tagElement.classList.remove('active', 'filtered');
             });
             
-            // 更新标签统计
+            // 更新标签统计（currentTagFilter 已置空，「当前筛选」行会被抹掉）
             updateTagStats();
-            const statsElement = document.querySelector('.tag-stats');
-            if (statsElement) {
-                statsElement.innerHTML = statsElement.innerHTML.split('<br>')[0];
-            }
-            
+
             filterTableByTag();
         }
         
+        // 统计行 = 固定的「标签统计」一行 + 可选的「当前筛选」一行。
+        // 取消筛选（再点一次同一个标签、或点[清除筛选]）都走这里，
+        // 否则再点一次激活中的标签只会留下过期的「当前筛选」
         function updateTagStats() {
             const statsElement = document.querySelector('.tag-stats');
-            if (statsElement && currentTagFilter) {
-                const count = tagVideoCount.get(currentTagFilter) || 0;
-                
-                const originalContent = statsElement.innerHTML.split('<br>')[0];
-                statsElement.innerHTML = `${originalContent}<br><strong>当前筛选：</strong>${escapeHtml(currentTagFilter)} (${count} 个视频) <a href="javascript:clearTagFilter()" style="color: var(--accent-color); text-decoration: none;">[清除筛选]</a>`;
+            if (!statsElement) return;
+
+            const originalContent = statsElement.innerHTML.split('<br>')[0];
+            if (!currentTagFilter) {
+                statsElement.innerHTML = originalContent;
+                return;
             }
+            const count = tagVideoCount.get(currentTagFilter) || 0;
+            statsElement.innerHTML = `${originalContent}<br><strong>当前筛选：</strong>${escapeHtml(currentTagFilter)} (${count} 个视频) <a href="javascript:clearTagFilter()" style="color: var(--accent-color); text-decoration: none;">[清除筛选]</a>`;
         }
         
         function filterTableByTag() {
@@ -2361,19 +2432,14 @@
         function toggleChart(chartType) {
             const elementId = chartType === 'heatmap' ? 'heatmapCalendar' : 'tagCloud';
             const container = document.getElementById(elementId)?.closest('.collapsible');
-            const toggleIcon = document.getElementById(chartType + 'Toggle');
             
             if (!container) return;
             
-            const isCollapsed = container.classList.contains('collapsed');
+            const willExpand = container.classList.contains('collapsed');
             
-            if (isCollapsed) {
-                container.classList.remove('collapsed');
-                saveCollapseState(chartType, false);
-            } else {
-                container.classList.add('collapsed');
-                saveCollapseState(chartType, true);
-            }
+            container.classList.toggle('collapsed', !willExpand);
+            saveCollapseState(chartType, !willExpand);
+            document.getElementById(chartType + 'Toggle')?.setAttribute('aria-expanded', String(willExpand));
         }
         
         function saveCollapseState(chartType, isCollapsed) {
@@ -2390,29 +2456,22 @@
                 const heatmapCollapsed = localStorage.getItem('chart_heatmap_collapsed') === 'true';
                 const tagcloudCollapsed = localStorage.getItem('chart_tagcloud_collapsed') !== 'false';
                 
-                if (heatmapCollapsed) {
-                    const heatmapContainer = document.getElementById('heatmapCalendar')?.closest('.collapsible');
-                    if (heatmapContainer) {
-                        heatmapContainer.classList.add('collapsed');
-                    }
-                }
-                
-                if (tagcloudCollapsed) {
-                    const tagcloudContainer = document.getElementById('tagCloud')?.closest('.collapsible');
-                    if (tagcloudContainer) {
-                        tagcloudContainer.classList.add('collapsed');
-                    }
-                }
+                applyCollapseState('heatmap', 'heatmapCalendar', heatmapCollapsed);
+                applyCollapseState('tagcloud', 'tagCloud', tagcloudCollapsed);
             } catch (e) {
                 console.log('无法加载折叠状态');
                 // 如果出错，热力图默认展开，标签云默认折叠
-                const tagcloudContainer = document.getElementById('tagCloud')?.closest('.collapsible');
-                
-                if (tagcloudContainer) {
-                    tagcloudContainer.classList.add('collapsed');
-                }
-                // 热力图不添加 collapsed 类，保持展开状态
+                applyCollapseState('tagcloud', 'tagCloud', true);
             }
+        }
+
+        // 折叠态既要写在容器的 class 上，也要同步到折叠按钮的 aria-expanded
+        function applyCollapseState(chartType, elementId, isCollapsed) {
+            const container = document.getElementById(elementId)?.closest('.collapsible');
+            if (container) {
+                container.classList.toggle('collapsed', isCollapsed);
+            }
+            document.getElementById(chartType + 'Toggle')?.setAttribute('aria-expanded', String(!isCollapsed));
         }
         
         function escapeHtml(text) {
