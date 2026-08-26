@@ -279,6 +279,177 @@
             margin-bottom: 20px;
         }
 
+        /* ── 台账 / 卡片：工具条与视图切换 ────────────────────────────────
+           .table-toolbar 一行两端：左边状态 chips，右边视图切换组；
+           空间不够时整组换行，靠 margin-left:auto 继续贴右。 */
+        .table-toolbar {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px 16px;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+
+        /* 下外边距交给工具条，免得工具条内部多出一截空白 */
+        .table-toolbar .status-chips {
+            margin-bottom: 0;
+            min-width: 0;
+        }
+
+        .view-toggle {
+            display: inline-flex;
+            border: 1px solid var(--line);
+            border-radius: 999px;
+            overflow: hidden;
+            margin-left: auto;
+            flex: none;
+        }
+
+        .view-btn {
+            border: 0;
+            background: var(--surface);
+            color: var(--ink-2);
+            padding: 4px 12px;
+            font-size: 0.8rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            cursor: pointer;
+        }
+
+        .view-btn.active {
+            background: var(--accent);
+            color: var(--on-accent);
+        }
+
+        /* ── 卡片视图 ──────────────────────────────────────────────────
+           卡片模式下只把表格本体收起来，DataTables 的搜索/信息/分页照常。 */
+        body.view-cards .table-scroll {
+            display: none;
+        }
+
+        /* 每页 24 张不在 lengthMenu 里，长度下拉在卡片模式下会显示成空白，
+           索性收起来；卡片模式的排序由 .card-sort 负责 */
+        body.view-cards #videosTable_wrapper .dataTables_length {
+            display: none;
+        }
+
+        .card-sort {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin: 0 0 12px;
+            font-size: 0.85rem;
+            color: var(--ink-2);
+        }
+
+        .card-sort label {
+            margin: 0;
+        }
+
+        .card-sort select {
+            width: auto;
+        }
+
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 16px;
+        }
+
+        /* 作者样式里的 display 会盖掉 UA 的 [hidden]，这里把它拿回来 */
+        .card-grid[hidden],
+        .card-sort[hidden] {
+            display: none;
+        }
+
+        .vcard {
+            background: var(--surface);
+            border: 1px solid var(--line);
+            border-radius: 8px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            transition: border-color .15s;
+        }
+
+        .vcard:hover { border-color: var(--ink-3); }
+
+        .vcard__cover { position: relative; }
+
+        /* 已删除/仅自见的封面先褪色，hover 时还原 */
+        .vcard--lost .vcard__cover img,
+        .vcard--hidden .vcard__cover img { filter: grayscale(.6); transition: filter .2s; }
+
+        .vcard--lost:hover .vcard__cover img,
+        .vcard--hidden:hover .vcard__cover img { filter: none; }
+
+        .vcard__ribbon {
+            position: absolute;
+            top: 0;
+            left: 0;
+            font-family: var(--mono);
+            font-size: 10.5px;
+            color: #fff;
+            padding: 2px 8px;
+            border-bottom-right-radius: 6px;
+        }
+
+        .vcard__ribbon--lost { background: var(--lost); }
+        .vcard__ribbon--backup { background: var(--backup); }
+
+        .vcard__body {
+            padding: 12px 14px 14px;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .vcard__title {
+            font-weight: 600;
+            font-size: 0.95rem;
+            line-height: 1.4;
+            color: var(--ink);
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .vcard--lost .vcard__title,
+        .vcard--hidden .vcard__title,
+        .vcard--backup .vcard__title { color: var(--ink-2); }
+
+        .vcard__title:hover { color: var(--accent); text-decoration: none; }
+
+        .vcard__meta { font-size: 0.75rem; color: var(--ink-3); }
+
+        .vcard .stamp { margin: 0; }
+
+        /* 表格里封面是 80×60 缩略图，卡片里改成整幅 16:10 顶图 */
+        .vcard .cover-container {
+            width: 100%;
+            height: auto;
+            aspect-ratio: 16 / 10;
+            border: 0;
+            border-radius: 8px 8px 0 0;
+        }
+
+        .vcard .video-cover { width: 100%; height: 100%; object-fit: cover; }
+
+        /* 表格里那 1.75 倍的放大预览在整幅封面上没必要 */
+        .vcard .video-cover:hover { transform: none; }
+
+        /* 描述与标签在表格里限宽 220px，卡片里跟着卡片走 */
+        .vcard .video-desc,
+        .vcard .tags-container { max-width: none; }
+
+        @media (max-width: 480px) {
+            .card-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+            .vcard__body { padding: 10px; }
+        }
+
         .chip {
             display: inline-flex;
             align-items: center;
@@ -671,7 +842,7 @@
         /* 键盘焦点：新加的可聚焦元素统一用主色描边 */
         .cloud-tag:focus-visible, .heatmap-day[tabindex]:focus-visible, .tag-more:focus-visible, .chip:focus-visible,
         .copy-btn:focus-visible, .collapse-btn:focus-visible, .cover-container:focus-visible, .lightbox-close:focus-visible,
-        .btn-link-like:focus-visible {
+        .btn-link-like:focus-visible, .view-btn:focus-visible, #cardSortSelect:focus-visible {
             outline: 2px solid var(--accent);
             outline-offset: 2px;
         }
@@ -983,6 +1154,11 @@
                 overflow-x: auto;
                 white-space: nowrap;
             }
+
+            /* chips 独占一行横滑，视图切换组换到下一行、仍靠右 */
+            .table-toolbar .status-chips {
+                flex: 1 1 100%;
+            }
         }
 
         @media (prefers-color-scheme: dark) {
@@ -1020,6 +1196,8 @@
       <symbol id="i-copy" viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></symbol>
       <symbol id="i-check" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></symbol>
       <symbol id="i-x" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></symbol>
+      <symbol id="i-list" viewBox="0 0 24 24"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></symbol>
+      <symbol id="i-grid" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></symbol>
     </svg>
     <div class="background-mosaic">
         <div class="mosaic-tile"></div>
@@ -1122,7 +1300,13 @@
         
         <!-- 表格容器 -->
         <div class="table-container">
-            <div class="status-chips" id="statusChips"></div>
+            <div class="table-toolbar" id="tableToolbar">
+                <div class="status-chips" id="statusChips"></div>
+                <div class="view-toggle" id="viewToggle" role="group" aria-label="视图">
+                    <button type="button" class="view-btn" data-view="table" aria-pressed="true"><svg class="icon" aria-hidden="true"><use href="#i-list"/></svg> 台账</button>
+                    <button type="button" class="view-btn" data-view="cards" aria-pressed="false"><svg class="icon" aria-hidden="true"><use href="#i-grid"/></svg> 卡片</button>
+                </div>
+            </div>
 
             <div class="loading" id="loading">
                 <svg class="icon" aria-hidden="true"><use href="#i-spinner"/></svg>
@@ -1193,6 +1377,8 @@
             bindTagCloud();
             // 绑定表格行内的委托事件（标签展开、封面放大）
             bindRowEvents();
+            // 台账/卡片视图切换：先把上次选的视图应用到 body，避免加载完再闪一下
+            bindViewToggle();
             // 加载视频数据
             loadVideoData();
         });
@@ -1265,6 +1451,155 @@
             });
         }
         
+        // ===== 视图模式：台账（表格） / 卡片 =====
+        const VIEW_STORAGE_KEY = 'view_mode';
+        const TABLE_PAGE_LEN = 25;   // 台账每页行数
+        const CARDS_PAGE_LEN = 24;   // 卡片每页张数：2/3/4 列都能排满
+        let viewMode = 'table';
+
+        // 没有记录时按视口猜：窄屏默认卡片，宽屏默认台账
+        function storedViewMode() {
+            try {
+                const saved = localStorage.getItem(VIEW_STORAGE_KEY);
+                if (saved === 'table' || saved === 'cards') return saved;
+            } catch (e) {
+                // 隐私模式下 localStorage 可能直接抛错，忽略
+            }
+            return window.matchMedia && window.matchMedia('(max-width: 767px)').matches ? 'cards' : 'table';
+        }
+
+        function bindViewToggle() {
+            $(document).on('click', '#viewToggle .view-btn', function () {
+                applyViewMode(this.dataset.view);
+            });
+            $(document).on('change', '#cardSortSelect', function () {
+                if (!$.fn.DataTable.isDataTable('#videosTable')) return;
+                const value = this.value;
+                $('#videosTable').DataTable()
+                    .order(value === 'date-asc' ? [[4, 'asc']] : value === 'title-asc' ? [[1, 'asc']] : [[4, 'desc']])
+                    .draw();
+            });
+            // 表格还没初始化，这一趟只切 body 类和按钮状态，避免加载完成后再闪一下
+            applyViewMode(storedViewMode(), { initial: true });
+        }
+
+        // 卡片模式专用的排序行 + 网格容器：initComplete 里插到 .table-scroll 后面，
+        // 这样 DataTables 的信息行和分页仍然在它们下面
+        function setupCardView(table) {
+            const scroll = $('#videosTable').closest('.table-scroll');
+            if (!scroll.length || document.getElementById('cardGrid')) return;
+            scroll.after('<div id="cardGrid" class="card-grid" role="list" hidden></div>');
+            $('#cardGrid').before(
+                '<div class="card-sort" id="cardSort" hidden>' +
+                    '<label for="cardSortSelect">排序</label>' +
+                    '<select id="cardSortSelect" class="custom-select custom-select-sm">' +
+                        '<option value="date-desc">投稿时间 新 → 旧</option>' +
+                        '<option value="date-asc">投稿时间 旧 → 新</option>' +
+                        '<option value="title-asc">标题</option>' +
+                    '</select>' +
+                '</div>'
+            );
+            applyViewMode(viewMode, { initial: true });
+        }
+
+        function applyViewMode(mode, options) {
+            viewMode = mode === 'cards' ? 'cards' : 'table';
+            const cards = viewMode === 'cards';
+
+            document.body.classList.toggle('view-cards', cards);
+            $('#viewToggle .view-btn').each(function () {
+                const on = this.dataset.view === viewMode;
+                this.classList.toggle('active', on);
+                this.setAttribute('aria-pressed', String(on));
+            });
+
+            const grid = document.getElementById('cardGrid');
+            const sort = document.getElementById('cardSort');
+            if (grid) grid.hidden = !cards;
+            if (sort) sort.hidden = !cards;
+
+            try {
+                localStorage.setItem(VIEW_STORAGE_KEY, viewMode);
+            } catch (e) {
+                // 存不下就算了，本次会话仍然按 viewMode 走
+            }
+
+            if (!$.fn.DataTable.isDataTable('#videosTable')) return;
+            const table = $('#videosTable').DataTable();
+            if (cards) syncCardSort(table);
+
+            // initial 那次表格已经画好了，只有卡片模式才需要补一次重绘去填 #cardGrid
+            if (options && options.initial && !cards) return;
+
+            // page.len() 只改设置不重绘，下面统一 draw(false) 一次，避免画两遍
+            const len = table.page.len();
+            if (cards && len === TABLE_PAGE_LEN) {
+                table.page.len(CARDS_PAGE_LEN);
+            } else if (!cards && len === CARDS_PAGE_LEN) {
+                table.page.len(TABLE_PAGE_LEN);
+            }
+            table.draw(false);
+        }
+
+        // 进卡片模式时把下拉对齐到表格当前的排序
+        function syncCardSort(table) {
+            const select = document.getElementById('cardSortSelect');
+            if (!select) return;
+            const first = (table.order() || [])[0] || [4, 'desc'];
+            select.value = Number(first[0]) === 1 ? 'title-asc' : (first[1] === 'asc' ? 'date-asc' : 'date-desc');
+        }
+
+        // 在 drawCallback 里跑：当前页、当前筛选、当前排序的行索引与 window.videosData 一一对应
+        function renderCards(table) {
+            const grid = document.getElementById('cardGrid');
+            if (!grid) return;
+            // 整片重排前先把旧封面从 IntersectionObserver 上摘掉，
+            // 否则没进过视口的图会被观察器一直攥着不放
+            releaseLazyImages(grid);
+            if (viewMode !== 'cards') {
+                // 表格模式下不留隐藏的卡片 DOM，免得封面和事件白挂着
+                if (grid.firstChild) grid.textContent = '';
+                return;
+            }
+            const videos = window.videosData || [];
+            grid.innerHTML = table
+                .rows({ page: 'current', search: 'applied', order: 'applied' })
+                .indexes()
+                .toArray()
+                .map(index => cardHtml(videos[index]))
+                .join('');
+        }
+
+        function cardRibbon(status) {
+            if (status === 'lost' || status === 'hidden') return '<span class="vcard__ribbon vcard__ribbon--lost">已删除</span>';
+            if (status === 'backup') return '<span class="vcard__ribbon vcard__ribbon--backup">已补档</span>';
+            return '';
+        }
+
+        function cardHtml(video) {
+            if (!video) return '';
+            const status = statusOf(video);
+            const aid = video.aid;
+            const title = video.title ? escapeHtml(video.title) : '无标题';
+            // created_at 形如 "2026-08-26 07:30"，取前 16 位挡住可能带的秒
+            const meta = [
+                video.created_at ? escapeHtml(String(video.created_at).slice(0, 16)) : '',
+                video.duration ? formatDuration(video.duration) : '',
+                aid ? 'AV' + escapeHtml(String(aid)) : ''
+            ].filter(Boolean).join(' · ');
+
+            return `<article class="vcard vcard--${status}" role="listitem" data-aid="${aid}">
+                        <div class="vcard__cover">${formatCover(video.cover, video.cover_local, aid)}${cardRibbon(status)}</div>
+                        <div class="vcard__body">
+                            <a class="vcard__title" href="https://www.bilibili.com/video/av${aid}" target="_blank" rel="noopener" title="在B站打开">${title}</a>
+                            <div class="vcard__meta num">${meta}</div>
+                            ${stampHtml(video, status)}
+                            <div class="vcard__desc">${formatDescription(video.desc, aid)}</div>
+                            <div class="vcard__tags">${formatTags(video.tags, aid)}</div>
+                        </div>
+                    </article>`;
+        }
+
         function loadVideoData() {
             // 别名表拿不到就退化成空表，标签云仍按原始写法工作
             const aliasesPromise = fetch('data/tag_aliases.json')
@@ -1369,9 +1704,11 @@
                 order: [[4, 'desc']], // 默认按时间降序排列
                 deferRender: true, // 延迟渲染，提高性能
                 processing: true, // 显示处理中状态
-                drawCallback: function() {
+                drawCallback: function (settings) {
                     // 重新绑定事件和初始化懒加载
                     bindEvents();
+                    // 卡片必须在懒加载之前渲染出来，新封面才能在同一趟里挂上观察器
+                    renderCards(new $.fn.dataTable.Api(settings));
                     // 在空闲时间初始化懒加载，降低重绘压力
                     if ('requestIdleCallback' in window) {
                         requestIdleCallback(initLazyLoading);
@@ -1382,8 +1719,10 @@
                 // 横向滚动容器只包 <table>：写死在 HTML 里的话，DataTables 会把
                 // 长度选择、搜索框、信息行和分页一起生成在滚动容器内部，窄屏上
                 // 这些控件会跟着表格一起滑出视口
-                initComplete: function () {
+                initComplete: function (settings) {
                     $('#videosTable').wrap('<div class="table-scroll"></div>');
+                    // 卡片网格插在滚动容器后面，并把上次选的视图应用上
+                    setupCardView(new $.fn.dataTable.Api(settings));
                 }
             });
         }
@@ -1722,8 +2061,8 @@
             return (window.videosData || []).find(v => String(v.aid) === key);
         }
 
-        // 表格行内的委托事件：+N 展开标签、点击封面看大图。
-        // 只在 ready 时绑一次，DataTables 每次重绘出来的新行自动生效
+        // 表格行 / 卡片内的委托事件：+N 展开标签、点击封面看大图。
+        // 只在 ready 时绑一次，DataTables 每次重绘出来的新行、新卡片自动生效
         function bindRowEvents() {
             const openTags = element => {
                 const container = element.closest('.tags-container');
@@ -1738,18 +2077,18 @@
                 showImageModal(video, container);
             };
 
-            $(document).on('click', '#videosTable .tag-more', function () {
+            $(document).on('click', '#videosTable .tag-more, #cardGrid .tag-more', function () {
                 openTags(this);
             });
-            $(document).on('keydown', '#videosTable .tag-more', function (e) {
+            $(document).on('keydown', '#videosTable .tag-more, #cardGrid .tag-more', function (e) {
                 if (!isActivationKey(e)) return;
                 e.preventDefault();
                 openTags(this);
             });
-            $(document).on('click', '#videosTable .cover-container', function () {
+            $(document).on('click', '#videosTable .cover-container, #cardGrid .cover-container', function () {
                 openCover(this);
             });
-            $(document).on('keydown', '#videosTable .cover-container', function (e) {
+            $(document).on('keydown', '#videosTable .cover-container, #cardGrid .cover-container', function (e) {
                 if (!isActivationKey(e)) return;
                 e.preventDefault();
                 openCover(this);
@@ -1806,6 +2145,11 @@
             };
 
             img.src = imageSrc;
+        }
+
+        function releaseLazyImages(root) {
+            if (!lazyImageObserver || !root) return;
+            root.querySelectorAll('.lazy-image').forEach(img => lazyImageObserver.unobserve(img));
         }
 
         function initLazyLoading() {
