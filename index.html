@@ -641,8 +641,8 @@
             border-color: var(--line);
         }
 
-        /* ── 封面灯箱：对话框按图片宽度收窄，图下一条信息栏 ── */
-        .lightbox .modal-dialog { max-width: min(92vw, 1120px); margin: 1rem auto; transition: max-width 0.15s ease; }
+        /* ── 封面灯箱：对话框按图片宽度收窄，图下一条信息栏；舞台在两套主题里恒为深色，故用字面色 ── */
+        .lightbox.modal .modal-dialog { max-width: min(92vw, 1120px); margin: 1rem auto; transition: transform 0.3s ease-out, max-width 0.15s ease; }
         .lightbox .modal-content { background: var(--surface); color: var(--ink); border: 1px solid var(--line); border-radius: 10px; overflow: hidden; }
         .lightbox-stage { position: relative; background: #0b0f14; display: flex; align-items: center; justify-content: center; min-height: 160px; }
         .lightbox-stage img { display: block; width: 100%; height: auto; max-height: 76vh; object-fit: contain; }
@@ -1153,7 +1153,7 @@
     </div>
     
     <!-- 图片放大模态框 -->
-    <div class="modal fade lightbox" id="imageModal" tabindex="-1" aria-labelledby="lightboxTitle">
+    <div class="modal fade lightbox" id="imageModal" tabindex="-1" role="dialog" aria-modal="true" aria-labelledby="lightboxTitle">
         <div class="modal-dialog modal-dialog-centered" id="lightboxDialog">
             <div class="modal-content">
                 <button type="button" class="lightbox-close" data-dismiss="modal" aria-label="关闭"><svg class="icon" aria-hidden="true"><use href="#i-x"/></svg></button>
@@ -1421,7 +1421,7 @@
             let stampBody = label;
             if (status === 'backup') {
                 const reuploadUrl = `https://www.bilibili.com/video/av${video.reupload_aid}`;
-                stampBody = `<a href="${reuploadUrl}" target="_blank" title="点击查看补档">${label}</a>`;
+                stampBody = `<a href="${reuploadUrl}" target="_blank" rel="noopener" title="点击查看补档">${label}</a>`;
             } else if (status === 'lost' && video.reupload_dead_at) {
                 stampAttrs = ` title="补档 av${video.reupload_aid} 已于 ${escapeHtml(video.reupload_dead_at)} 发现不可见"`;
             }
@@ -1576,38 +1576,52 @@
             element.setAttribute('title', expanded ? '点击收起描述' : '点击展开描述');
         }
 
-        function showImageModal(video) {
+        let lightboxToken = 0;       // 每次打开 +1，让上一次未完成的图片探测作废
+        let lightboxTrigger = null;  // 打开灯箱的元素，关闭后把焦点还回去
+
+        function showImageModal(video, trigger) {
             const modalImage = document.getElementById('modalImage');
             const errorDiv = document.getElementById('lightboxError');
             const dialog = document.getElementById('lightboxDialog');
             const cover = video.cover || '';
             const fullUrl = cover.startsWith('//') ? 'https:' + cover : cover;
             const localUrl = video.cover_local || '';
+            const token = ++lightboxToken;
+            lightboxTrigger = trigger || null;
 
-            // 重置状态
-            modalImage.style.display = 'block';
+            // 重置状态：图片先不显示，避免探测期间闪出 alt 文字
+            modalImage.style.display = 'none';
             modalImage.removeAttribute('src');
             errorDiv.style.display = 'none';
             dialog.style.maxWidth = '';
             modalImage.onload = function () {
-                // 对话框按图片实际宽度收窄：本地 480px 镜像最多放大到 640px，原图最多 1120px
+                if (token !== lightboxToken) return;
+                // 对话框按图片实际宽度收窄：本地 480px 镜像最多放大到 640px，原图最多 1120px，
+                // 再受视口 92% 约束（内联样式会盖过 CSS 里的 min(92vw, …)）
                 const natural = modalImage.naturalWidth || 0;
-                if (natural) dialog.style.maxWidth = Math.min(Math.max(natural, 640), 1120) + 'px';
+                if (!natural) return;
+                const target = Math.min(Math.max(natural, 640), 1120, Math.floor(window.innerWidth * 0.92));
+                dialog.style.maxWidth = target + 'px';
             };
 
             renderLightboxCaption(video);
             $('#imageModal').modal('show');
 
-            // 监听模态框关闭事件，清除焦点
+            // 关闭后把焦点还给打开它的封面（行可能已被 DataTables 重绘，先确认还在文档里）
             $('#imageModal').off('hidden.bs.modal.focus').on('hidden.bs.modal.focus', function() {
-                if (document.activeElement && document.activeElement.blur) {
+                if (lightboxTrigger && document.contains(lightboxTrigger)) {
+                    lightboxTrigger.focus();
+                } else if (document.activeElement && document.activeElement.blur) {
                     document.activeElement.blur();
                 }
+                lightboxTrigger = null;
             });
 
             // 大图优先 B站 原图（更清晰，只在点开时才请求），拿不到再用本地 480px 镜像
             setTimeout(() => {
-                tryLoadImage(modalImage, [fullUrl, localUrl], errorDiv);
+                tryLoadImage(modalImage, [fullUrl, localUrl], errorDiv, () => token === lightboxToken, () => {
+                    dialog.style.maxWidth = '480px'; // 失败提示不需要一整块宽对话框
+                });
             }, 100);
         }
 
@@ -1631,20 +1645,23 @@
             document.getElementById('lightboxActions').innerHTML = actions;
         }
 
-        function tryLoadImage(imgElement, urls, errorDiv) {
+        function tryLoadImage(imgElement, urls, errorDiv, stillCurrent, onExhausted) {
             const candidates = (urls || []).filter(Boolean);
+            const isCurrent = () => !stillCurrent || stillCurrent();
             let currentAttempt = 0;
 
             function attemptLoad() {
+                if (!isCurrent()) return; // 灯箱已换了一张图，放弃这一轮探测
                 if (currentAttempt >= candidates.length) {
                     // 所有候选地址都失败了
                     imgElement.style.display = 'none';
                     errorDiv.style.display = 'block';
+                    if (onExhausted) onExhausted();
                     return;
                 }
 
                 const url = candidates[currentAttempt];
-                console.log(`尝试加载方法 ${currentAttempt + 1}: ${url}`);
+                let settled = false;
 
                 // 创建新的图片元素进行测试
                 const testImg = new Image();
@@ -1654,24 +1671,24 @@
                 testImg.referrerPolicy = 'no-referrer';
 
                 testImg.onload = function() {
-                    console.log(`方法 ${currentAttempt + 1} 成功`);
+                    if (settled) return;
+                    settled = true;
+                    if (!isCurrent()) return;
                     imgElement.src = url;
                     imgElement.style.display = 'block';
                     errorDiv.style.display = 'none';
                 };
 
                 testImg.onerror = function() {
-                    console.log(`方法 ${currentAttempt + 1} 失败，尝试下一种方法`);
+                    if (settled) return;
+                    settled = true;
                     currentAttempt++;
                     setTimeout(attemptLoad, 500); // 延迟500ms后尝试下一种方法
                 };
 
                 // 设置5秒超时
                 setTimeout(() => {
-                    if (!testImg.complete) {
-                        console.log(`方法 ${currentAttempt + 1} 超时`);
-                        testImg.onerror();
-                    }
+                    if (!settled) testImg.onerror();
                 }, 5000);
 
                 testImg.src = url;
@@ -1717,8 +1734,8 @@
             };
             const openCover = container => {
                 const video = videoByAid(container.dataset.aid);
-                if (!video || !video.cover) return;
-                showImageModal(video);
+                if (!video || !(video.cover || video.cover_local)) return;
+                showImageModal(video, container);
             };
 
             $(document).on('click', '#videosTable .tag-more', function () {
@@ -1739,7 +1756,7 @@
             });
             // 复制按钮（表格行 + 灯箱）统一委托，不再内联 onclick
             $(document).on('click', '.copy-btn[data-copy]', function () {
-                copyField(Number(this.dataset.aid), this.dataset.copy, this);
+                copyField(this.dataset.aid, this.dataset.copy, this);
             });
         }
 
@@ -1988,7 +2005,8 @@
             ['none', '无投稿'],
             ['ok', '全部现存'],
             ['backup', '含已补档'],
-            ['lost', '全部待补档'], ['hidden', '仅自见'],
+            ['hidden', '仅自见'],
+            ['lost', '全部待补档'],
             ['mixed', '部分失落']
         ];
         
