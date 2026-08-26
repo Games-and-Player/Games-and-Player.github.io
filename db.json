@@ -1,6 +1,31 @@
 {
     "videos": [
         {
+            "aid": 117154896748329,
+            "title": "铁巢重炮，炮火连天与桌面屠夫",
+            "cover": "http://i2.hdslb.com/bfs/archive/c81bb210227224bb94c1ef229b255cb1a3569220.jpg",
+            "desc": "这几天玩了一款新出的独立游戏，铁巢重炮。游戏本身颇有值得圈点之处，但更有意思的是，这款游戏让我产生了一些关于人生的思考。\n本期早餐车，我们就来聊聊这个话题。",
+            "tags": [
+                "上B站看播客",
+                "战争",
+                "游戏杂谈",
+                "独立游戏",
+                "模拟",
+                "steam",
+                "铁巢重炮",
+                "桌面屠夫",
+                "游戏文化",
+                "游戏介绍"
+            ],
+            "cid": 41244888338,
+            "created_at": "2026-08-26 07:30",
+            "created_timestamp": 1787700600,
+            "status_code": 0,
+            "status_description": "OK",
+            "is_available": true,
+            "status_check_time": "2026-08-26T12:49:54"
+        },
+        {
             "aid": 117149595080864,
             "title": "视觉霸权，聊为何玩家常常忽略音响",
             "cover": "http://i0.hdslb.com/bfs/archive/cca3b0ba303ec8413ed50f93d1ac48e8c19a76e1.jpg",
