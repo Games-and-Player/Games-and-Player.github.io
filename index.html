@@ -1120,12 +1120,12 @@
             return `<div class="cover-container">
                         <img class="video-cover lazy-image"
                              data-src="${thumbSrc}"
+                             data-fallback="${localUrl ? fullUrl : ''}"
                              alt="视频封面"
                              referrerpolicy="no-referrer"
                              crossorigin="anonymous"
                              style="opacity: 0; pointer-events: none;"
-                             onclick="showImageModal('${fullUrl}', '${localUrl}')"
-                             onerror="this.style.display='none'; this.nextElementSibling.style.display='inline';">
+                             onclick="showImageModal('${fullUrl}', '${localUrl}')">
                         <div class="cover-placeholder" onclick="showImageModal('${fullUrl}', '${localUrl}')">
                             <svg class="icon"><use href="#i-image"/></svg>
                         </div>
@@ -1383,6 +1383,43 @@
 
         let lazyImageObserver = null;
 
+        // 懒加载图片的实际赋值 + 成功/失败处理：IntersectionObserver 分支和
+        // 不支持 IntersectionObserver 时的兜底分支共用这一份逻辑，只写一次
+        function attachLazyImage(img, placeholder) {
+            const imageSrc = img.getAttribute('data-src');
+            if (!imageSrc) {
+                return;
+            }
+
+            img.onload = function() {
+                img.style.opacity = '1';
+                img.style.pointerEvents = 'auto';
+                img.classList.add('loaded');
+                if (placeholder) {
+                    placeholder.style.display = 'none';
+                }
+            };
+
+            img.onerror = function() {
+                // 本地镜像封面缺失/404 时，回退到 hdslb 原图再试一次（只重试一次，
+                // 避免两边都失败时反复触发 onerror）；referrerpolicy="no-referrer"
+                // 已经写在元素的 HTML 属性上，重新赋值 src 时同样生效
+                const fallback = img.dataset.fallback;
+                if (fallback && img.dataset.fallbackTried !== '1') {
+                    img.dataset.fallbackTried = '1';
+                    img.src = fallback;
+                    return;
+                }
+                img.style.display = 'none';
+                if (placeholder) {
+                    placeholder.innerHTML = '<svg class="icon"><use href="#i-image-off"/></svg>';
+                    placeholder.classList.remove('lazy-loading');
+                }
+            };
+
+            img.src = imageSrc;
+        }
+
         function initLazyLoading() {
             const lazyImages = document.querySelectorAll('.lazy-image');
             if (lazyImages.length === 0) {
@@ -1397,28 +1434,7 @@
                     img.dataset.lazyAttached = 'true';
                     const container = img.parentElement;
                     const placeholder = container ? container.querySelector('.cover-placeholder') : null;
-                    const imageSrc = img.getAttribute('data-src');
-                    if (!imageSrc) {
-                        return;
-                    }
-
-                    img.src = imageSrc;
-                    img.onload = function() {
-                        img.style.opacity = '1';
-                        img.style.pointerEvents = 'auto';
-                        img.classList.add('loaded');
-                        if (placeholder) {
-                            placeholder.style.display = 'none';
-                        }
-                    };
-
-                    img.onerror = function() {
-                        img.style.display = 'none';
-                        if (placeholder) {
-                            placeholder.innerHTML = '<svg class="icon"><use href="#i-image-off"/></svg>';
-                            placeholder.classList.remove('lazy-loading');
-                        }
-                    };
+                    attachLazyImage(img, placeholder);
                 });
                 return;
             }
@@ -1438,25 +1454,7 @@
                             placeholder.classList.add('lazy-loading');
                         }
 
-                        const imageSrc = img.getAttribute('data-src');
-                        if (imageSrc) {
-                            img.src = imageSrc;
-                            img.onload = function() {
-                                img.style.opacity = '1';
-                                img.style.pointerEvents = 'auto';
-                                img.classList.add('loaded');
-                                if (placeholder) {
-                                    placeholder.style.display = 'none';
-                                }
-                            };
-                            img.onerror = function() {
-                                img.style.display = 'none';
-                                if (placeholder) {
-                                    placeholder.innerHTML = '<svg class="icon"><use href="#i-image-off"/></svg>';
-                                    placeholder.classList.remove('lazy-loading');
-                                }
-                            };
-                        }
+                        attachLazyImage(img, placeholder);
 
                         observer.unobserve(img);
                     });
