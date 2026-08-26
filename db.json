@@ -1,7 +1,45 @@
 {
     "schema_version": 2,
-    "generated_at": "2026-08-26T15:26:33+08:00",
+    "generated_at": "2026-08-26T15:50:21+08:00",
     "videos": [
+        {
+            "aid": 117154896748329,
+            "bvid": "BV1uMhV6PEdQ",
+            "title": "铁巢重炮，炮火连天与桌面屠夫",
+            "cover": "https://i2.hdslb.com/bfs/archive/c81bb210227224bb94c1ef229b255cb1a3569220.jpg",
+            "desc": "这几天玩了一款新出的独立游戏，铁巢重炮。游戏本身颇有值得圈点之处，但更有意思的是，这款游戏让我产生了一些关于人生的思考。\n本期早餐车，我们就来聊聊这个话题。",
+            "tags": [
+                "上B站看播客",
+                "独立游戏",
+                "游戏杂谈",
+                "模拟",
+                "战争",
+                "steam",
+                "铁巢重炮",
+                "桌面屠夫",
+                "游戏文化",
+                "游戏介绍"
+            ],
+            "cid": 41244888338,
+            "created_at": "2026-08-26 07:30",
+            "created_timestamp": 1787700600,
+            "duration": 1033,
+            "status_code": 0,
+            "status_description": "OK",
+            "is_available": true,
+            "status_check_time": "2026-08-26T15:50:16",
+            "deleted_found_at": null,
+            "restored_at": null,
+            "stat": {
+                "view": 7787,
+                "like": 664,
+                "coin": 205,
+                "favorite": 118,
+                "danmaku": 65,
+                "at": "2026-08-26"
+            },
+            "cover_local": "covers/117154896748329.webp"
+        },
         {
             "aid": 117149595080864,
             "title": "视觉霸权，聊为何玩家常常忽略音响",
@@ -70712,8 +70750,8 @@
         }
     ],
     "metadata": {
-        "total": 2030,
-        "available": 1086,
+        "total": 2031,
+        "available": 1087,
         "deleted": 939,
         "self_visible": 5,
         "reuploaded": 481,
@@ -70761,7 +70799,7 @@
                 "deleted": 0
             },
             "2026": {
-                "available": 147,
+                "available": 148,
                 "deleted": 1
             }
         },
