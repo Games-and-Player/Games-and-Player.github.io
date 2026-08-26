@@ -50,3 +50,6 @@ Thumbs.db
 # 临时文件与日志
 *.tmp
 *.log
+
+# 浏览器自动化会话缓存
+.playwright-cli/

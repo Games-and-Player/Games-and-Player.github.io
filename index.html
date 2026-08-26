@@ -36,6 +36,8 @@
             --accent-rgb: 31, 78, 156;
             --bg-rgb: 243, 245, 247;
             --on-accent: #FFFFFF;
+            /* 签条底色是 --lost / --backup，浅色下是深底配白字，深色下是亮底配暗字 */
+            --ribbon-ink: #FFFFFF;
             --ok: #0B7A58;
             --backup: #7A4EB5;
             --hidden: #6B7785;
@@ -66,6 +68,7 @@
                 --accent-rgb: 127, 166, 232;
                 --bg-rgb: 15, 21, 27;
                 --on-accent: #0F151B;
+                --ribbon-ink: #0F151B;
                 --ok: #20A392;
                 --backup: #977DDE;
                 --hidden: #8A96A3;
@@ -391,7 +394,7 @@
             left: 0;
             font-family: var(--mono);
             font-size: 10.5px;
-            color: #fff;
+            color: var(--ribbon-ink);
             padding: 2px 8px;
             border-bottom-right-radius: 6px;
         }
@@ -1475,6 +1478,7 @@
             $(document).on('change', '#cardSortSelect', function () {
                 if (!$.fn.DataTable.isDataTable('#videosTable')) return;
                 const value = this.value;
+                if (value === 'custom') return; // 兜底项只用来显示，选不中它
                 $('#videosTable').DataTable()
                     .order(value === 'date-asc' ? [[4, 'asc']] : value === 'title-asc' ? [[1, 'asc']] : [[4, 'desc']])
                     .draw();
@@ -1496,6 +1500,9 @@
                         '<option value="date-desc">投稿时间 新 → 旧</option>' +
                         '<option value="date-asc">投稿时间 旧 → 新</option>' +
                         '<option value="title-asc">标题</option>' +
+                        // 表头点出来的排序（标题倒序、AID/CID、多列）这三项表达不了，
+                        // 用一个藏起来的兜底项如实显示，而不是谎报成其中之一
+                        '<option value="custom" hidden>自定义</option>' +
                     '</select>' +
                 '</div>'
             );
@@ -1503,7 +1510,11 @@
         }
 
         function applyViewMode(mode, options) {
-            viewMode = mode === 'cards' ? 'cards' : 'table';
+            const next = mode === 'cards' ? 'cards' : 'table';
+            const initial = !!(options && options.initial);
+            // 点当前已经选中的那个按钮不该触发任何重绘
+            if (next === viewMode && !initial) return;
+            viewMode = next;
             const cards = viewMode === 'cards';
 
             document.body.classList.toggle('view-cards', cards);
@@ -1518,10 +1529,14 @@
             if (grid) grid.hidden = !cards;
             if (sort) sort.hidden = !cards;
 
-            try {
-                localStorage.setItem(VIEW_STORAGE_KEY, viewMode);
-            } catch (e) {
-                // 存不下就算了，本次会话仍然按 viewMode 走
+            // 只记用户自己点出来的选择；首次访问按视口推出来的默认值不落盘，
+            // 免得把一次窄屏访问变成这台设备的永久偏好
+            if (!initial) {
+                try {
+                    localStorage.setItem(VIEW_STORAGE_KEY, viewMode);
+                } catch (e) {
+                    // 存不下就算了，本次会话仍然按 viewMode 走
+                }
             }
 
             if (!$.fn.DataTable.isDataTable('#videosTable')) return;
@@ -1529,7 +1544,7 @@
             if (cards) syncCardSort(table);
 
             // initial 那次表格已经画好了，只有卡片模式才需要补一次重绘去填 #cardGrid
-            if (options && options.initial && !cards) return;
+            if (initial && !cards) return;
 
             // page.len() 只改设置不重绘，下面统一 draw(false) 一次，避免画两遍
             const len = table.page.len();
@@ -1541,33 +1556,73 @@
             table.draw(false);
         }
 
-        // 进卡片模式时把下拉对齐到表格当前的排序
+        // 进卡片模式时把下拉对齐到表格当前的排序。只认下拉真能表达的三种，
+        // 其余（标题倒序、AID/CID、多列排序）一律显示「自定义」
         function syncCardSort(table) {
             const select = document.getElementById('cardSortSelect');
             if (!select) return;
-            const first = (table.order() || [])[0] || [4, 'desc'];
-            select.value = Number(first[0]) === 1 ? 'title-asc' : (first[1] === 'asc' ? 'date-asc' : 'date-desc');
+            const order = table.order() || [];
+            const first = order.length === 1 ? order[0] : null;
+            const col = first ? Number(first[0]) : null;
+            const dir = first ? first[1] : null;
+            select.value = (col === 1 && dir === 'asc') ? 'title-asc'
+                : (col === 4 && dir === 'asc') ? 'date-asc'
+                : (col === 4 && dir === 'desc') ? 'date-desc'
+                : 'custom';
         }
+
+        // 上一趟渲染出来的卡片：行索引 → <article>，以及那趟的行索引串
+        let cardNodes = new Map();
+        let lastCardIndexes = null;
 
         // 在 drawCallback 里跑：当前页、当前筛选、当前排序的行索引与 window.videosData 一一对应
         function renderCards(table) {
             const grid = document.getElementById('cardGrid');
             if (!grid) return;
-            // 整片重排前先把旧封面从 IntersectionObserver 上摘掉，
-            // 否则没进过视口的图会被观察器一直攥着不放
-            releaseLazyImages(grid);
             if (viewMode !== 'cards') {
-                // 表格模式下不留隐藏的卡片 DOM，免得封面和事件白挂着
-                if (grid.firstChild) grid.textContent = '';
+                // 表格模式下不留隐藏的卡片 DOM，免得封面和事件白挂着；
+                // 丢弃前先把封面从 IntersectionObserver 上摘掉
+                if (grid.firstChild) {
+                    releaseLazyImages(grid);
+                    grid.textContent = '';
+                }
+                cardNodes.clear();
+                lastCardIndexes = null;
                 return;
             }
-            const videos = window.videosData || [];
-            grid.innerHTML = table
+
+            const indexes = table
                 .rows({ page: 'current', search: 'applied', order: 'applied' })
                 .indexes()
-                .toArray()
-                .map(index => cardHtml(videos[index]))
-                .join('');
+                .toArray();
+            const key = indexes.join(',');
+            // 行集和次序都没变（chips 反复点同一个、灯箱关闭引发的重绘等）就什么都不做
+            if (key === lastCardIndexes && grid.firstChild) return;
+            lastCardIndexes = key;
+
+            // 按行索引复用上一趟的卡片节点：搜索框每敲一个字都会重绘，
+            // 留在页面上的那些卡片直接搬过去，已经加载好的封面就不会被打回占位图
+            const videos = window.videosData || [];
+            const next = new Map();
+            const frag = document.createDocumentFragment();
+            const scratch = document.createElement('div');
+            indexes.forEach(index => {
+                let node = cardNodes.get(index);
+                if (!node) {
+                    scratch.innerHTML = cardHtml(videos[index]);
+                    node = scratch.firstElementChild;
+                }
+                if (!node) return;
+                next.set(index, node);
+                frag.appendChild(node);
+            });
+            // 这一趟没被复用的旧卡片才需要解除观察，然后随 textContent 一起丢掉
+            cardNodes.forEach((node, index) => {
+                if (!next.has(index)) releaseLazyImages(node);
+            });
+            cardNodes = next;
+            grid.textContent = '';
+            grid.appendChild(frag);
         }
 
         function cardRibbon(status) {
@@ -1711,7 +1766,9 @@
                     renderCards(new $.fn.dataTable.Api(settings));
                     // 在空闲时间初始化懒加载，降低重绘压力
                     if ('requestIdleCallback' in window) {
-                        requestIdleCallback(initLazyLoading);
+                        // 带 timeout：连续打字时浏览器一直不空闲，没有上限的话
+                        // 卡片会一直停在占位图上
+                        requestIdleCallback(initLazyLoading, { timeout: 200 });
                     } else {
                         requestAnimationFrame(initLazyLoading);
                     }
@@ -2148,8 +2205,12 @@
         }
 
         function releaseLazyImages(root) {
-            if (!lazyImageObserver || !root) return;
-            root.querySelectorAll('.lazy-image').forEach(img => lazyImageObserver.unobserve(img));
+            if (!root) return;
+            root.querySelectorAll('.lazy-image').forEach(img => {
+                if (lazyImageObserver) lazyImageObserver.unobserve(img);
+                // 标记也一并清掉：这张图要是再回到页面上，还能重新排进懒加载
+                delete img.dataset.lazyAttached;
+            });
         }
 
         function initLazyLoading() {
