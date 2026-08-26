@@ -19,14 +19,61 @@
     <link rel="stylesheet" href="static/vendor/bootstrap-4.6.0.min.css">
     
     <style>
+        /* ── 设计令牌（台账皮肤）────────────────────────────────────────────
+           浅色为基准，深色只重定义令牌本身，组件规则一律走 var()。
+           --*-rgb 供需要透明度的地方拼 rgba()，--on-accent 是填充 --accent
+           时的文字色（浅色下是白、深色下是近黑），保证两套主题都够对比。 */
         :root {
-            --accent-color: #1a73e8;
-            --accent-color-soft: rgba(26, 115, 232, 0.12);
-            --text-color: #1f2933;
-            --muted-color: #6b7280;
-            --border-color: #e5e7eb;
-            --surface-color: #ffffff;
-            --surface-muted: #f5f7fa;
+            color-scheme: light dark;
+
+            --bg: #F3F5F7;
+            --surface: #FFFFFF;
+            --ink: #14202B;
+            --ink-2: #4A5866;
+            --ink-3: #8593A0;
+            --line: #D9DFE5;
+            --accent: #1F4E9C;
+            --accent-rgb: 31, 78, 156;
+            --bg-rgb: 243, 245, 247;
+            --on-accent: #FFFFFF;
+            --ok: #1B8A6B;
+            --backup: #7A4EB5;
+            --hidden: #6B7785;
+            --lost: #C2362B;
+            --stripe: rgba(20, 32, 43, 0.028);
+            --row-hover: rgba(31, 78, 156, 0.06);
+            --mono: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+
+            /* 兼容旧变量名 */
+            --accent-color: var(--accent);
+            --accent-color-soft: rgba(31, 78, 156, 0.12);
+            --text-color: var(--ink);
+            --muted-color: var(--ink-2);
+            --border-color: var(--line);
+            --surface-color: var(--surface);
+            --surface-muted: var(--bg);
+        }
+
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --bg: #0F151B;
+                --surface: #161E26;
+                --ink: #E6EBF0;
+                --ink-2: #A7B3BE;
+                --ink-3: #6F7C88;
+                --line: #26313C;
+                --accent: #7FA6E8;
+                --accent-rgb: 127, 166, 232;
+                --bg-rgb: 15, 21, 27;
+                --on-accent: #0F151B;
+                --ok: #20A392;
+                --backup: #8A66D2;
+                --hidden: #8A96A3;
+                --lost: #E0665A;
+                --stripe: rgba(230, 235, 240, 0.035);
+                --row-hover: rgba(127, 166, 232, 0.10);
+                --accent-color-soft: rgba(127, 166, 232, 0.16);
+            }
         }
 
         * {
@@ -37,12 +84,22 @@
             position: relative;
 
             font-family: 'Noto Sans SC', 'Helvetica Neue', Arial, sans-serif;
-            background-color: var(--surface-muted);
-            color: var(--text-color);
+            background-color: var(--bg);
+            color: var(--ink);
             min-height: 100vh;
             margin: 0;
             padding: 32px 0;
             overflow-x: hidden;
+        }
+
+        /* 台账的数字一律等宽 + 定宽数位，纵向能对齐 */
+        .num,
+        .stat-number,
+        .date-cell,
+        .number-cell,
+        .chip b {
+            font-family: var(--mono);
+            font-variant-numeric: tabular-nums;
         }
 
         .container-fluid {
@@ -68,8 +125,8 @@
             content: '';
             position: absolute;
             inset: 0;
-            background: linear-gradient(180deg, rgba(255,255,255,0.55), rgba(245,247,250,0.8)),
-                repeating-linear-gradient(135deg, rgba(26,115,232,0.08) 0 4px, transparent 4px 12px);
+            background: linear-gradient(180deg, rgba(var(--bg-rgb), 0.55), rgba(var(--bg-rgb), 0.86)),
+                repeating-linear-gradient(135deg, rgba(var(--accent-rgb), 0.08) 0 4px, transparent 4px 12px);
             z-index: 1;
         }
 
@@ -78,8 +135,8 @@
             min-height: 120px;
             border-radius: 16px;
             overflow: hidden;
-            background: linear-gradient(135deg, rgba(26, 115, 232, 0.2), rgba(26, 115, 232, 0.05)),
-                repeating-linear-gradient(135deg, rgba(255,255,255,0.1) 0 3px, rgba(26, 115, 232, 0.08) 3px 9px);
+            background: linear-gradient(135deg, rgba(var(--accent-rgb), 0.2), rgba(var(--accent-rgb), 0.05)),
+                repeating-linear-gradient(135deg, rgba(var(--bg-rgb), 0.1) 0 3px, rgba(var(--accent-rgb), 0.08) 3px 9px);
         }
 
         .mosaic-tile img {
@@ -108,10 +165,22 @@
             margin-bottom: 32px;
         }
 
+        /* flex 让图标与标题之间只留一个受控的 gap，
+           不再受标签间空白文本节点的影响 */
         .header h1 {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
             margin: 0 0 8px;
             font-size: 2rem;
-            font-weight: 600;
+            font-weight: 700;
+        }
+
+        .header h1 .icon,
+        .chart-header h3 .icon {
+            flex: none;
+            color: var(--accent);
         }
 
         .header p {
@@ -127,30 +196,33 @@
             margin-bottom: 32px;
         }
 
+        /* 卡片只有一条发丝边，不投影 */
         .stat-card {
-            background: var(--surface-color);
-            border: 1px solid var(--border-color);
+            background: var(--surface);
+            border: 1px solid var(--line);
             border-radius: 12px;
-            padding: 16px;
+            padding: 16px 18px;
+            box-shadow: none;
         }
 
         .stat-number {
             display: block;
             font-size: 1.8rem;
             font-weight: 600;
-            color: var(--accent-color);
+            line-height: 1.2;
+            color: var(--accent);
         }
 
         .stat-note {
-            font-size: 0.65rem;
-            color: #999;
+            font-size: 0.7rem;
+            color: var(--ink-2);
             margin-top: 4px;
         }
 
         .stat-label {
-            color: var(--muted-color);
+            color: var(--ink-2);
             font-size: 0.85rem;
-            margin-top: 4px;
+            margin-top: 6px;
         }
 
         .stat-number.is-date {
@@ -172,10 +244,10 @@
             display: block;
         }
 
-        .survival__ok { background: #1B8A6B; }
-        .survival__backup { background: #7A4EB5; }
-        .survival__hidden { background: #6B7785; }
-        .survival__lost { background: #C2362B; }
+        .survival__ok { background: var(--ok); }
+        .survival__backup { background: var(--backup); }
+        .survival__hidden { background: var(--hidden); }
+        .survival__lost { background: var(--lost); }
 
         .survival-legend {
             font-size: 0.78rem;
@@ -221,15 +293,15 @@
             transition: color 0.15s ease, border-color 0.15s ease, background-color 0.15s ease;
         }
 
-        .chip:hover {
-            color: var(--accent-color);
-            border-color: var(--accent-color);
+        .chip:hover:not(.active) {
+            color: var(--accent);
+            border-color: var(--accent);
         }
 
         .chip.active {
-            color: var(--accent-color);
-            background: var(--accent-color-soft);
-            border-color: var(--accent-color);
+            color: var(--on-accent);
+            background: var(--accent);
+            border-color: var(--accent);
         }
 
         .chip .num {
@@ -311,24 +383,18 @@
         }
 
         .video-title.unavailable > a {
-            color: #999 !important;
+            color: var(--ink-2) !important;
         }
 
+        /* 状态章只出现在标题列，单独占一行，避免跟着标题末尾折行 */
         .stamp {
-            display: inline-flex;
+            display: flex;
             align-items: center;
             gap: 6px;
-            margin-left: 6px;
-            font-size: 0.72rem;
-            color: var(--muted-color);
-            white-space: nowrap;
-            vertical-align: middle;
-        }
-
-        /* 标题列里状态章单独占一行，避免跟着标题末尾折行 */
-        .video-title .stamp {
-            display: flex;
             margin: 4px 0 0;
+            font-size: 0.72rem;
+            color: var(--ink-2);
+            white-space: nowrap;
         }
 
         .stamp i {
@@ -345,10 +411,10 @@
             text-decoration: underline dotted;
         }
 
-        .stamp--available { color: #1B8A6B; }
-        .stamp--backup { color: #7A4EB5; }
-        .stamp--hidden { color: #6B7785; }
-        .stamp--lost { color: #C2362B; }
+        .stamp--available { color: var(--ok); }
+        .stamp--backup { color: var(--backup); }
+        .stamp--hidden { color: var(--hidden); }
+        .stamp--lost { color: var(--lost); }
 
         .cover-container {
             width: 80px;
@@ -448,21 +514,148 @@
         }
 
         .copy-btn.copied {
-            color: #28a745;
-            border-color: #28a745;
+            color: var(--ok);
+            border-color: var(--ok);
         }
 
         .copy-btn.failed {
-            color: #dc3545;
-            border-color: #dc3545;
+            color: var(--lost);
+            border-color: var(--lost);
+        }
+
+        /* ── 表格与第三方组件（Bootstrap / DataTables）改吃设计令牌 ──
+           这些组件的颜色都写死在 vendor CSS 里，深色模式下不覆盖就会
+           出现黑字黑底 / 白底刺眼条纹，所以在这里统一接回 var()。 */
+        .table {
+            color: var(--ink);
+            border-color: var(--line);
+        }
+
+        .table th,
+        .table td {
+            border-top: 1px solid var(--line);
+        }
+
+        /* 表头不再用 Bootstrap 的 .thead-dark 深色块，改成台账式浅表头 */
+        #videosTable thead th {
+            background: var(--surface);
+            color: var(--ink-2);
+            font-weight: 500;
+            font-size: 0.8rem;
+            letter-spacing: 0.02em;
+            border-top: 0;
+            border-bottom: 1px solid var(--line);
+        }
+
+        .table-striped tbody tr:nth-of-type(odd) {
+            background-color: var(--stripe);
+        }
+
+        .table-hover tbody tr:hover {
+            color: var(--ink);
+            background-color: var(--row-hover);
+        }
+
+        .date-cell,
+        .number-cell {
+            font-size: 0.85rem;
+            color: var(--ink-2);
+        }
+
+        .number-cell {
+            text-align: right;
+        }
+
+        .text-muted {
+            color: var(--ink-2) !important;
+        }
+
+        .form-control,
+        .custom-select {
+            color: var(--ink);
+            background-color: var(--surface);
+            border-color: var(--line);
+        }
+
+        .form-control:focus,
+        .custom-select:focus {
+            color: var(--ink);
+            background-color: var(--surface);
+            border-color: var(--accent);
+            box-shadow: 0 0 0 2px var(--accent-color-soft);
+        }
+
+        .form-control::placeholder {
+            color: var(--ink-3);
         }
 
         #videosTable_wrapper .dataTables_filter input,
         #videosTable_wrapper .dataTables_length select {
-            border: 1px solid var(--border-color);
+            border: 1px solid var(--line);
             border-radius: 8px;
             padding: 6px 12px;
-            background: var(--surface-color);
+            background-color: var(--surface);
+            color: var(--ink);
+        }
+
+        /* select 右侧要给下拉箭头留位置 */
+        #videosTable_wrapper .dataTables_length select {
+            padding-right: 28px;
+        }
+
+        #videosTable_wrapper .dataTables_info,
+        #videosTable_wrapper .dataTables_length,
+        #videosTable_wrapper .dataTables_filter,
+        #videosTable_wrapper .dataTables_processing {
+            color: var(--ink-2);
+            font-size: 0.85rem;
+        }
+
+        .page-link {
+            color: var(--accent);
+            background-color: var(--surface);
+            border-color: var(--line);
+        }
+
+        .page-link:hover {
+            color: var(--accent);
+            background-color: var(--bg);
+            border-color: var(--line);
+        }
+
+        .page-item.active .page-link {
+            color: var(--on-accent);
+            background-color: var(--accent);
+            border-color: var(--accent);
+        }
+
+        .page-item.disabled .page-link {
+            color: var(--ink-3);
+            background-color: var(--surface);
+            border-color: var(--line);
+        }
+
+        .modal-content {
+            background-color: var(--surface);
+            color: var(--ink);
+            border: 1px solid var(--line);
+        }
+
+        .modal-header,
+        .modal-footer {
+            border-color: var(--line);
+        }
+
+        /* 关闭按钮带着旧深色表头留下的 .text-white，在浅表头上会看不见 */
+        .modal-header .close,
+        .modal-header .close.text-white {
+            color: var(--ink) !important;
+            text-shadow: none;
+            opacity: 0.6;
+        }
+
+        .modal-header .close:hover {
+            opacity: 1;
         }
 
         .loading {
@@ -479,8 +672,9 @@
         .error {
             border-radius: 12px;
             padding: 16px;
-            background: #fee2e2;
-            color: #b91c1c;
+            background: var(--surface);
+            border: 1px solid var(--lost);
+            color: var(--lost);
         }
 
         .tag-cloud {
@@ -511,22 +705,17 @@
             padding: 6px 14px;
             border-radius: 999px;
             border: 1px solid transparent;
-            background: var(--surface-muted);
-            color: var(--text-color);
+            background: var(--bg);
+            color: var(--ink);
             font-size: 0.85rem;
             cursor: pointer;
-            transition: all 0.2s ease;
+            transition: border-color 0.2s ease, background-color 0.2s ease, opacity 0.2s ease;
         }
 
+        /* 悬停只动描边：热度高的标签是实心 accent 底，
+           再改文字色就会糊成一片 */
         .cloud-tag:hover {
-            border-color: var(--accent-color);
-            color: var(--accent-color);
-        }
-
-        .cloud-tag.active {
-            background: var(--accent-color);
-            color: #ffffff;
-            border-color: var(--accent-color);
+            border-color: var(--accent);
         }
 
         .cloud-tag.filtered {
@@ -542,14 +731,23 @@
         .cloud-tag.size-7 { font-size: 1.5rem; }
         .cloud-tag.size-8 { font-size: 1.7rem; }
 
-        .cloud-tag.heat-1 { background: var(--surface-muted); }
-        .cloud-tag.heat-2 { background: rgba(26, 115, 232, 0.12); color: var(--accent-color); }
-        .cloud-tag.heat-3 { background: rgba(26, 115, 232, 0.18); color: var(--accent-color); }
-        .cloud-tag.heat-4 { background: rgba(26, 115, 232, 0.24); color: var(--accent-color); }
-        .cloud-tag.heat-5 { background: rgba(26, 115, 232, 0.3); color: #ffffff; }
-        .cloud-tag.heat-6 { background: rgba(26, 115, 232, 0.4); color: #ffffff; }
-        .cloud-tag.heat-7 { background: rgba(26, 115, 232, 0.5); color: #ffffff; }
-        .cloud-tag.heat-8 { background: rgba(26, 115, 232, 0.6); color: #ffffff; }
+        /* 热度靠 accent 底色的浓淡表达；淡底配 --ink，浓底配 --on-accent，
+           两套主题下都是高对比 */
+        .cloud-tag.heat-1 { background: var(--bg); }
+        .cloud-tag.heat-2 { background: rgba(var(--accent-rgb), 0.10); }
+        .cloud-tag.heat-3 { background: rgba(var(--accent-rgb), 0.16); }
+        .cloud-tag.heat-4 { background: rgba(var(--accent-rgb), 0.24); }
+        .cloud-tag.heat-5 { background: rgba(var(--accent-rgb), 0.34); }
+        .cloud-tag.heat-6 { background: rgba(var(--accent-rgb), 0.78); color: var(--on-accent); }
+        .cloud-tag.heat-7 { background: rgba(var(--accent-rgb), 0.90); color: var(--on-accent); }
+        .cloud-tag.heat-8 { background: var(--accent); color: var(--on-accent); }
+
+        /* 必须排在 heat-* 之后：同权重下靠源序取胜，否则选中态会被热度底色盖掉 */
+        .cloud-tag.active {
+            background: var(--accent);
+            color: var(--on-accent);
+            border-color: var(--accent);
+        }
 
         .tag-stats {
             width: 100%;
@@ -624,7 +822,7 @@
             width: 12px;
             height: 12px;
             border-radius: 2px;
-            background: var(--surface-muted);
+            background: var(--line);
             transition: transform 0.1s ease, border 0.1s ease;
         }
 
@@ -637,15 +835,16 @@
             cursor: pointer;
         }
 
-        /* 日格状态色，Task 5 会挪进设计令牌 */
-        .heatmap-day.day-none { background: var(--surface-muted); }
-        .heatmap-day.day-ok { background: #1B8A6B; }
-        .heatmap-day.day-backup { background: #7A4EB5; }
-        .heatmap-day.day-lost { background: #C2362B; }
-        .heatmap-day.day-mixed { background: linear-gradient(135deg, #1B8A6B 50%, #C2362B 50%); }
+        /* 日格状态色。day-none 用 --line 而不是 --bg：
+           日历卡片本身是 --surface，用 --bg 在卡片上几乎看不见 */
+        .heatmap-day.day-none { background: var(--line); }
+        .heatmap-day.day-ok { background: var(--ok); }
+        .heatmap-day.day-backup { background: var(--backup); }
+        .heatmap-day.day-lost { background: var(--lost); }
+        .heatmap-day.day-mixed { background: linear-gradient(135deg, var(--ok) 50%, var(--lost) 50%); }
 
         .heatmap-day.selected {
-            outline: 2px solid var(--accent-color);
+            outline: 2px solid var(--accent);
         }
 
         .heatmap-tooltip {
@@ -656,7 +855,7 @@
             border-radius: 8px;
             padding: 8px 12px;
             font-size: 0.85rem;
-            box-shadow: 0 8px 16px rgba(15, 23, 42, 0.08);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.18);
             pointer-events: none;
             opacity: 0;
             transition: opacity 0.15s ease;
@@ -767,6 +966,23 @@
                 white-space: nowrap;
             }
         }
+
+        @media (prefers-color-scheme: dark) {
+            /* Bootstrap 把 select 的下拉箭头写死成深灰 data URI，深色下换浅色 */
+            .custom-select {
+                background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='4' height='5' viewBox='0 0 4 5'%3e%3cpath fill='%23A7B3BE' d='M2 0L0 2h4zm0 5L0 3h4z'/%3e%3c/svg%3e");
+            }
+
+            /* 深色下封面墙压得更暗，免得整片封面在暗背景上发光 */
+            .background-mosaic {
+                opacity: 0.12;
+            }
+
+            .mosaic-tile img {
+                filter: saturate(0.8) brightness(0.7);
+            }
+        }
+
         .icon { width: 1em; height: 1em; vertical-align: -0.125em; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
         .icon.spin { animation: spin 1s linear infinite; }
         @keyframes spin { to { transform: rotate(360deg); } }
@@ -1210,13 +1426,18 @@
         function appendMosaicCovers() {
             const mosaicTiles = document.querySelectorAll('.mosaic-tile');
             if (!mosaicTiles.length) return;
-            const videosWithCovers = (window.videosData || []).filter(v => v.cover);
+            // 只从有本地镜像封面的视频里抽，正常打开首页就不会有任何 hdslb 请求；
+            // 整份数据都没有镜像时才退回 https 原图
+            const all = window.videosData || [];
+            const mirrored = all.filter(v => v.cover_local);
+            const videosWithCovers = mirrored.length ? mirrored : all.filter(v => v.cover);
             if (!videosWithCovers.length) return;
             const covers = shuffleAndSlice(videosWithCovers, mosaicTiles.length);
             mosaicTiles.forEach((tile, index) => {
                 const video = covers[index % covers.length];
                 const img = document.createElement('img');
-                const coverUrl = video.cover.startsWith('//') ? 'https:' + video.cover : video.cover;
+                const rawCover = video.cover_local || video.cover;
+                const coverUrl = rawCover.startsWith('//') ? 'https:' + rawCover : rawCover;
                 img.src = coverUrl;
                 img.loading = 'lazy';
                 img.referrerPolicy = 'no-referrer';
@@ -1407,21 +1628,6 @@
         
         function bindEvents() {
             // 封面悬停效果已在CSS中实现
-        }
-        
-        const mosaicTiles = document.querySelectorAll('.mosaic-tile');
-        if (mosaicTiles.length) {
-            const sampleImages = (window.videosData || []).slice(0, 12).filter(v => v.cover);
-            mosaicTiles.forEach((tile, index) => {
-                const video = sampleImages[index % sampleImages.length];
-                if (video) {
-                    const img = document.createElement('img');
-                    const coverUrl = video.cover.startsWith('//') ? 'https:' + video.cover : video.cover;
-                    img.src = coverUrl;
-                    img.loading = 'lazy';
-                    tile.appendChild(img);
-                }
-            });
         }
 
         let lazyImageObserver = null;
