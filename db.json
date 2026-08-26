@@ -1,6 +1,6 @@
 {
     "schema_version": 2,
-    "generated_at": "2026-08-26T15:50:21+08:00",
+    "generated_at": "2026-08-26T15:52:27+08:00",
     "videos": [
         {
             "aid": 117154896748329,
@@ -57621,7 +57621,8 @@
             "cover_local": "covers/21257351.webp",
             "duration": null,
             "restored_at": null,
-            "deleted_found_at": "2026-04-04"
+            "deleted_found_at": "2026-04-04",
+            "reupload_aid": 117151742563678
         },
         {
             "aid": 21226660,
@@ -68113,7 +68114,8 @@
             "cover_local": "covers/7697921.webp",
             "duration": null,
             "restored_at": null,
-            "deleted_found_at": "2026-04-04"
+            "deleted_found_at": "2026-04-04",
+            "reupload_aid": 116825106946070
         },
         {
             "aid": 11317184,
@@ -70754,8 +70756,8 @@
         "available": 1087,
         "deleted": 939,
         "self_visible": 5,
-        "reuploaded": 481,
-        "pending_reupload": 463,
+        "reuploaded": 483,
+        "pending_reupload": 461,
         "reupload_dead": 0,
         "by_year": {
             "2016": {
