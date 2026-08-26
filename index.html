@@ -579,11 +579,18 @@
         }
 
         .heatmap-legend {
-            display: inline-flex;
+            display: flex;
+            flex-wrap: wrap;
             align-items: center;
-            gap: 10px;
+            gap: 6px 16px;
             font-size: 0.85rem;
             color: var(--muted-color);
+        }
+
+        .heatmap-legend-item {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
         }
 
         .heatmap-year {
@@ -613,6 +620,7 @@
         }
 
         .heatmap-day {
+            display: inline-block;
             width: 12px;
             height: 12px;
             border-radius: 2px;
@@ -629,11 +637,12 @@
             cursor: pointer;
         }
 
-        .heatmap-day.level-0 { background: #e5e7eb; }
-        .heatmap-day.level-1 { background: #cfe1fd; }
-        .heatmap-day.level-2 { background: #99c0fb; }
-        .heatmap-day.level-3 { background: #659df6; }
-        .heatmap-day.level-4 { background: #1a73e8; }
+        /* 日格状态色，Task 5 会挪进设计令牌 */
+        .heatmap-day.day-none { background: var(--surface-muted); }
+        .heatmap-day.day-ok { background: #1B8A6B; }
+        .heatmap-day.day-backup { background: #7A4EB5; }
+        .heatmap-day.day-lost { background: #C2362B; }
+        .heatmap-day.day-mixed { background: linear-gradient(135deg, #1B8A6B 50%, #C2362B 50%); }
 
         .heatmap-day.selected {
             outline: 2px solid var(--accent-color);
@@ -685,6 +694,24 @@
         .heatmap-stats-hint {
             font-size: 0.8rem;
             margin-top: 4px;
+        }
+
+        .heatmap-years-toggle {
+            font-size: 0.85rem;
+        }
+
+        .btn-link-like {
+            padding: 0;
+            border: 0;
+            background: none;
+            color: var(--accent-color);
+            font: inherit;
+            font-size: inherit;
+            cursor: pointer;
+        }
+
+        .btn-link-like:hover {
+            text-decoration: underline;
         }
 
         .lazy-loading {
@@ -838,8 +865,8 @@
         <div class="chart-container collapsible">
             <div class="chart-header" onclick="toggleChart('heatmap')">
                 <div class="header-content">
-                    <h3><svg class="icon"><use href="#i-calendar"/></svg> 发布活跃度热力图</h3>
-                    <p>显示视频发布的活跃程度，点击方块可筛选当天发布的视频</p>
+                    <h3><svg class="icon"><use href="#i-calendar"/></svg> 失落日历</h3>
+                    <p>每格一天，颜色是当天投稿的存续状态；点击方块筛选当天投稿</p>
                 </div>
                 <div class="collapse-btn">
                     <svg class="icon" id="heatmapToggle"><use href="#i-chevron-up"/></svg>
@@ -849,7 +876,7 @@
                 <div id="heatmapCalendar" class="heatmap-container">
                     <div class="heatmap-loading">
                         <svg class="icon spin"><use href="#i-spinner"/></svg>
-                        <span>正在生成热力日历...</span>
+                        <span>正在生成失落日历...</span>
                     </div>
                 </div>
             </div>
@@ -926,6 +953,8 @@
             loadCollapseStates();
             // 绑定状态筛选 chips
             bindStatusChips();
+            // 绑定标签云点击
+            bindTagCloud();
             // 加载视频数据
             loadVideoData();
         });
@@ -999,6 +1028,11 @@
         }
         
         function loadVideoData() {
+            // 别名表拿不到就退化成空表，标签云仍按原始写法工作
+            const aliasesPromise = fetch('data/tag_aliases.json')
+                .then(response => (response.ok ? response.json() : null))
+                .catch(() => null);
+
             fetch('db.json')
                 .then(response => {
                     if (!response.ok) {
@@ -1006,12 +1040,15 @@
                     }
                     return response.json();
                 })
-                .then(data => {
+                .then(data => aliasesPromise.then(aliases => ({ data, aliases })))
+                .then(({ data, aliases }) => {
                     const videos = data.videos || [];
                     window.videosData = videos; // 保存数据供其他函数使用
+                    setTagAliases(aliases);
+                    buildTagIndex(videos);
                     displayStats(videos, data.metadata);
                     createHeatmapCalendar(videos);
-                    createTagCloud(videos);
+                    createTagCloud();
                     initializeTable(videos);
                     renderStatusChips(videos);
                     appendMosaicCovers();
@@ -1202,7 +1239,12 @@
         
         function formatTags(tags, aid) {
             if (!tags || tags.length === 0) return '<span class="text-muted">无标签</span>';
-            
+
+            // 单元格里只显示前 3 个标签，但 DataTables 的列筛选读的是这段 HTML 去标签后的文本，
+            // 所以额外塞一份完整标签（| a | b | 形式，供整词匹配）到视觉隐藏的 span 里。
+            // 放在 .tags-container 外面，免得 showAllTags() 重写容器时把它冲掉。
+            const allTagsText = escapeHtml('| ' + tags.map(tag => String(tag).trim()).filter(Boolean).join(' | ') + ' |');
+
             return `<div class="tags-container">
                         ${tags.slice(0, 3).map(tag => `<span class="tag">${escapeHtml(tag)}</span>`).join('')}
                         ${tags.length > 3 ? 
@@ -1210,6 +1252,7 @@
                             ''
                         }
                     </div>
+                    <span class="sr-only tags-all">${allTagsText}</span>
                     <button type="button" class="copy-btn" onclick="copyField(${aid}, 'tags', this)" title="复制全部标签，以 | 分隔"><svg class="icon"><use href="#i-copy"/></svg> 复制标签</button>`;
         }
         
@@ -1474,9 +1517,10 @@
             });
         }
         
+        const RECENT_YEAR_COUNT = 2;
+
         let availableYears = [];
         let heatmapDailyData = {};
-        let heatmapMaxCount = 0;
         
         function createHeatmapCalendar(videos) {
             const dailyData = processDailyData(videos);
@@ -1490,23 +1534,47 @@
             // 保存全局数据
             heatmapDailyData = dailyData;
             availableYears = getYearsFromData(dailyData);
-            heatmapMaxCount = Math.max(...Object.values(dailyData));
 
+            renderHeatmapCalendar();
+        }
+        
+        function heatmapShowsAllYears() {
+            try {
+                return localStorage.getItem('heatmap_all_years') === '1';
+            } catch (e) {
+                return false;
+            }
+        }
+        
+        function toggleHeatmapYears() {
+            const showAll = !heatmapShowsAllYears();
+            try {
+                localStorage.setItem('heatmap_all_years', showAll ? '1' : '0');
+            } catch (e) {
+                console.log('无法保存年份显示状态到本地存储');
+            }
             renderHeatmapCalendar();
         }
         
         function renderHeatmapCalendar() {
             const container = document.getElementById('heatmapCalendar');
 
+            const allYears = [...availableYears].sort((a, b) => b - a);
+            const showAll = heatmapShowsAllYears();
+            const yearsToRender = showAll ? allYears : allYears.slice(0, RECENT_YEAR_COUNT);
+
             let heatmapHTML = '<div class="heatmap-calendar">';
             heatmapHTML += createHeatmapLegend();
 
-            const yearsToRender = [...availableYears].sort((a, b) => b - a);
             yearsToRender.forEach(year => {
-                heatmapHTML += createYearHeatmap(year, heatmapDailyData, heatmapMaxCount);
+                heatmapHTML += createYearHeatmap(year, heatmapDailyData);
             });
 
-            heatmapHTML += createHeatmapStats(heatmapDailyData, heatmapMaxCount);
+            if (allYears.length > RECENT_YEAR_COUNT) {
+                heatmapHTML += `<div class="heatmap-years-toggle"><button type="button" class="btn-link-like" onclick="toggleHeatmapYears()">${showAll ? '只看最近两年' : '显示全部年份'}</button></div>`;
+            }
+
+            heatmapHTML += createHeatmapStats(heatmapDailyData);
             heatmapHTML += '</div>';
 
             container.innerHTML = heatmapHTML;
@@ -1521,11 +1589,10 @@
 
             bindHeatmapEvents();
             updateHeatmapSelection();
-            updateDateFilterStats();
         }
         
         function processDailyData(videos) {
-            const dailyCount = {};
+            const daily = {};
             
             videos.forEach(video => {
                 let date;
@@ -1538,10 +1605,24 @@
                 }
                 
                 const dateKey = formatDateKey(date);
-                dailyCount[dateKey] = (dailyCount[dateKey] || 0) + 1;
+                if (!daily[dateKey]) {
+                    daily[dateKey] = { count: 0, available: 0, backup: 0, hidden: 0, lost: 0 };
+                }
+                daily[dateKey].count += 1;
+                daily[dateKey][statusOf(video)] += 1;
             });
             
-            return dailyCount;
+            return daily;
+        }
+        
+        // 日格状态码：无投稿 none / 全部现存 ok / 有已补档 backup /
+        // 无现存且无补档 lost / 其余 mixed
+        function dayStatusCode(day) {
+            if (!day || day.count === 0) return 'none';
+            if (day.available === day.count) return 'ok';
+            if (day.backup > 0) return 'backup';
+            if (day.available === 0) return 'lost';
+            return 'mixed';
         }
         
         function formatDateKey(date) {
@@ -1559,21 +1640,22 @@
             return Array.from(years).sort((a, b) => a - b); // 升序排列，最早年份在前
         }
         
+        const HEATMAP_LEGEND = [
+            ['none', '无投稿'],
+            ['ok', '全部现存'],
+            ['backup', '含已补档'],
+            ['lost', '全部待补档'],
+            ['mixed', '部分失落']
+        ];
+        
         function createHeatmapLegend() {
-            return `
-                <div class="heatmap-legend">
-                    <span>少</span>
-                    <div class="heatmap-day level-0"></div>
-                    <div class="heatmap-day level-1"></div>
-                    <div class="heatmap-day level-2"></div>
-                    <div class="heatmap-day level-3"></div>
-                    <div class="heatmap-day level-4"></div>
-                    <span>多</span>
-                </div>
-            `;
+            const items = HEATMAP_LEGEND
+                .map(([code, label]) => `<span class="heatmap-legend-item"><i class="heatmap-day day-${code}"></i>${label}</span>`)
+                .join('');
+            return `<div class="heatmap-legend">${items}</div>`;
         }
         
-        function createYearHeatmap(year, dailyData, maxCount) {
+        function createYearHeatmap(year, dailyData) {
             let html = `
                 <div class="heatmap-year" id="year-${year}">
                     <div class="heatmap-year-title">${year}年</div>
@@ -1600,9 +1682,10 @@
             for (let day = 0; day < daysInYear; day++) {
                 const currentDate = new Date(year, 0, 1 + day);
                 const dateKey = formatDateKey(currentDate);
-                const count = dailyData[dateKey] || 0;
-                const level = getHeatLevel(count, maxCount);
-                const hasVideos = count > 0 ? 'has-videos' : '';
+                const dayData = dailyData[dateKey];
+                const count = dayData ? dayData.count : 0;
+                const code = dayStatusCode(dayData);
+                const hasVideos = count > 0 ? ' has-videos' : '';
                 
                 // 计算在网格中的位置
                 const totalDays = firstDayWeek + day;
@@ -1613,7 +1696,7 @@
                     grid[row][col] = {
                         dateKey,
                         count,
-                        level,
+                        code,
                         hasVideos
                     };
                 }
@@ -1624,7 +1707,7 @@
                 for (let col = 0; col < 53; col++) {
                     const dayData = grid[row][col];
                     if (dayData) {
-                        html += `<div class="heatmap-day level-${dayData.level} ${dayData.hasVideos}" 
+                        html += `<div class="heatmap-day day-${dayData.code}${dayData.hasVideos}" 
                                       data-date="${dayData.dateKey}" 
                                       data-count="${dayData.count}"></div>`;
                     } else {
@@ -1641,30 +1724,36 @@
             return (year % 4 === 0 && year % 100 !== 0) || (year % 400 === 0);
         }
         
-        function getHeatLevel(count, maxCount) {
-            if (count === 0) return 0;
-            if (maxCount <= 1) return 1;
-            
-            const ratio = count / maxCount;
-            if (ratio <= 0.25) return 1;
-            if (ratio <= 0.5) return 2;
-            if (ratio <= 0.75) return 3;
-            return 4;
+        // 「现存 x · 已补档 y · 待补档 z」，仅自见只有真的存在时才追加，
+        // 免得几个数字加起来对不上当天/全站的投稿数
+        function formatStatusBreakdown(day) {
+            let text = `现存 ${day.available} · 已补档 ${day.backup} · 待补档 ${day.lost}`;
+            if (day.hidden) {
+                text += ` · 仅自见 ${day.hidden}`;
+            }
+            return text;
         }
-        
-        function createHeatmapStats(dailyData, maxCount) {
-            const totalVideos = Object.values(dailyData).reduce((sum, count) => sum + count, 0);
-            const activeDays = Object.values(dailyData).filter(count => count > 0).length;
-            const busiestCount = maxCount || 0;
 
+        function createHeatmapStats(dailyData) {
+            const days = Object.values(dailyData);
+            const activeDays = days.filter(day => day.count > 0).length;
+            const totals = days.reduce((acc, day) => {
+                acc.available += day.available;
+                acc.backup += day.backup;
+                acc.hidden += day.hidden;
+                acc.lost += day.lost;
+                return acc;
+            }, { available: 0, backup: 0, hidden: 0, lost: 0 });
+
+            const selected = currentDateFilter ? dailyData[currentDateFilter] : null;
             const filterInfo = currentDateFilter
-                ? `<div class="heatmap-stats-filter">当前筛选：${formatDisplayDate(currentDateFilter)} (${dailyData[currentDateFilter] || 0} 个视频) <a href="javascript:clearDateFilter()">清除筛选</a></div>`
+                ? `<div class="heatmap-stats-filter">当前筛选：${formatDisplayDate(currentDateFilter)} · ${selected ? selected.count : 0} 期（${selected ? formatStatusBreakdown(selected) : '无投稿'}） <a href="javascript:clearDateFilter()">清除筛选</a></div>`
                 : '<div class="heatmap-stats-hint">提示：点击任意有颜色的日期可筛选当天投稿</div>';
 
             return `
                 <div class="heatmap-stats">
-                    <strong>活跃统计：</strong>
-                    ${activeDays} 天有投稿，共 ${totalVideos} 个视频，最高单日 ${busiestCount} 个
+                    <strong>存续统计：</strong>
+                    ${activeDays} 天有投稿 · ${formatStatusBreakdown(totals)}
                     ${filterInfo}
                 </div>
             `;
@@ -1677,13 +1766,14 @@
             days.forEach(day => {
                 day.addEventListener('mouseenter', (e) => {
                     const date = e.target.getAttribute('data-date');
-                    const count = parseInt(e.target.getAttribute('data-count'));
-                    const formattedDate = formatDisplayDate(date);
-                    const hasVideos = count > 0;
+                    const dayData = heatmapDailyData[date];
+                    const count = dayData ? dayData.count : 0;
                     
-                    let tooltipText = `${formattedDate}<br>${count} 个视频`;
-                    if (hasVideos) {
-                        tooltipText += '<br><small>点击查看详情</small>';
+                    let tooltipText = count > 0
+                        ? `${date} · ${count} 期：${formatStatusBreakdown(dayData)}`
+                        : `${date} · 无投稿`;
+                    if (count > 0) {
+                        tooltipText += '<br><small>点击筛选当天投稿</small>';
                     }
                     
                     tooltip.innerHTML = tooltipText;
@@ -1770,7 +1860,7 @@
             if (!statsElement) {
                 return;
             }
-            statsElement.outerHTML = createHeatmapStats(heatmapDailyData, heatmapMaxCount);
+            statsElement.outerHTML = createHeatmapStats(heatmapDailyData);
         }
         
         function filterTableByDate() {
@@ -1801,8 +1891,8 @@
         let currentTagFilter = null;
         let currentDateFilter = null;
         
-        function createTagCloud(videos) {
-            const tagFrequency = calculateTagFrequency(videos);
+        function createTagCloud() {
+            const tagFrequency = calculateTagFrequency();
             const tagCloudElement = document.getElementById('tagCloud');
             
             if (tagFrequency.length === 0) {
@@ -1821,7 +1911,6 @@
                 return `<span class="cloud-tag size-${sizeLevel} heat-${heatLevel}" 
                               data-tag="${escapeHtml(tag)}" 
                               data-count="${count}"
-                              onclick="filterByTag('${escapeHtml(tag)}')"
                               title="${escapeHtml(tag)} (${count} 个视频)">
                             ${escapeHtml(tag)}
                         </span>`;
@@ -1832,28 +1921,121 @@
                     <strong>标签统计：</strong>共 ${tagFrequency.length} 个标签，
                     最热门：${tagFrequency[0].tag} (${tagFrequency[0].count} 次)，
                     最冷门：${tagFrequency[tagFrequency.length - 1].tag} (${tagFrequency[tagFrequency.length - 1].count} 次)
-                    ${currentTagFilter ? `<br><strong>当前筛选：</strong>${currentTagFilter} <a href="javascript:clearTagFilter()" style="color: var(--accent-color); text-decoration: none;">[清除筛选]</a>` : ''}
+                    ${currentTagFilter ? `<br><strong>当前筛选：</strong>${escapeHtml(currentTagFilter)} <a href="javascript:clearTagFilter()" style="color: var(--accent-color); text-decoration: none;">[清除筛选]</a>` : ''}
                 </div>
             `;
             
             tagCloudElement.innerHTML = tagElements + statsHtml;
         }
         
-        function calculateTagFrequency(videos) {
-            const tagCount = {};
-            
+        // ===== 标签归一化 =====
+        // canonical: 小写原始写法 -> 展示名；hidden: 频道通用标签，不进标签云
+        let tagAliases = { canonical: {}, hidden: [] };
+        let tagHiddenSet = new Set();      // 小写
+        let tagDisplayByLower = new Map(); // 小写 -> 展示名，隐藏标签为 null
+        let tagVariants = new Map();       // 展示名 -> Set(出现过的原始写法)
+        let tagVideoCount = new Map();     // 展示名 -> 含该标签的视频数
+
+        function setTagAliases(aliases) {
+            tagAliases = {
+                canonical: (aliases && aliases.canonical) || {},
+                hidden: (aliases && aliases.hidden) || []
+            };
+            tagHiddenSet = new Set(tagAliases.hidden.map(tag => String(tag).trim().toLowerCase()));
+        }
+
+        function normalizeTag(tag) {
+            const t = String(tag == null ? '' : tag).trim();
+            if (!t) return null;
+            const lower = t.toLowerCase();
+            if (tagHiddenSet.has(lower)) return null;
+            if (tagDisplayByLower.has(lower)) return tagDisplayByLower.get(lower);
+            return tagAliases.canonical[lower] || t;
+        }
+
+        // 预先统计全部原始标签：按小写分组，组内取别名表指定的写法，
+        // 没有别名就取出现次数最多的原始写法当展示名
+        function buildTagIndex(videos) {
+            const groups = new Map(); // 小写 -> Map(原始写法 -> 次数)
+
             videos.forEach(video => {
-                if (video.tags && Array.isArray(video.tags)) {
-                    video.tags.forEach(tag => {
-                        tagCount[tag] = (tagCount[tag] || 0) + 1;
-                    });
-                }
+                (video.tags || []).forEach(raw => {
+                    const t = String(raw).trim();
+                    if (!t) return;
+                    const lower = t.toLowerCase();
+                    if (!groups.has(lower)) groups.set(lower, new Map());
+                    const spellings = groups.get(lower);
+                    spellings.set(t, (spellings.get(t) || 0) + 1);
+                });
             });
-            
-            return Object.entries(tagCount)
+
+            tagDisplayByLower = new Map();
+            groups.forEach((spellings, lower) => {
+                if (tagHiddenSet.has(lower)) {
+                    tagDisplayByLower.set(lower, null);
+                    return;
+                }
+                const canonical = tagAliases.canonical[lower];
+                if (canonical) {
+                    tagDisplayByLower.set(lower, canonical);
+                    return;
+                }
+                let best = null;
+                let bestCount = -1;
+                spellings.forEach((count, spelling) => {
+                    if (count > bestCount) {
+                        best = spelling;
+                        bestCount = count;
+                    }
+                });
+                tagDisplayByLower.set(lower, best);
+            });
+
+            // 一个视频对同一个展示名只计一次：ns 和 switch 同时出现时不该算两个
+            tagVariants = new Map();
+            tagVideoCount = new Map();
+            videos.forEach(video => {
+                const names = new Set();
+                (video.tags || []).forEach(raw => {
+                    const t = String(raw).trim();
+                    const name = normalizeTag(t);
+                    if (!name) return;
+                    if (!tagVariants.has(name)) tagVariants.set(name, new Set());
+                    tagVariants.get(name).add(t);
+                    names.add(name);
+                });
+                names.forEach(name => tagVideoCount.set(name, (tagVideoCount.get(name) || 0) + 1));
+            });
+        }
+
+        function calculateTagFrequency() {
+            return Array.from(tagVideoCount.entries())
                 .map(([tag, count]) => ({ tag, count }))
                 .sort((a, b) => b.count - a.count)
                 .slice(0, 50);
+        }
+
+        function escapeRegex(text) {
+            return String(text).replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+        }
+
+        // 标签列里藏了一份完整原始标签（`| a | b |`），所以按竖线包住整个标签整词匹配，
+        // 把该展示名下的全部原始写法拼成一条 | 分支的正则
+        function tagFilterRegex(name) {
+            const variants = tagVariants.get(name);
+            const list = variants ? Array.from(variants) : [name];
+            const seen = new Set();
+            const alternatives = [];
+
+            list.forEach(variant => {
+                const key = variant.toLowerCase();
+                if (seen.has(key)) return; // DataTables 列筛选默认忽略大小写
+                seen.add(key);
+                alternatives.push(escapeRegex(variant));
+            });
+            alternatives.sort((a, b) => b.length - a.length);
+
+            return '\\|\\s*(?:' + alternatives.join('|') + ')\\s*\\|';
         }
         
         function calculateSizeLevel(count, minFreq, maxFreq) {
@@ -1870,7 +2052,15 @@
             return Math.max(1, Math.min(8, Math.ceil(ratio * 8)));
         }
         
+        function bindTagCloud() {
+            // 事件委托：标签名可能带引号/反斜杠，不适合塞进内联 onclick
+            $(document).on('click', '#tagCloud .cloud-tag', function () {
+                filterByTag(this.getAttribute('data-tag') || '');
+            });
+        }
+        
         function filterByTag(tag) {
+            if (!tag) return;
             currentTagFilter = currentTagFilter === tag ? null : tag;
             
             // 清除日期筛选
@@ -1917,11 +2107,10 @@
         function updateTagStats() {
             const statsElement = document.querySelector('.tag-stats');
             if (statsElement && currentTagFilter) {
-                const tagElement = document.querySelector(`[data-tag="${currentTagFilter}"]`);
-                const count = tagElement ? tagElement.getAttribute('data-count') : 0;
+                const count = tagVideoCount.get(currentTagFilter) || 0;
                 
                 const originalContent = statsElement.innerHTML.split('<br>')[0];
-                statsElement.innerHTML = `${originalContent}<br><strong>当前筛选：</strong>${currentTagFilter} (${count} 个视频) <a href="javascript:clearTagFilter()" style="color: var(--accent-color); text-decoration: none;">[清除筛选]</a>`;
+                statsElement.innerHTML = `${originalContent}<br><strong>当前筛选：</strong>${escapeHtml(currentTagFilter)} (${count} 个视频) <a href="javascript:clearTagFilter()" style="color: var(--accent-color); text-decoration: none;">[清除筛选]</a>`;
             }
         }
         
@@ -1941,7 +2130,7 @@
                 table.search('');
                 // 只在标签列（第3列，索引为3）进行搜索
                 table.columns().search(''); // 清除所有列的搜索
-                table.column(3).search(currentTagFilter, false, false).draw();
+                table.column(3).search(tagFilterRegex(currentTagFilter), true, false).draw();
             }
         }
         
