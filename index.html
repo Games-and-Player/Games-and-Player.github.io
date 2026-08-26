@@ -341,8 +341,12 @@
             justify-content: center;
             width: 32px;
             height: 32px;
+            padding: 0;
+            border: 0;
             border-radius: 50%;
+            background: none;
             color: var(--muted-color);
+            cursor: pointer;
             transition: background-color 0.2s ease, color 0.2s ease;
         }
 
@@ -536,7 +540,7 @@
             border-top: 1px solid var(--line);
         }
 
-        /* 表头不再用 Bootstrap 的 .thead-dark 深色块，改成台账式浅表头 */
+        /* 表头不用 Bootstrap 自带的深色块，改成台账式浅表头，两套主题一致 */
         #videosTable thead th {
             background: var(--surface);
             color: var(--ink-2);
@@ -1019,7 +1023,7 @@
     <div class="container-fluid">
         <!-- 头部 -->
         <div class="header">
-            <h1><svg class="icon"><use href="#i-gamepad"/></svg> 宋少弘（原游戏公民大会）视频投稿存档</h1>
+            <h1><svg class="icon" aria-hidden="true"><use href="#i-gamepad"/></svg> 宋少弘（原游戏公民大会）视频投稿存档</h1>
             <p>永不退场的闯关族</p>
         </div>
         
@@ -1060,12 +1064,14 @@
         <div class="chart-container collapsible">
             <div class="chart-header" onclick="toggleChart('tagcloud')">
                 <div class="header-content">
-                    <h3><svg class="icon"><use href="#i-tag"/></svg> 标签热力云</h3>
+                    <h3><svg class="icon" aria-hidden="true"><use href="#i-tag"/></svg> 标签热力云</h3>
                     <p>点击标签可筛选相关视频，标签大小表示使用频率</p>
                 </div>
-                <div class="collapse-btn">
-                    <svg class="icon" id="tagcloudToggle"><use href="#i-chevron-up"/></svg>
-                </div>
+                <button type="button" class="collapse-btn" id="tagcloudToggle"
+                        aria-expanded="true" aria-controls="tagCloud" aria-label="折叠或展开标签热力云"
+                        onclick="event.stopPropagation(); toggleChart('tagcloud')">
+                    <svg class="icon" aria-hidden="true"><use href="#i-chevron-up"/></svg>
+                </button>
             </div>
             <div class="chart-content">
                 <div class="tag-cloud" id="tagCloud">
@@ -1081,12 +1087,14 @@
         <div class="chart-container collapsible">
             <div class="chart-header" onclick="toggleChart('heatmap')">
                 <div class="header-content">
-                    <h3><svg class="icon"><use href="#i-calendar"/></svg> 失落日历</h3>
+                    <h3><svg class="icon" aria-hidden="true"><use href="#i-calendar"/></svg> 失落日历</h3>
                     <p>每格一天，颜色是当天投稿的存续状态；点击方块筛选当天投稿</p>
                 </div>
-                <div class="collapse-btn">
-                    <svg class="icon" id="heatmapToggle"><use href="#i-chevron-up"/></svg>
-                </div>
+                <button type="button" class="collapse-btn" id="heatmapToggle"
+                        aria-expanded="true" aria-controls="heatmapCalendar" aria-label="折叠或展开失落日历"
+                        onclick="event.stopPropagation(); toggleChart('heatmap')">
+                    <svg class="icon" aria-hidden="true"><use href="#i-chevron-up"/></svg>
+                </button>
             </div>
             <div class="chart-content">
                 <div id="heatmapCalendar" class="heatmap-container">
@@ -1112,9 +1120,8 @@
                 <strong>加载失败：</strong>请确保 db.json 文件在同一目录下。
             </div>
             
-            <div class="table-scroll">
             <table id="videosTable" class="table table-striped table-hover" style="display: none;">
-                <thead class="thead-dark">
+                <thead>
                     <tr>
                         <th>封面</th>
                         <th>标题</th>
@@ -1128,7 +1135,6 @@
                 </thead>
                 <tbody></tbody>
             </table>
-            </div>
         </div>
     </div>
     
@@ -1356,6 +1362,12 @@
                     } else {
                         requestAnimationFrame(initLazyLoading);
                     }
+                },
+                // 横向滚动容器只包 <table>：写死在 HTML 里的话，DataTables 会把
+                // 长度选择、搜索框、信息行和分页一起生成在滚动容器内部，窄屏上
+                // 这些控件会跟着表格一起滑出视口
+                initComplete: function () {
+                    $('#videosTable').wrap('<div class="table-scroll"></div>');
                 }
             });
         }
@@ -1516,12 +1528,18 @@
         }
 
         function flashCopied(btn, ok) {
-            const original = btn.innerHTML;
-            btn.innerHTML = ok ? '<svg class="icon"><use href="#i-check"/></svg> 已复制' : '<svg class="icon"><use href="#i-x"/></svg> 复制失败';
+            // 闪烁期间再点一次，原来会把「已复制」当成原始文案存下来，
+            // 恢复后按钮就永远停在「已复制」上；所以原始文案只在第一次存进
+            // data-label，并且闪烁中直接忽略重复触发
+            if (btn.dataset.flashing === '1') return;
+            if (!btn.dataset.label) btn.dataset.label = btn.innerHTML;
+            btn.dataset.flashing = '1';
+            btn.innerHTML = ok ? '<svg class="icon" aria-hidden="true"><use href="#i-check"/></svg> 已复制' : '<svg class="icon" aria-hidden="true"><use href="#i-x"/></svg> 复制失败';
             btn.classList.add(ok ? 'copied' : 'failed');
             setTimeout(() => {
-                btn.innerHTML = original;
+                btn.innerHTML = btn.dataset.label;
                 btn.classList.remove('copied', 'failed');
+                delete btn.dataset.flashing;
             }, 1500);
         }
 
@@ -1801,16 +1819,19 @@
             const daily = {};
             
             videos.forEach(video => {
-                let date;
-                if (video.created_timestamp) {
-                    date = new Date(video.created_timestamp * 1000);
-                } else if (video.created_at) {
-                    date = new Date(video.created_at);
+                // 日期键直接取 created_at 的前 10 位（数据里已经是投稿当天的日期）。
+                // 走 new Date(timestamp) 会按访客本地时区分桶，同一期投稿在不同时区
+                // 会落进不同的日格，也对不上日期筛选（筛的是第 4 列的 created_at 文本）
+                let dateKey;
+                if (video.created_at) {
+                    dateKey = String(video.created_at).slice(0, 10);
+                } else if (video.created_timestamp) {
+                    dateKey = formatDateKey(new Date(video.created_timestamp * 1000));
                 } else {
                     return;
                 }
-                
-                const dateKey = formatDateKey(date);
+                if (!/^\d{4}-\d{2}-\d{2}$/.test(dateKey)) return;
+
                 if (!daily[dateKey]) {
                     daily[dateKey] = { count: 0, available: 0, backup: 0, hidden: 0, lost: 0 };
                 }
@@ -2077,19 +2098,18 @@
             
             const table = $('#videosTable').DataTable();
             
+            // 只动列筛选，不碰 table.search()：全局搜索框里的关键词要和
+            // 日期筛选取交集，否则输入框还显示着关键词、结果却已经被悄悄放大
             if (currentDateFilter === null) {
-                // 清除所有列的搜索
-                table.search('').columns().search('').draw();
+                table.columns().search('').draw();
             } else {
                 // 搜索日期格式：2025-07-16 或 2025年7月16日
                 const [year, month, day] = currentDateFilter.split('-');
                 const searchDate = `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`;
                 const searchDateChinese = `${year}年${parseInt(month)}月${parseInt(day)}日`;
-                
-                // 清除全局搜索
-                table.search('');
+
+                table.columns().search(''); // 清除所有列的搜索（含标签列，标签与日期互斥）
                 // 只在时间列（第4列，索引为4）进行搜索
-                table.columns().search(''); // 清除所有列的搜索
                 table.column(4).search(`${searchDate}|${searchDateChinese}`, true, false).draw();
             }
         }
@@ -2328,14 +2348,12 @@
             
             const table = $('#videosTable').DataTable();
             
+            // 同 filterTableByDate：全局搜索框的关键词与标签筛选取交集
             if (currentTagFilter === null) {
-                // 清除所有列的搜索
-                table.search('').columns().search('').draw();
+                table.columns().search('').draw();
             } else {
-                // 清除全局搜索
-                table.search('');
+                table.columns().search(''); // 清除所有列的搜索（含时间列，标签与日期互斥）
                 // 只在标签列（第3列，索引为3）进行搜索
-                table.columns().search(''); // 清除所有列的搜索
                 table.column(3).search(tagFilterRegex(currentTagFilter), true, false).draw();
             }
         }
