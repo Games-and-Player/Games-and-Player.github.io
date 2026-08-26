@@ -67,7 +67,7 @@
                 --bg-rgb: 15, 21, 27;
                 --on-accent: #0F151B;
                 --ok: #20A392;
-                --backup: #8A66D2;
+                --backup: #977DDE;
                 --hidden: #8A96A3;
                 --lost: #E0665A;
                 --stripe: rgba(230, 235, 240, 0.035);
@@ -368,6 +368,7 @@
             padding-bottom: 0;
             pointer-events: none;
             visibility: hidden; /* 折叠后的可聚焦元素退出 Tab 序列 */
+            overflow: hidden;
         }
 
         .collapsible.collapsed .collapse-btn .icon {
@@ -640,27 +641,39 @@
             border-color: var(--line);
         }
 
-        .modal-content {
-            background-color: var(--surface);
-            color: var(--ink);
-            border: 1px solid var(--line);
+        /* ── 封面灯箱：对话框按图片宽度收窄，图下一条信息栏 ── */
+        .lightbox .modal-dialog { max-width: min(92vw, 1120px); margin: 1rem auto; transition: max-width 0.15s ease; }
+        .lightbox .modal-content { background: var(--surface); color: var(--ink); border: 1px solid var(--line); border-radius: 10px; overflow: hidden; }
+        .lightbox-stage { position: relative; background: #0b0f14; display: flex; align-items: center; justify-content: center; min-height: 160px; }
+        .lightbox-stage img { display: block; width: 100%; height: auto; max-height: 76vh; object-fit: contain; }
+        .lightbox-close { position: absolute; top: 10px; right: 10px; z-index: 2; width: 36px; height: 36px; padding: 0; border: 0; border-radius: 50%; background: rgba(0, 0, 0, 0.55); color: #fff; display: inline-flex; align-items: center; justify-content: center; font-size: 18px; cursor: pointer; }
+        .lightbox-close:hover, .lightbox-close:focus-visible { background: rgba(0, 0, 0, 0.85); }
+        .lightbox-error { display: none; padding: 48px 24px; text-align: center; color: #cbd5e1; }
+        .lightbox-error .icon { font-size: 2.4rem; margin-bottom: 10px; }
+        .lightbox-error p { margin: 0 0 4px; }
+        .lightbox-error small { color: #94a3b8; }
+        .lightbox-caption { display: flex; justify-content: space-between; align-items: flex-start; gap: 16px; padding: 14px 18px 16px; }
+        .lightbox-caption__main { min-width: 0; display: flex; flex-direction: column; gap: 6px; }
+        .lightbox-title { font-weight: 600; font-size: 1.02rem; line-height: 1.4; color: var(--ink); text-decoration: none; }
+        .lightbox-title:hover { color: var(--accent); text-decoration: none; }
+        .lightbox-meta { display: flex; flex-wrap: wrap; gap: 6px 14px; font-size: 0.8rem; color: var(--ink-3); }
+        .lightbox-meta span:empty { display: none; }
+        .lightbox-actions { display: flex; flex-wrap: wrap; gap: 8px; flex: none; justify-content: flex-end; max-width: 46%; }
+        .lightbox-actions .copy-btn { margin-top: 0; }
+        .lightbox-actions a.copy-btn { text-decoration: none; }
+        @media (max-width: 768px) {
+            .lightbox .modal-dialog { margin: 0.5rem; max-width: none; }
+            .lightbox-stage img { max-height: 60vh; }
+            .lightbox-caption { flex-direction: column; }
+            .lightbox-actions { max-width: none; justify-content: flex-start; }
         }
 
-        .modal-header,
-        .modal-footer {
-            border-color: var(--line);
-        }
-
-        /* 关闭按钮带着旧深色表头留下的 .text-white，在浅表头上会看不见 */
-        .modal-header .close,
-        .modal-header .close.text-white {
-            color: var(--ink) !important;
-            text-shadow: none;
-            opacity: 0.6;
-        }
-
-        .modal-header .close:hover {
-            opacity: 1;
+        /* 键盘焦点：新加的可聚焦元素统一用主色描边 */
+        .cloud-tag:focus-visible, .heatmap-day[tabindex]:focus-visible, .tag-more:focus-visible, .chip:focus-visible,
+        .copy-btn:focus-visible, .collapse-btn:focus-visible, .cover-container:focus-visible, .lightbox-close:focus-visible,
+        .btn-link-like:focus-visible {
+            outline: 2px solid var(--accent);
+            outline-offset: 2px;
         }
 
         .loading {
@@ -845,6 +858,7 @@
         .heatmap-day.day-ok { background: var(--ok); }
         .heatmap-day.day-backup { background: var(--backup); }
         .heatmap-day.day-lost { background: var(--lost); }
+        .heatmap-day.day-hidden { background: var(--hidden); }
         .heatmap-day.day-mixed { background: linear-gradient(135deg, var(--ok) 50%, var(--lost) 50%); }
 
         .heatmap-day.selected {
@@ -1139,25 +1153,25 @@
     </div>
     
     <!-- 图片放大模态框 -->
-    <div class="modal fade" id="imageModal" tabindex="-1">
-        <div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal fade lightbox" id="imageModal" tabindex="-1" aria-labelledby="lightboxTitle">
+        <div class="modal-dialog modal-dialog-centered" id="lightboxDialog">
             <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">视频封面</h5>
-                    <button type="button" class="close text-white" data-dismiss="modal">
-                        <span>&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body text-center">
-                    <img id="modalImage" src="" alt="视频封面" 
-                         style="max-width: 100%; max-height: 70vh; border-radius: 10px;"
-                         referrerpolicy="no-referrer" crossorigin="anonymous"
-                         onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
-                    <div style="display: none; padding: 50px; color: var(--ink-2);">
-                        <svg class="icon" aria-hidden="true" style="font-size: 3rem; margin-bottom: 15px;"><use href="#i-image-off"/></svg>
-                        <p>图片加载失败</p>
-                        <small style="color: var(--ink-3);">正在尝试多种加载方式，如果仍然失败可能是网络问题</small>
+                <button type="button" class="lightbox-close" data-dismiss="modal" aria-label="关闭"><svg class="icon" aria-hidden="true"><use href="#i-x"/></svg></button>
+                <div class="lightbox-stage">
+                    <img id="modalImage" alt="视频封面" referrerpolicy="no-referrer" crossorigin="anonymous">
+                    <div class="lightbox-error" id="lightboxError">
+                        <svg class="icon" aria-hidden="true"><use href="#i-image-off"/></svg>
+                        <p>封面加载失败</p>
+                        <small>本地镜像和 B站 图床都没有拿到这张图</small>
                     </div>
+                </div>
+                <div class="lightbox-caption">
+                    <div class="lightbox-caption__main">
+                        <a id="lightboxTitle" class="lightbox-title" href="#" target="_blank" rel="noopener" title="在B站打开"></a>
+                        <div class="lightbox-meta"><span id="lightboxDate" class="num"></span><span id="lightboxDuration" class="num"></span><span id="lightboxAid" class="id"></span></div>
+                        <div id="lightboxStatus"></div>
+                    </div>
+                    <div class="lightbox-actions" id="lightboxActions"></div>
                 </div>
             </div>
         </div>
@@ -1296,7 +1310,7 @@
             $('#statTotal').text(videos.length.toLocaleString());
             $('#statAvailable').text(counts.available.toLocaleString());
             $('#statDeleted').text(deleted.toLocaleString());
-            $('#statDeletedNote').text(`其中仅自见 ${counts.hidden}`);
+            $('#statDeletedNote').text(counts.hidden ? `其中仅自见 ${counts.hidden}` : '');
             $('#statBackup').text(counts.backup.toLocaleString());
             $('#statPending').text(pending.toLocaleString());
             $('#statRecheck').text((metadata && metadata.last_recheck) || '—');
@@ -1316,7 +1330,7 @@
                 ['survival__lost', '待补档', counts.lost]
             ];
 
-            bar.innerHTML = parts.map(([cls, , count]) => `<span class="${cls}" style="flex:${count}"></span>`).join('');
+            bar.innerHTML = parts.filter(([, , count]) => count > 0).map(([cls, , count]) => `<span class="${cls}" style="flex:${count}"></span>`).join('');
             bar.setAttribute('aria-label', parts.map(([, label, count]) => `${label} ${count}`).join('，'));
             legend.textContent = parts.map(([, label, count]) => `${label} ${count}`).join(' · ');
         }
@@ -1385,7 +1399,7 @@
 
             // 点击放大走委托事件：容器只带 aid，封面地址由 bindRowEvents() 回查
             // window.videosData，URL 不再拼进内联 onclick 字符串
-            return `<div class="cover-container" data-aid="${aid}">
+            return `<div class="cover-container" data-aid="${aid}" role="button" tabindex="0" aria-label="查看封面大图">
                         <img class="video-cover lazy-image"
                              data-src="${thumbSrc}"
                              data-fallback="${localUrl ? fullUrl : ''}"
@@ -1399,14 +1413,10 @@
                     </div>`;
         }
         
-        function formatTitle(video) {
-            const title = video.title;
-            if (!title) return '<span class="text-muted">无标题</span>';
-
-            const status = statusOf(video);
+        // 状态章：表格标题列与灯箱共用同一份渲染
+        function stampHtml(video, status) {
+            status = status || statusOf(video);
             const label = escapeHtml(STATUS_LABEL[status]);
-            const bilibiliUrl = `https://www.bilibili.com/video/av${video.aid}`;
-
             let stampAttrs = '';
             let stampBody = label;
             if (status === 'backup') {
@@ -1415,7 +1425,23 @@
             } else if (status === 'lost' && video.reupload_dead_at) {
                 stampAttrs = ` title="补档 av${video.reupload_aid} 已于 ${escapeHtml(video.reupload_dead_at)} 发现不可见"`;
             }
-            const stamp = `<span class="stamp stamp--${status}"${stampAttrs}><i></i>${stampBody}</span>`;
+            return `<span class="stamp stamp--${status}"${stampAttrs}><i></i>${stampBody}</span>`;
+        }
+
+        function formatDuration(seconds) {
+            const s = Math.max(0, Math.round(seconds));
+            const h = Math.floor(s / 3600), m = Math.floor((s % 3600) / 60), r = s % 60;
+            const mm = String(m).padStart(h ? 2 : 1, '0'), ss = String(r).padStart(2, '0');
+            return h ? `${h}:${mm}:${ss}` : `${mm}:${ss}`;
+        }
+
+        function formatTitle(video) {
+            const title = video.title;
+            if (!title) return '<span class="text-muted">无标题</span>';
+
+            const status = statusOf(video);
+            const bilibiliUrl = `https://www.bilibili.com/video/av${video.aid}`;
+            const stamp = stampHtml(video, status);
 
             return `<div class="video-title${status === 'available' ? '' : ' unavailable'}">
                         <a href="${bilibiliUrl}" target="_blank" title="在B站打开">${escapeHtml(title)}</a>${stamp}
@@ -1433,7 +1459,7 @@
                          title="点击展开或收起描述">
                         ${safeDescWithBreaks}
                     </div>
-                    <button type="button" class="copy-btn" onclick="copyField(${aid}, 'desc', this)" title="复制完整简介"><svg class="icon" aria-hidden="true"><use href="#i-copy"/></svg> 复制简介</button>`;
+                    <button type="button" class="copy-btn" data-copy="desc" data-aid="${aid}" title="复制完整简介"><svg class="icon" aria-hidden="true"><use href="#i-copy"/></svg> 复制简介</button>`;
         }
         
         function appendMosaicCovers() {
@@ -1483,7 +1509,7 @@
                         ${tags.length > 3 ? tagMoreButton(`+${tags.length - 3}`) : ''}
                     </div>
                     <span class="sr-only tags-all" aria-hidden="true">${allTagsText}</span>
-                    <button type="button" class="copy-btn" onclick="copyField(${aid}, 'tags', this)" title="复制全部标签，以 | 分隔"><svg class="icon" aria-hidden="true"><use href="#i-copy"/></svg> 复制标签</button>`;
+                    <button type="button" class="copy-btn" data-copy="tags" data-aid="${aid}" title="复制全部标签，以 | 分隔"><svg class="icon" aria-hidden="true"><use href="#i-copy"/></svg> 复制标签</button>`;
         }
 
         function tagMoreButton(label) {
@@ -1501,7 +1527,7 @@
         }
         
         function copyField(aid, field, btn) {
-            const video = (window.videosData || []).find(v => v.aid === aid);
+            const video = videoByAid(aid);
             if (!video) return;
             const text = field === 'tags' ? (video.tags || []).join(' | ') : (video.desc || '');
             copyText(text).then(ok => flashCopied(btn, ok));
@@ -1550,32 +1576,59 @@
             element.setAttribute('title', expanded ? '点击收起描述' : '点击展开描述');
         }
 
-        function showImageModal(imageUrl, localUrl) {
+        function showImageModal(video) {
             const modalImage = document.getElementById('modalImage');
-            const errorDiv = modalImage.nextElementSibling;
+            const errorDiv = document.getElementById('lightboxError');
+            const dialog = document.getElementById('lightboxDialog');
+            const cover = video.cover || '';
+            const fullUrl = cover.startsWith('//') ? 'https:' + cover : cover;
+            const localUrl = video.cover_local || '';
 
             // 重置状态
             modalImage.style.display = 'block';
+            modalImage.removeAttribute('src');
             errorDiv.style.display = 'none';
-            modalImage.src = '';
+            dialog.style.maxWidth = '';
+            modalImage.onload = function () {
+                // 对话框按图片实际宽度收窄：本地 480px 镜像最多放大到 640px，原图最多 1120px
+                const natural = modalImage.naturalWidth || 0;
+                if (natural) dialog.style.maxWidth = Math.min(Math.max(natural, 640), 1120) + 'px';
+            };
 
-            // 显示模态框
+            renderLightboxCaption(video);
             $('#imageModal').modal('show');
 
             // 监听模态框关闭事件，清除焦点
             $('#imageModal').off('hidden.bs.modal.focus').on('hidden.bs.modal.focus', function() {
-                // 移除焦点，避免 aria-hidden 警告
                 if (document.activeElement && document.activeElement.blur) {
                     document.activeElement.blur();
                 }
             });
 
-            // 延迟设置图片源，确保模态框已经显示
+            // 大图优先 B站 原图（更清晰，只在点开时才请求），拿不到再用本地 480px 镜像
             setTimeout(() => {
-                // 依次尝试：本地镜像封面（同源，无第三方请求）→ hdslb 原图；
-                // 不再经过任何第三方图片代理服务
-                tryLoadImage(modalImage, [localUrl, imageUrl], errorDiv);
+                tryLoadImage(modalImage, [fullUrl, localUrl], errorDiv);
             }, 100);
+        }
+
+        function renderLightboxCaption(video) {
+            const status = statusOf(video);
+            const title = document.getElementById('lightboxTitle');
+            title.textContent = video.title || '无标题';
+            title.href = `https://www.bilibili.com/video/av${video.aid}`;
+            document.getElementById('lightboxDate').textContent = (video.created_at || '').slice(0, 16);
+            document.getElementById('lightboxDuration').textContent = video.duration ? formatDuration(video.duration) : '';
+            document.getElementById('lightboxAid').textContent = `AV${video.aid}${video.bvid ? ' · ' + video.bvid : ''}`;
+            document.getElementById('lightboxStatus').innerHTML = stampHtml(video, status);
+
+            const aid = video.aid;
+            let actions = `<a class="copy-btn" href="https://www.bilibili.com/video/av${aid}" target="_blank" rel="noopener">在 B站 打开</a>`;
+            if (status === 'backup') {
+                actions += `<a class="copy-btn" href="https://www.bilibili.com/video/av${video.reupload_aid}" target="_blank" rel="noopener">查看补档</a>`;
+            }
+            actions += `<button type="button" class="copy-btn" data-copy="desc" data-aid="${aid}" title="复制完整简介"><svg class="icon" aria-hidden="true"><use href="#i-copy"/></svg> 复制简介</button>`;
+            actions += `<button type="button" class="copy-btn" data-copy="tags" data-aid="${aid}" title="复制全部标签，以 | 分隔"><svg class="icon" aria-hidden="true"><use href="#i-copy"/></svg> 复制标签</button>`;
+            document.getElementById('lightboxActions').innerHTML = actions;
         }
 
         function tryLoadImage(imgElement, urls, errorDiv) {
@@ -1665,8 +1718,7 @@
             const openCover = container => {
                 const video = videoByAid(container.dataset.aid);
                 if (!video || !video.cover) return;
-                const fullUrl = video.cover.startsWith('//') ? 'https:' + video.cover : video.cover;
-                showImageModal(fullUrl, video.cover_local || '');
+                showImageModal(video);
             };
 
             $(document).on('click', '#videosTable .tag-more', function () {
@@ -1679,6 +1731,15 @@
             });
             $(document).on('click', '#videosTable .cover-container', function () {
                 openCover(this);
+            });
+            $(document).on('keydown', '#videosTable .cover-container', function (e) {
+                if (!isActivationKey(e)) return;
+                e.preventDefault();
+                openCover(this);
+            });
+            // 复制按钮（表格行 + 灯箱）统一委托，不再内联 onclick
+            $(document).on('click', '.copy-btn[data-copy]', function () {
+                copyField(Number(this.dataset.aid), this.dataset.copy, this);
             });
         }
 
@@ -1831,6 +1892,8 @@
             }
 
             renderHeatmapCalendar();
+            const toggleBtn = document.querySelector('.heatmap-years-toggle button');
+            if (toggleBtn) toggleBtn.focus();
         }
         
         function renderHeatmapCalendar() {
@@ -1901,6 +1964,7 @@
             if (!day || day.count === 0) return 'none';
             if (day.available === day.count) return 'ok';
             if (day.backup > 0) return 'backup';
+            if (day.available === 0 && day.lost === 0 && day.hidden > 0) return 'hidden';
             if (day.available === 0) return 'lost';
             return 'mixed';
         }
@@ -1924,7 +1988,7 @@
             ['none', '无投稿'],
             ['ok', '全部现存'],
             ['backup', '含已补档'],
-            ['lost', '全部待补档'],
+            ['lost', '全部待补档'], ['hidden', '仅自见'],
             ['mixed', '部分失落']
         ];
         
