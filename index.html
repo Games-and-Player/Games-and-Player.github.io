@@ -367,6 +367,7 @@
             padding-top: 0;
             padding-bottom: 0;
             pointer-events: none;
+            visibility: hidden; /* 折叠后的可聚焦元素退出 Tab 序列 */
         }
 
         .collapsible.collapsed .collapse-btn .icon {
@@ -1075,7 +1076,7 @@
             <div class="chart-content">
                 <div class="tag-cloud" id="tagCloud">
                     <div class="tag-cloud-loading">
-                        <svg class="icon spin"><use href="#i-spinner"/></svg>
+                        <svg class="icon spin" aria-hidden="true"><use href="#i-spinner"/></svg>
                         <span>正在生成标签云...</span>
                     </div>
                 </div>
@@ -1098,7 +1099,7 @@
             <div class="chart-content">
                 <div id="heatmapCalendar" class="heatmap-container">
                     <div class="heatmap-loading">
-                        <svg class="icon spin"><use href="#i-spinner"/></svg>
+                        <svg class="icon spin" aria-hidden="true"><use href="#i-spinner"/></svg>
                         <span>正在生成失落日历...</span>
                     </div>
                 </div>
@@ -1110,12 +1111,12 @@
             <div class="status-chips" id="statusChips"></div>
 
             <div class="loading" id="loading">
-                <svg class="icon"><use href="#i-spinner"/></svg>
+                <svg class="icon" aria-hidden="true"><use href="#i-spinner"/></svg>
                 <div>正在加载视频数据...</div>
             </div>
             
             <div id="errorMessage" class="error" style="display: none;">
-                <svg class="icon"><use href="#i-alert"/></svg>
+                <svg class="icon" aria-hidden="true"><use href="#i-alert"/></svg>
                 <strong>加载失败：</strong>请确保 db.json 文件在同一目录下。
             </div>
             
@@ -1153,7 +1154,7 @@
                          referrerpolicy="no-referrer" crossorigin="anonymous"
                          onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
                     <div style="display: none; padding: 50px; color: var(--ink-2);">
-                        <svg class="icon" style="font-size: 3rem; margin-bottom: 15px;"><use href="#i-image-off"/></svg>
+                        <svg class="icon" aria-hidden="true" style="font-size: 3rem; margin-bottom: 15px;"><use href="#i-image-off"/></svg>
                         <p>图片加载失败</p>
                         <small style="color: var(--ink-3);">正在尝试多种加载方式，如果仍然失败可能是网络问题</small>
                     </div>
@@ -1393,7 +1394,7 @@
                              crossorigin="anonymous"
                              style="opacity: 0; pointer-events: none;">
                         <div class="cover-placeholder">
-                            <svg class="icon"><use href="#i-image"/></svg>
+                            <svg class="icon" aria-hidden="true"><use href="#i-image"/></svg>
                         </div>
                     </div>`;
         }
@@ -1658,7 +1659,8 @@
                 const container = element.closest('.tags-container');
                 if (!container) return;
                 const video = videoByAid(container.dataset.aid);
-                showAllTags(element, (video && video.tags) || []);
+                if (!video) return;
+                showAllTags(element, video.tags || []);
             };
             const openCover = container => {
                 const video = videoByAid(container.dataset.aid);
@@ -1720,7 +1722,7 @@
                 }
                 img.style.display = 'none';
                 if (placeholder) {
-                    placeholder.innerHTML = '<svg class="icon"><use href="#i-image-off"/></svg>';
+                    placeholder.innerHTML = '<svg class="icon" aria-hidden="true"><use href="#i-image-off"/></svg>';
                     placeholder.classList.remove('lazy-loading');
                 }
             };
@@ -1986,7 +1988,7 @@
                     const dayData = grid[row][col];
                     if (dayData) {
                         // 只有有投稿的日格能点，也就只有它们进 Tab 序列
-                        const focusable = dayData.count > 0 ? ' role="button" tabindex="0"' : '';
+                        const focusable = dayData.count > 0 ? ` role="button" tabindex="0" aria-label="${dayData.dateKey} · ${dayData.count} 期"` : '';
                         html += `<div class="heatmap-day day-${dayData.code}${dayData.hasVideos}" 
                                       data-date="${dayData.dateKey}" 
                                       data-count="${dayData.count}"${focusable}></div>`;
