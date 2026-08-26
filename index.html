@@ -42,12 +42,14 @@
             min-height: 100vh;
             margin: 0;
             padding: 32px 0;
+            overflow-x: hidden;
         }
 
         .container-fluid {
             max-width: 1120px;
             margin: 0 auto;
             padding: 0 24px;
+            overflow-x: hidden;
         }
 
         .background-mosaic {
@@ -189,6 +191,13 @@
             border-radius: 12px;
             padding: 24px;
             margin-bottom: 32px;
+        }
+
+        /* 表格自身滚动：DataTables 渲染后表格宽度由列宽撑开，
+           容器负责横向滚动，避免页面整体横向溢出 */
+        .table-scroll {
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
         }
 
         .status-chips {
@@ -701,8 +710,34 @@
                 padding: 20px;
             }
 
+            .header h1 {
+                font-size: 1.4rem;
+            }
+
             .stats-cards {
-                grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .cover-container {
+                width: 64px;
+                height: 40px;
+            }
+
+            .video-title {
+                max-width: 200px;
+            }
+
+            .video-desc,
+            .tags-container {
+                max-width: 180px;
+            }
+
+            /* flex-wrap: nowrap 覆盖基础 .status-chips 的 wrap，
+               让筛选 chips 挤成一行、靠 overflow-x 横向滑动，而不是换行 */
+            .status-chips {
+                flex-wrap: nowrap;
+                overflow-x: auto;
+                white-space: nowrap;
             }
         }
         .icon { width: 1em; height: 1em; vertical-align: -0.125em; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
@@ -834,6 +869,7 @@
                 <strong>加载失败：</strong>请确保 db.json 文件在同一目录下。
             </div>
             
+            <div class="table-scroll">
             <table id="videosTable" class="table table-striped table-hover" style="display: none;">
                 <thead class="thead-dark">
                     <tr>
@@ -849,6 +885,7 @@
                 </thead>
                 <tbody></tbody>
             </table>
+            </div>
         </div>
     </div>
     
@@ -1025,7 +1062,7 @@
         
         function initializeTable(videos) {
             const tableData = videos.map(video => [
-                formatCover(video.cover),
+                formatCover(video.cover, video.cover_local),
                 formatTitle(video),
                 formatDescription(video.desc, video.aid),
                 formatTags(video.tags, video.aid),
@@ -1051,7 +1088,7 @@
                     { width: "200px", targets: 2 }, // 描述列宽度
                     { width: "200px", targets: 3 }, // 标签列宽度
                     { width: "120px", targets: 4 }, // 时间列宽度
-                    { className: "number-cell", targets: [5, 6] }, // AID和CID右对齐
+                    { className: "number-cell d-none d-lg-table-cell", targets: [5, 6] }, // AID和CID右对齐，窄屏隐藏
                     { targets: 7, visible: false, searchable: false } // 状态键，仅供 chips 筛选
                 ],
                 order: [[4, 'desc']], // 默认按时间降序排列
@@ -1070,23 +1107,26 @@
             });
         }
         
-        function formatCover(coverUrl) {
+        function formatCover(coverUrl, coverLocal) {
             if (!coverUrl) return '<span class="text-muted">无封面</span>';
-            
+
             // 处理相对路径
             const fullUrl = coverUrl.startsWith('//') ? 'https:' + coverUrl : coverUrl;
-            
+            const localUrl = coverLocal || '';
+            // 表格缩略图优先用本地镜像封面（同源、无第三方请求），没有的话才回退到 hdslb 原图
+            const thumbSrc = localUrl || fullUrl;
+
             // 添加点击事件来显示大图
             return `<div class="cover-container">
-                        <img class="video-cover lazy-image" 
-                             data-src="${fullUrl}" 
-                             alt="视频封面" 
-                             referrerpolicy="no-referrer" 
+                        <img class="video-cover lazy-image"
+                             data-src="${thumbSrc}"
+                             alt="视频封面"
+                             referrerpolicy="no-referrer"
                              crossorigin="anonymous"
                              style="opacity: 0; pointer-events: none;"
-                             onclick="showImageModal('${fullUrl}')"
+                             onclick="showImageModal('${fullUrl}', '${localUrl}')"
                              onerror="this.style.display='none'; this.nextElementSibling.style.display='inline';">
-                        <div class="cover-placeholder" onclick="showImageModal('${fullUrl}')">
+                        <div class="cover-placeholder" onclick="showImageModal('${fullUrl}', '${localUrl}')">
                             <svg class="icon"><use href="#i-image"/></svg>
                         </div>
                         <span style="display:none" class="text-muted">加载失败</span>
@@ -1227,18 +1267,18 @@
             element.setAttribute('title', expanded ? '点击收起描述' : '点击展开描述');
         }
 
-        function showImageModal(imageUrl) {
+        function showImageModal(imageUrl, localUrl) {
             const modalImage = document.getElementById('modalImage');
             const errorDiv = modalImage.nextElementSibling;
-            
+
             // 重置状态
             modalImage.style.display = 'block';
             errorDiv.style.display = 'none';
             modalImage.src = '';
-            
+
             // 显示模态框
             $('#imageModal').modal('show');
-            
+
             // 监听模态框关闭事件，清除焦点
             $('#imageModal').off('hidden.bs.modal.focus').on('hidden.bs.modal.focus', function() {
                 // 移除焦点，避免 aria-hidden 警告
@@ -1246,55 +1286,50 @@
                     document.activeElement.blur();
                 }
             });
-            
+
             // 延迟设置图片源，确保模态框已经显示
             setTimeout(() => {
-                // 尝试多种加载方式
-                tryLoadImage(modalImage, imageUrl, errorDiv);
+                // 依次尝试：本地镜像封面（同源，无第三方请求）→ hdslb 原图；
+                // 不再经过任何第三方图片代理服务
+                tryLoadImage(modalImage, [localUrl, imageUrl], errorDiv);
             }, 100);
         }
-        
-        function tryLoadImage(imgElement, originalUrl, errorDiv) {
+
+        function tryLoadImage(imgElement, urls, errorDiv) {
+            const candidates = (urls || []).filter(Boolean);
             let currentAttempt = 0;
-            const loadMethods = [
-                // 方法1: 直接加载
-                () => originalUrl,
-                // 方法2: 使用 images.weserv.nl 代理
-                () => `https://images.weserv.nl/?url=${encodeURIComponent(originalUrl.replace(/^https?:\/\//, ''))}`,
-                // 方法3: 使用 proxy.cors.sh 代理
-                () => `https://proxy.cors.sh/${originalUrl}`,
-                // 方法4: 强制 https
-                () => originalUrl.replace(/^http:/, 'https:')
-            ];
-            
+
             function attemptLoad() {
-                if (currentAttempt >= loadMethods.length) {
-                    // 所有方法都失败了
+                if (currentAttempt >= candidates.length) {
+                    // 所有候选地址都失败了
                     imgElement.style.display = 'none';
                     errorDiv.style.display = 'block';
                     return;
                 }
-                
-                const url = loadMethods[currentAttempt]();
+
+                const url = candidates[currentAttempt];
                 console.log(`尝试加载方法 ${currentAttempt + 1}: ${url}`);
-                
+
                 // 创建新的图片元素进行测试
                 const testImg = new Image();
                 testImg.crossOrigin = 'anonymous';
-                
+                // hdslb 对带 Referer 的跨站请求会返回 403，必须与 #modalImage 的
+                // referrerpolicy="no-referrer" 保持一致，否则 hdslb 候选永远测试失败
+                testImg.referrerPolicy = 'no-referrer';
+
                 testImg.onload = function() {
                     console.log(`方法 ${currentAttempt + 1} 成功`);
                     imgElement.src = url;
                     imgElement.style.display = 'block';
                     errorDiv.style.display = 'none';
                 };
-                
+
                 testImg.onerror = function() {
                     console.log(`方法 ${currentAttempt + 1} 失败，尝试下一种方法`);
                     currentAttempt++;
                     setTimeout(attemptLoad, 500); // 延迟500ms后尝试下一种方法
                 };
-                
+
                 // 设置5秒超时
                 setTimeout(() => {
                     if (!testImg.complete) {
@@ -1302,10 +1337,10 @@
                         testImg.onerror();
                     }
                 }, 5000);
-                
+
                 testImg.src = url;
             }
-            
+
             attemptLoad();
         }
         
