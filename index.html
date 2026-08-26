@@ -1919,8 +1919,8 @@
             const statsHtml = `
                 <div class="tag-stats">
                     <strong>标签统计：</strong>共 ${tagFrequency.length} 个标签，
-                    最热门：${tagFrequency[0].tag} (${tagFrequency[0].count} 次)，
-                    最冷门：${tagFrequency[tagFrequency.length - 1].tag} (${tagFrequency[tagFrequency.length - 1].count} 次)
+                    最热门：${escapeHtml(tagFrequency[0].tag)} (${tagFrequency[0].count} 个视频)，
+                    最冷门：${escapeHtml(tagFrequency[tagFrequency.length - 1].tag)} (${tagFrequency[tagFrequency.length - 1].count} 个视频)
                     ${currentTagFilter ? `<br><strong>当前筛选：</strong>${escapeHtml(currentTagFilter)} <a href="javascript:clearTagFilter()" style="color: var(--accent-color); text-decoration: none;">[清除筛选]</a>` : ''}
                 </div>
             `;
