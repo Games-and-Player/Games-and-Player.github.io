@@ -231,11 +231,27 @@ class BilibiliAPI:
             for key, value in temp_cookie.items():
                 self.session.cookies.set(key, value, domain=".bilibili.com")
 
-            if self.get_user_info():
+            if self._nav_logged_in():
                 self.logger.info("使用 cookie 登录成功")
                 return True
         except Exception as e:
             self.logger.error(f"设置 cookie 失败：{e}")
+        return False
+
+    def _nav_logged_in(self, attempts: int = 3) -> bool:
+        """用 nav 接口确认登录态。比 wbi 的 acc/info 稳定；风控/网络抖动时重试，明确未登录（-101）不重试。"""
+        url = "https://api.bilibili.com/x/web-interface/nav"
+        for attempt in range(attempts):
+            response = self._request("get", url, headers=self.api_headers)
+            data = (response or {}).get("data") or {}
+            if response and response.get("code") == 0 and data.get("isLogin"):
+                self.user_info.nickname = data.get("uname", "")
+                self.logger.info(f"{self.user_info.nickname}(UID={data.get('mid')}) 已登录")
+                return True
+            if response and response.get("code") == -101:
+                return False
+            self.logger.warning(f"nav 登录态检查失败（尝试 {attempt + 1}/{attempts}）：{(response or {}).get('code')}")
+            time.sleep(1 + attempt)
         return False
 
     def login_with_qrcode(self, cookie_file: Optional[str] = None) -> bool:
