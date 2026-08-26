@@ -6,10 +6,17 @@
     <title>宋少弘（原游戏公民大会）视频投稿存档</title>
     <link rel="icon" type="image/png" href="favicon.png">
 
+    <meta name="description" content="宋少弘（原游戏公民大会）B站投稿存档：收录 2016 年至今的全部投稿，包括已删除视频的标题、简介、标签与补档信息，每日自动更新。">
+    <link rel="canonical" href="https://games-and-player.github.io/">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="宋少弘（原游戏公民大会）视频投稿存档">
+    <meta property="og:description" content="收录 2016 年至今的全部投稿，包括已删除视频的标题、简介、标签与补档信息。">
+    <meta property="og:url" content="https://games-and-player.github.io/">
+    <meta property="og:image" content="https://games-and-player.github.io/favicon.png">
+
     <!-- DataTables CSS -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/datatables/1.10.21/css/dataTables.bootstrap4.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.0/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="static/vendor/dataTables.bootstrap4-1.10.21.min.css">
+    <link rel="stylesheet" href="static/vendor/bootstrap-4.6.0.min.css">
     
     <style>
         :root {
@@ -246,7 +253,7 @@
             pointer-events: none;
         }
 
-        .collapsible.collapsed .collapse-btn i {
+        .collapsible.collapsed .collapse-btn .icon {
             transform: rotate(180deg);
         }
 
@@ -388,7 +395,7 @@
             color: var(--muted-color);
         }
 
-        .loading i {
+        .loading .icon {
             font-size: 2.5rem;
             margin-bottom: 12px;
         }
@@ -417,7 +424,7 @@
             color: var(--muted-color);
         }
 
-        .tag-cloud-loading i {
+        .tag-cloud-loading .icon {
             font-size: 1.6rem;
         }
 
@@ -631,9 +638,26 @@
                 grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
             }
         }
+        .icon { width: 1em; height: 1em; vertical-align: -0.125em; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+        .icon.spin { animation: spin 1s linear infinite; }
+        @keyframes spin { to { transform: rotate(360deg); } }
+
     </style>
 </head>
 <body>
+    <svg xmlns="http://www.w3.org/2000/svg" style="display:none">
+      <symbol id="i-gamepad" viewBox="0 0 24 24"><line x1="6" y1="12" x2="10" y2="12"/><line x1="8" y1="10" x2="8" y2="14"/><line x1="15" y1="13" x2="15.01" y2="13"/><line x1="18" y1="11" x2="18.01" y2="11"/><rect x="2" y="6" width="20" height="12" rx="2"/></symbol>
+      <symbol id="i-tag" viewBox="0 0 24 24"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></symbol>
+      <symbol id="i-calendar" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></symbol>
+      <symbol id="i-spinner" viewBox="0 0 24 24"><path d="M21 12a9 9 0 1 1-6.219-8.56"/></symbol>
+      <symbol id="i-image" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></symbol>
+      <symbol id="i-image-off" viewBox="0 0 24 24"><line x1="2" y1="2" x2="22" y2="22"/><path d="M10.41 10.41a2 2 0 1 1-2.83-2.83"/><line x1="13.5" y1="13.5" x2="6" y2="21"/><line x1="18" y1="12" x2="21" y2="15"/><path d="M3.59 3.59A2 2 0 0 0 3 5v14a2 2 0 0 0 2 2h14c.55 0 1.05-.22 1.41-.59"/><path d="M21 15V5a2 2 0 0 0-2-2H9"/></symbol>
+      <symbol id="i-chevron-up" viewBox="0 0 24 24"><polyline points="18 15 12 9 6 15"/></symbol>
+      <symbol id="i-alert" viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></symbol>
+      <symbol id="i-copy" viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></symbol>
+      <symbol id="i-check" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></symbol>
+      <symbol id="i-x" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></symbol>
+    </svg>
     <div class="background-mosaic">
         <div class="mosaic-tile"></div>
         <div class="mosaic-tile"></div>
@@ -650,7 +674,7 @@
     <div class="container-fluid">
         <!-- 头部 -->
         <div class="header">
-            <h1><i class="fas fa-gamepad"></i> 宋少弘（原游戏公民大会）视频投稿存档</h1>
+            <h1><svg class="icon"><use href="#i-gamepad"/></svg> 宋少弘（原游戏公民大会）视频投稿存档</h1>
             <p>永不退场的闯关族</p>
         </div>
         
@@ -683,17 +707,17 @@
         <div class="chart-container collapsible">
             <div class="chart-header" onclick="toggleChart('tagcloud')">
                 <div class="header-content">
-                    <h3><i class="fas fa-tags"></i> 标签热力云</h3>
+                    <h3><svg class="icon"><use href="#i-tag"/></svg> 标签热力云</h3>
                     <p>点击标签可筛选相关视频，标签大小表示使用频率</p>
                 </div>
                 <div class="collapse-btn">
-                    <i class="fas fa-chevron-up" id="tagcloudToggle"></i>
+                    <svg class="icon" id="tagcloudToggle"><use href="#i-chevron-up"/></svg>
                 </div>
             </div>
             <div class="chart-content">
                 <div class="tag-cloud" id="tagCloud">
                     <div class="tag-cloud-loading">
-                        <i class="fas fa-spinner fa-spin"></i>
+                        <svg class="icon spin"><use href="#i-spinner"/></svg>
                         <span>正在生成标签云...</span>
                     </div>
                 </div>
@@ -704,17 +728,17 @@
         <div class="chart-container collapsible">
             <div class="chart-header" onclick="toggleChart('heatmap')">
                 <div class="header-content">
-                    <h3><i class="fas fa-calendar-alt"></i> 发布活跃度热力图</h3>
+                    <h3><svg class="icon"><use href="#i-calendar"/></svg> 发布活跃度热力图</h3>
                     <p>显示视频发布的活跃程度，点击方块可筛选当天发布的视频</p>
                 </div>
                 <div class="collapse-btn">
-                    <i class="fas fa-chevron-up" id="heatmapToggle"></i>
+                    <svg class="icon" id="heatmapToggle"><use href="#i-chevron-up"/></svg>
                 </div>
             </div>
             <div class="chart-content">
                 <div id="heatmapCalendar" class="heatmap-container">
                     <div class="heatmap-loading">
-                        <i class="fas fa-spinner fa-spin"></i>
+                        <svg class="icon spin"><use href="#i-spinner"/></svg>
                         <span>正在生成热力日历...</span>
                     </div>
                 </div>
@@ -724,12 +748,12 @@
         <!-- 表格容器 -->
         <div class="table-container">
             <div class="loading" id="loading">
-                <i class="fas fa-spinner"></i>
+                <svg class="icon"><use href="#i-spinner"/></svg>
                 <div>正在加载视频数据...</div>
             </div>
             
             <div id="errorMessage" class="error" style="display: none;">
-                <i class="fas fa-exclamation-triangle"></i>
+                <svg class="icon"><use href="#i-alert"/></svg>
                 <strong>加载失败：</strong>请确保 db.json 文件在同一目录下。
             </div>
             
@@ -766,7 +790,7 @@
                          referrerpolicy="no-referrer" crossorigin="anonymous"
                          onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
                     <div style="display: none; padding: 50px; color: #666;">
-                        <i class="fas fa-image-slash" style="font-size: 3rem; margin-bottom: 15px;"></i>
+                        <svg class="icon" style="font-size: 3rem; margin-bottom: 15px;"><use href="#i-image-off"/></svg>
                         <p>图片加载失败</p>
                         <small>正在尝试多种加载方式，如果仍然失败可能是网络问题</small>
                     </div>
@@ -776,10 +800,10 @@
     </div>
     
     <!-- JavaScript 库 -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.0/js/bootstrap.bundle.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/datatables/1.10.21/js/jquery.dataTables.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/datatables/1.10.21/js/dataTables.bootstrap4.min.js"></script>
+    <script src="static/vendor/jquery-3.6.0.min.js"></script>
+    <script src="static/vendor/bootstrap.bundle-4.6.0.min.js"></script>
+    <script src="static/vendor/jquery.dataTables-1.10.21.min.js"></script>
+    <script src="static/vendor/dataTables.bootstrap4-1.10.21.min.js"></script>
     
     <script>
         $(document).ready(function() {
@@ -855,7 +879,7 @@
                 pageLength: 25,
                 lengthMenu: [[10, 25, 50, 100], [10, 25, 50, 100]], // 移除"全部"选项以提高性能
                 language: {
-                    url: 'https://cdn.datatables.net/plug-ins/1.10.21/i18n/Chinese.json'
+                    url: 'static/vendor/dataTables-zh-1.10.21.json'
                 },
                 columnDefs: [
                     { orderable: false, targets: [0, 2, 3] }, // 封面、描述、标签不可排序
@@ -899,7 +923,7 @@
                              onclick="showImageModal('${fullUrl}')"
                              onerror="this.style.display='none'; this.nextElementSibling.style.display='inline';">
                         <div class="cover-placeholder" onclick="showImageModal('${fullUrl}')">
-                            <i class="fas fa-image"></i>
+                            <svg class="icon"><use href="#i-image"/></svg>
                         </div>
                         <span style="display:none" class="text-muted">加载失败</span>
                     </div>`;
@@ -938,7 +962,7 @@
                          title="点击展开或收起描述">
                         ${safeDescWithBreaks}
                     </div>
-                    <button type="button" class="copy-btn" onclick="copyField(${aid}, 'desc', this)" title="复制完整简介"><i class="fas fa-copy"></i> 复制简介</button>`;
+                    <button type="button" class="copy-btn" onclick="copyField(${aid}, 'desc', this)" title="复制完整简介"><svg class="icon"><use href="#i-copy"/></svg> 复制简介</button>`;
         }
         
         function appendMosaicCovers() {
@@ -981,7 +1005,7 @@
                             ''
                         }
                     </div>
-                    <button type="button" class="copy-btn" onclick="copyField(${aid}, 'tags', this)" title="复制全部标签，以 | 分隔"><i class="fas fa-copy"></i> 复制标签</button>`;
+                    <button type="button" class="copy-btn" onclick="copyField(${aid}, 'tags', this)" title="复制全部标签，以 | 分隔"><svg class="icon"><use href="#i-copy"/></svg> 复制标签</button>`;
         }
         
         function formatDate(createdAt, timestamp) {
@@ -1024,7 +1048,7 @@
 
         function flashCopied(btn, ok) {
             const original = btn.innerHTML;
-            btn.innerHTML = ok ? '<i class="fas fa-check"></i> 已复制' : '<i class="fas fa-times"></i> 复制失败';
+            btn.innerHTML = ok ? '<svg class="icon"><use href="#i-check"/></svg> 已复制' : '<svg class="icon"><use href="#i-x"/></svg> 复制失败';
             btn.classList.add(ok ? 'copied' : 'failed');
             setTimeout(() => {
                 btn.innerHTML = original;
@@ -1191,7 +1215,7 @@
                     img.onerror = function() {
                         img.style.display = 'none';
                         if (placeholder) {
-                            placeholder.innerHTML = '<i class="fas fa-image-slash"></i>';
+                            placeholder.innerHTML = '<svg class="icon"><use href="#i-image-off"/></svg>';
                             placeholder.classList.remove('lazy-loading');
                         }
                     };
@@ -1228,7 +1252,7 @@
                             img.onerror = function() {
                                 img.style.display = 'none';
                                 if (placeholder) {
-                                    placeholder.innerHTML = '<i class="fas fa-image-slash"></i>';
+                                    placeholder.innerHTML = '<svg class="icon"><use href="#i-image-off"/></svg>';
                                     placeholder.classList.remove('lazy-loading');
                                 }
                             };
