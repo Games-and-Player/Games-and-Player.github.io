@@ -145,46 +145,41 @@
             margin-top: 4px;
         }
 
-        .status-badge {
-            display: inline-block;
-            padding: 1px 6px;
-            font-size: 0.7rem;
-            color: #fff !important;
-            border-radius: 3px;
-            margin-left: 6px;
-            text-decoration: none !important;
-            vertical-align: middle;
-        }
-        .status-badge.deleted {
-            background: #dc3545;
-        }
-        .status-badge.self-visible {
-            background: #e0a800;
-        }
-
-        .video-title.unavailable > a:not(.reupload-badge) {
-            color: #999 !important;
-        }
-
-        .reupload-badge {
-            display: inline-block;
-            padding: 1px 6px;
-            font-size: 0.7rem;
-            background: #28a745;
-            color: #fff !important;
-            border-radius: 3px;
-            margin-left: 6px;
-            text-decoration: none !important;
-            vertical-align: middle;
-        }
-        .reupload-badge:hover {
-            background: #218838;
-        }
-
         .stat-label {
             color: var(--muted-color);
             font-size: 0.85rem;
             margin-top: 4px;
+        }
+
+        .stat-number.is-date {
+            font-size: 1.2rem;
+            line-height: 1.8;
+        }
+
+        .survival {
+            display: flex;
+            gap: 2px;
+            height: 8px;
+            border-radius: 4px;
+            overflow: hidden;
+            background: var(--border-color);
+            margin: -16px 0 32px;
+        }
+
+        .survival > span {
+            display: block;
+        }
+
+        .survival__ok { background: #1B8A6B; }
+        .survival__backup { background: #7A4EB5; }
+        .survival__hidden { background: #6B7785; }
+        .survival__lost { background: #C2362B; }
+
+        .survival-legend {
+            font-size: 0.78rem;
+            color: var(--muted-color);
+            text-align: center;
+            margin: -24px 0 32px;
         }
 
         .table-container,
@@ -194,6 +189,42 @@
             border-radius: 12px;
             padding: 24px;
             margin-bottom: 32px;
+        }
+
+        .status-chips {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 20px;
+        }
+
+        .chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 5px 14px;
+            font-size: 0.85rem;
+            color: var(--muted-color);
+            background: var(--surface-color);
+            border: 1px solid var(--border-color);
+            border-radius: 999px;
+            cursor: pointer;
+            transition: color 0.15s ease, border-color 0.15s ease, background-color 0.15s ease;
+        }
+
+        .chip:hover {
+            color: var(--accent-color);
+            border-color: var(--accent-color);
+        }
+
+        .chip.active {
+            color: var(--accent-color);
+            background: var(--accent-color-soft);
+            border-color: var(--accent-color);
+        }
+
+        .chip .num {
+            font-weight: 600;
         }
 
         .chart-container.collapsible .chart-header {
@@ -269,6 +300,39 @@
         .video-title a:hover {
             color: var(--accent-color);
         }
+
+        .video-title.unavailable > a {
+            color: #999 !important;
+        }
+
+        .stamp {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            margin-left: 6px;
+            font-size: 0.72rem;
+            color: var(--muted-color);
+            white-space: nowrap;
+            vertical-align: middle;
+        }
+
+        .stamp i {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: currentColor;
+        }
+
+        .stamp a,
+        .stamp a:hover {
+            color: inherit;
+            text-decoration: underline dotted;
+        }
+
+        .stamp--available { color: #1B8A6B; }
+        .stamp--backup { color: #7A4EB5; }
+        .stamp--hidden { color: #6B7785; }
+        .stamp--lost { color: #C2362B; }
 
         .cover-container {
             width: 80px;
@@ -375,10 +439,6 @@
         .copy-btn.failed {
             color: #dc3545;
             border-color: #dc3545;
-        }
-
-        .status-badge.reupload-dead {
-            background: #6c757d;
         }
 
         #videosTable_wrapper .dataTables_filter input,
@@ -681,27 +741,35 @@
         <!-- 统计卡片 -->
         <div class="stats-cards" id="statsCards">
             <div class="stat-card">
-                <div class="stat-number" id="totalVideos">-</div>
-                <div class="stat-label">总视频数</div>
+                <div class="stat-number num" id="statTotal">-</div>
+                <div class="stat-label">总收录</div>
             </div>
             <div class="stat-card">
-                <div class="stat-number" id="totalTags">-</div>
-                <div class="stat-label">标签总数</div>
+                <div class="stat-number num" id="statAvailable">-</div>
+                <div class="stat-label">现存</div>
             </div>
             <div class="stat-card">
-                <div class="stat-number" id="avgLength">-</div>
-                <div class="stat-label">平均标题长度</div>
+                <div class="stat-number num" id="statDeleted">-</div>
+                <div class="stat-label">已删除</div>
+                <div class="stat-note" id="statDeletedNote"></div>
             </div>
             <div class="stat-card">
-                <div class="stat-number" id="timeSpan">-</div>
-                <div class="stat-label">时间跨度(年)</div>
+                <div class="stat-number num" id="statBackup">-</div>
+                <div class="stat-label">已补档</div>
             </div>
             <div class="stat-card">
-                <div class="stat-number"><span id="reuploadCount">-</span>/<span id="deletedCount">-</span></div>
-                <div class="stat-label">已补档/已删除</div>
-                <div class="stat-note">已删除指已找到封面等元信息的删除视频数量</div>
+                <div class="stat-number num" id="statPending">-</div>
+                <div class="stat-label">待补档</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number num is-date" id="statRecheck">—</div>
+                <div class="stat-label">上次巡检</div>
             </div>
         </div>
+
+        <!-- 存续条 -->
+        <div class="survival" id="survivalBar" role="img" aria-label="视频存续比例"></div>
+        <div class="survival-legend" id="survivalLegend"></div>
 
         <!-- 标签云 -->
         <div class="chart-container collapsible">
@@ -747,6 +815,8 @@
         
         <!-- 表格容器 -->
         <div class="table-container">
+            <div class="status-chips" id="statusChips"></div>
+
             <div class="loading" id="loading">
                 <svg class="icon"><use href="#i-spinner"/></svg>
                 <div>正在加载视频数据...</div>
@@ -767,6 +837,7 @@
                         <th>投稿时间</th>
                         <th>AID</th>
                         <th>CID</th>
+                        <th>状态</th>
                     </tr>
                 </thead>
                 <tbody></tbody>
@@ -809,9 +880,79 @@
         $(document).ready(function() {
             // 加载折叠状态
             loadCollapseStates();
+            // 绑定状态筛选 chips
+            bindStatusChips();
             // 加载视频数据
             loadVideoData();
         });
+
+        // ===== 四态状态：available / backup / hidden / lost =====
+        const STATUS_LABEL = {
+            available: '现存',
+            backup: '已删除 · 已补档',
+            hidden: '仅自见',
+            lost: '已删除 · 待补档'
+        };
+
+        // chips 用短标签，与 STATUS_LABEL 的长标签区分开
+        const STATUS_CHIPS = [
+            { key: '', label: '全部' },
+            { key: 'available', label: '现存' },
+            { key: 'backup', label: '已补档' },
+            { key: 'lost', label: '待补档' },
+            { key: 'hidden', label: '仅自见' }
+        ];
+
+        // 当前状态筛选：null 或状态键。它活在 ext.search 里，
+        // 因此标签/日期筛选调用 columns().search('') 清列筛选时不会被重置。
+        let currentStatusFilter = null;
+        let statusFilterRegistered = false;
+
+        // 与 scripts/enrich.py 的 status_key() 保持一致
+        function statusOf(video) {
+            if (video.is_available) return 'available';
+            if (video.reupload_aid && !video.reupload_dead_at) return 'backup';
+            if (video.status_code === 62012) return 'hidden';
+            return 'lost';
+        }
+
+        function countByStatus(videos) {
+            const counts = { available: 0, backup: 0, hidden: 0, lost: 0 };
+            videos.forEach(video => { counts[statusOf(video)] += 1; });
+            return counts;
+        }
+
+        function registerStatusFilter() {
+            if (statusFilterRegistered) return;
+            statusFilterRegistered = true;
+            $.fn.dataTable.ext.search.push(function (settings, searchData, dataIndex, rowData) {
+                if (settings.nTable.id !== 'videosTable') return true;
+                return !currentStatusFilter || (rowData && rowData[7] === currentStatusFilter);
+            });
+        }
+
+        function renderStatusChips(videos) {
+            const container = document.getElementById('statusChips');
+            if (!container) return;
+            const counts = countByStatus(videos);
+            const active = currentStatusFilter || '';
+            container.innerHTML = STATUS_CHIPS.map(chip => {
+                const count = chip.key === '' ? videos.length : counts[chip.key];
+                return `<button type="button" class="chip${chip.key === active ? ' active' : ''}" data-status="${chip.key}">${chip.label} <b class="num">${count}</b></button>`;
+            }).join('');
+        }
+
+        function bindStatusChips() {
+            $(document).on('click', '#statusChips .chip', function () {
+                const key = this.getAttribute('data-status') || '';
+                currentStatusFilter = key === '' ? null : key;
+                $('#statusChips .chip').removeClass('active');
+                $(this).addClass('active');
+                if ($.fn.DataTable.isDataTable('#videosTable')) {
+                    $('#videosTable').DataTable().draw();
+                }
+            });
+        }
         
         function loadVideoData() {
             fetch('db.json')
@@ -824,10 +965,11 @@
                 .then(data => {
                     const videos = data.videos || [];
                     window.videosData = videos; // 保存数据供其他函数使用
-                    displayStats(videos);
+                    displayStats(videos, data.metadata);
                     createHeatmapCalendar(videos);
                     createTagCloud(videos);
                     initializeTable(videos);
+                    renderStatusChips(videos);
                     appendMosaicCovers();
                     $('#loading').hide();
                     $('#videosTable').show();
@@ -839,41 +981,54 @@
                 });
         }
         
-        function displayStats(videos) {
-            const totalVideos = videos.length;
-            const allTags = videos.flatMap(v => v.tags || []);
-            const uniqueTags = new Set(allTags).size;
-            const avgTitleLength = Math.round(
-                videos.reduce((sum, v) => sum + (v.title || '').length, 0) / totalVideos
-            );
-            
-            // 计算时间跨度
-            const timestamps = videos.map(v => v.created_timestamp || 0).filter(t => t > 0);
-            const timeSpanYears = timestamps.length > 0 ? 
-                Math.round((Math.max(...timestamps) - Math.min(...timestamps)) / (365 * 24 * 3600)) : 0;
-            
-            const reuploadCount = videos.filter(v => v.reupload_aid).length;
-            const deletedCount = videos.filter(v => v.status_code === 62002 || v.status_code === 62012).length;
+        function displayStats(videos, metadata) {
+            const counts = countByStatus(videos);
+            // 已删除 = 已补档 + 待补档 + 仅自见（即所有 is_available 为 false 的稿件）
+            const deleted = counts.backup + counts.lost + counts.hidden;
+            const pending = counts.lost + counts.hidden;
 
-            $('#totalVideos').text(totalVideos.toLocaleString());
-            $('#totalTags').text(uniqueTags.toLocaleString());
-            $('#avgLength').text(avgTitleLength);
-            $('#timeSpan').text(timeSpanYears);
-            $('#reuploadCount').text(reuploadCount);
-            $('#deletedCount').text(deletedCount);
+            $('#statTotal').text(videos.length.toLocaleString());
+            $('#statAvailable').text(counts.available.toLocaleString());
+            $('#statDeleted').text(deleted.toLocaleString());
+            $('#statDeletedNote').text(`其中仅自见 ${counts.hidden}`);
+            $('#statBackup').text(counts.backup.toLocaleString());
+            $('#statPending').text(pending.toLocaleString());
+            $('#statRecheck').text((metadata && metadata.last_recheck) || '—');
+
+            renderSurvivalBar(counts);
+        }
+
+        function renderSurvivalBar(counts) {
+            const bar = document.getElementById('survivalBar');
+            const legend = document.getElementById('survivalLegend');
+            if (!bar || !legend) return;
+
+            const parts = [
+                ['survival__ok', '现存', counts.available],
+                ['survival__backup', '已补档', counts.backup],
+                ['survival__hidden', '仅自见', counts.hidden],
+                ['survival__lost', '待补档', counts.lost]
+            ];
+
+            bar.innerHTML = parts.map(([cls, , count]) => `<span class="${cls}" style="flex:${count}"></span>`).join('');
+            bar.setAttribute('aria-label', parts.map(([, label, count]) => `${label} ${count}`).join('，'));
+            legend.textContent = parts.map(([, label, count]) => `${label} ${count}`).join(' · ');
         }
         
         function initializeTable(videos) {
             const tableData = videos.map(video => [
                 formatCover(video.cover),
-                formatTitle(video.title, video.aid, video.reupload_aid, video.status_code, video.reupload_dead_at),
+                formatTitle(video),
                 formatDescription(video.desc, video.aid),
                 formatTags(video.tags, video.aid),
                 formatDate(video.created_at, video.created_timestamp),
                 video.aid || '',
-                video.cid || ''
+                video.cid || '',
+                statusOf(video)
             ]);
-            
+
+            registerStatusFilter();
+
             $('#videosTable').DataTable({
                 data: tableData,
                 pageLength: 25,
@@ -888,7 +1043,8 @@
                     { width: "200px", targets: 2 }, // 描述列宽度
                     { width: "200px", targets: 3 }, // 标签列宽度
                     { width: "120px", targets: 4 }, // 时间列宽度
-                    { className: "number-cell", targets: [5, 6] } // AID和CID右对齐
+                    { className: "number-cell", targets: [5, 6] }, // AID和CID右对齐
+                    { targets: 7, visible: false, searchable: false } // 状态键，仅供 chips 筛选
                 ],
                 order: [[4, 'desc']], // 默认按时间降序排列
                 deferRender: true, // 延迟渲染，提高性能
@@ -929,25 +1085,26 @@
                     </div>`;
         }
         
-        function formatTitle(title, aid, reuploadAid, statusCode, reuploadDeadAt) {
+        function formatTitle(video) {
+            const title = video.title;
             if (!title) return '<span class="text-muted">无标题</span>';
 
-            const bilibiliUrl = `https://www.bilibili.com/video/av${aid}`;
-            const isUnavailable = statusCode === 62002 || statusCode === 62012;
-            let badges = '';
-            if (statusCode === 62002) {
-                badges += ' <span class="status-badge deleted">已删除</span>';
-            } else if (statusCode === 62012) {
-                badges += ' <span class="status-badge self-visible">仅自见</span>';
+            const status = statusOf(video);
+            const label = escapeHtml(STATUS_LABEL[status]);
+            const bilibiliUrl = `https://www.bilibili.com/video/av${video.aid}`;
+
+            let stampAttrs = '';
+            let stampBody = label;
+            if (status === 'backup') {
+                const reuploadUrl = `https://www.bilibili.com/video/av${video.reupload_aid}`;
+                stampBody = `<a href="${reuploadUrl}" target="_blank" title="点击查看补档">${label}</a>`;
+            } else if (status === 'lost' && video.reupload_dead_at) {
+                stampAttrs = ` title="补档 av${video.reupload_aid} 已于 ${escapeHtml(video.reupload_dead_at)} 发现不可见"`;
             }
-            if (reuploadAid && reuploadDeadAt) {
-                badges += ` <span class="status-badge reupload-dead" title="补档视频已于 ${reuploadDeadAt} 发现不可见">补档失效</span>`;
-            } else if (reuploadAid) {
-                const reuploadUrl = `https://www.bilibili.com/video/av${reuploadAid}`;
-                badges += ` <a href="${reuploadUrl}" target="_blank" class="reupload-badge" title="已补档，点击查看">补档</a>`;
-            }
-            return `<div class="video-title${isUnavailable ? ' unavailable' : ''}">
-                        <a href="${bilibiliUrl}" target="_blank" title="在B站打开">${escapeHtml(title)}</a>${badges}
+            const stamp = `<span class="stamp stamp--${status}"${stampAttrs}><i></i>${stampBody}</span>`;
+
+            return `<div class="video-title${status === 'available' ? '' : ' unavailable'}">
+                        <a href="${bilibiliUrl}" target="_blank" title="在B站打开">${escapeHtml(title)}</a>${stamp}
                     </div>`;
         }
         
