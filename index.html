@@ -316,11 +316,18 @@
             vertical-align: middle;
         }
 
+        /* 标题列里状态章单独占一行，避免跟着标题末尾折行 */
+        .video-title .stamp {
+            display: flex;
+            margin: 4px 0 0;
+        }
+
         .stamp i {
             width: 8px;
             height: 8px;
             border-radius: 50%;
             background: currentColor;
+            flex: none;
         }
 
         .stamp a,
@@ -983,9 +990,10 @@
         
         function displayStats(videos, metadata) {
             const counts = countByStatus(videos);
-            // 已删除 = 已补档 + 待补档 + 仅自见（即所有 is_available 为 false 的稿件）
+            // 已删除 = 已补档 + 待补档 + 仅自见（即所有 is_available 为 false 的稿件）；
+            // 仅自见单独在已删除卡的 stat-note 里交代，所以待补档卡与同名 chip 一样只算 lost
             const deleted = counts.backup + counts.lost + counts.hidden;
-            const pending = counts.lost + counts.hidden;
+            const pending = counts.lost;
 
             $('#statTotal').text(videos.length.toLocaleString());
             $('#statAvailable').text(counts.available.toLocaleString());
