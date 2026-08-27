@@ -14,7 +14,7 @@
 
 `enrich.py`、`mirror_covers.py`、`update_reupload.py` 都是幂等的，可以放心重跑。
 
-## 二、把 `redesign/phase-1` 合并到 `main`
+## 二、把改版分支合并到 `main`（`redesign/phase-1` 与 `redesign/phase-2-light` 已于 2026-08-27 合并；以后合并任何改过 db.json 的分支都按此步骤）
 
 ```bash
 git checkout redesign/phase-1
@@ -44,7 +44,7 @@ git checkout main && git merge redesign/phase-1
 
 1. 在 Actions 里手动运行 CI / Daily Update / Weekly Recheck / Sync Reuploads 各一次。
 2. 本地用風二中账号刷新 cookie 后跑 `python scripts/update_reupload.py --verify`。
-3. 确认线上首页仍显示 2,030 / 481 / 944（旧页面按 `reupload_aid` 计数，尚不区分失效补档）。
+3. 确认线上首页的统计卡与 `db.json` 的 `metadata` 一致（2026-08-27 合并当天：总收录 2,032 · 现存 1,088 · 已删除 944（仅自见 5）· 已补档 483 · 待补档 456），并且工具条显示「表格 / 卡片」切换、默认卡片视图。
 
 ## 四、刷新 cookie
 
