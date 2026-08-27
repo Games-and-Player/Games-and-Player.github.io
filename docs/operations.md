@@ -44,7 +44,7 @@ git checkout main && git merge redesign/phase-1
 
 1. 在 Actions 里手动运行 CI / Daily Update / Weekly Recheck / Sync Reuploads 各一次。
 2. 本地用風二中账号刷新 cookie 后跑 `python scripts/update_reupload.py --verify`。
-3. 确认线上首页的统计卡与 `db.json` 的 `metadata` 一致（2026-08-27 合并当天：总收录 2,032 · 现存 1,088 · 已删除 944（仅自见 5）· 已补档 483 · 待补档 456），并且工具条显示「表格 / 卡片」切换、默认卡片视图。
+3. 确认线上首页的统计卡与 `db.json` 按四态统计一致——注意 `metadata.counts` 的 `deleted` 不含仅自见、`pending_reupload` 含仅自见，页面则把仅自见单列（2026-08-27 合并当天：总收录 2,032 · 现存 1,088 · 已删除 944（仅自见 5）· 已补档 483 · 待补档 456），并且工具条显示「表格 / 卡片」切换、默认卡片视图。
 
 ## 四、刷新 cookie
 
