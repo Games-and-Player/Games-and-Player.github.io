@@ -307,12 +307,33 @@
             min-width: 0;
         }
 
+        .toolbar-tools {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-left: auto;
+        }
+
+        .duration-filter {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            margin: 0;
+            font-size: .8rem;
+            color: var(--ink-2);
+        }
+
+        .duration-filter select {
+            width: auto;
+            font-size: .8rem;
+        }
+
         .view-toggle {
             display: inline-flex;
             border: 1px solid var(--line);
             border-radius: 999px;
             overflow: hidden;
-            margin-left: auto;
             flex: none;
         }
 
@@ -852,7 +873,8 @@
         /* 键盘焦点：新加的可聚焦元素统一用主色描边 */
         .cloud-tag:focus-visible, .heatmap-day[tabindex]:focus-visible, .tag-more:focus-visible, .chip:focus-visible,
         .copy-btn:focus-visible, .collapse-btn:focus-visible, .cover-container:focus-visible, .lightbox-close:focus-visible,
-        .btn-link-like:focus-visible, .view-btn:focus-visible, #cardSortSelect:focus-visible {
+        .btn-link-like:focus-visible, .view-btn:focus-visible, #cardSortSelect:focus-visible,
+        #durationSelect:focus-visible {
             outline: 2px solid var(--accent);
             outline-offset: 2px;
         }
@@ -1302,9 +1324,22 @@
         <div class="table-container">
             <div class="table-toolbar" id="tableToolbar">
                 <div class="status-chips" id="statusChips"></div>
-                <div class="view-toggle" id="viewToggle" role="group" aria-label="视图">
-                    <button type="button" class="view-btn" data-view="table" aria-pressed="false"><svg class="icon" aria-hidden="true"><use href="#i-list"/></svg> 表格</button>
-                    <button type="button" class="view-btn" data-view="cards" aria-pressed="true"><svg class="icon" aria-hidden="true"><use href="#i-grid"/></svg> 卡片</button>
+                <div class="toolbar-tools">
+                    <label class="duration-filter" for="durationSelect"><span>时长</span>
+                        <select id="durationSelect" class="custom-select custom-select-sm">
+                            <option value="">不限</option>
+                            <option value="le10">10 分钟内</option>
+                            <option value="le15">15 分钟内</option>
+                            <option value="le20">20 分钟内</option>
+                            <option value="le30">30 分钟内</option>
+                            <option value="gt30">30 分钟以上</option>
+                            <option value="unknown">时长未知</option>
+                        </select>
+                    </label>
+                    <div class="view-toggle" id="viewToggle" role="group" aria-label="视图">
+                        <button type="button" class="view-btn" data-view="table" aria-pressed="false"><svg class="icon" aria-hidden="true"><use href="#i-list"/></svg> 表格</button>
+                        <button type="button" class="view-btn" data-view="cards" aria-pressed="true"><svg class="icon" aria-hidden="true"><use href="#i-grid"/></svg> 卡片</button>
+                    </div>
                 </div>
             </div>
 
@@ -1373,6 +1408,8 @@
             loadCollapseStates();
             // 绑定状态筛选 chips
             bindStatusChips();
+            // 绑定时长筛选下拉
+            bindDurationFilter();
             // 绑定标签云点击
             bindTagCloud();
             // 绑定表格行内的委托事件（标签展开、封面放大）
@@ -1445,6 +1482,70 @@
                 currentStatusFilter = key === '' ? null : key;
                 $('#statusChips .chip').removeClass('active').attr('aria-pressed', 'false');
                 $(this).addClass('active').attr('aria-pressed', 'true');
+                if ($.fn.DataTable.isDataTable('#videosTable')) {
+                    $('#videosTable').DataTable().draw();
+                }
+            });
+        }
+
+        // ===== 时长筛选 =====
+        // dur<=0 记为「时长未知」；le* 系列是"不超过"的累计区间，不是互斥分箱——
+        // le10 会被 le15/le20/le30 包含，只有 le30 + gt30 + unknown 三者互斥、
+        // 合起来等于全部视频，校验用这条关系即可
+        const DURATION_LABELS = {
+            le10: '10 分钟内',
+            le15: '15 分钟内',
+            le20: '20 分钟内',
+            le30: '30 分钟内',
+            gt30: '30 分钟以上',
+            unknown: '时长未知'
+        };
+
+        let currentDurationFilter = '';
+        let durationFilterRegistered = false;
+
+        function matchesDurationFilter(video, key) {
+            if (!key) return true;
+            const dur = Number(video.duration) || 0;
+            switch (key) {
+                case 'unknown': return dur <= 0;
+                case 'le10': return dur > 0 && dur <= 600;
+                case 'le15': return dur > 0 && dur <= 900;
+                case 'le20': return dur > 0 && dur <= 1200;
+                case 'le30': return dur > 0 && dur <= 1800;
+                case 'gt30': return dur > 1800;
+                default: return true;
+            }
+        }
+
+        function registerDurationFilter() {
+            if (durationFilterRegistered) return;
+            durationFilterRegistered = true;
+            $.fn.dataTable.ext.search.push(function (settings, searchData, dataIndex) {
+                if (settings.nTable.id !== 'videosTable') return true;
+                if (!currentDurationFilter) return true;
+                const video = (window.videosData || [])[dataIndex];
+                return !!video && matchesDurationFilter(video, currentDurationFilter);
+            });
+        }
+
+        // 数量按全部视频统计，不与状态 chips 相交
+        function updateDurationOptionCounts(videos) {
+            const select = document.getElementById('durationSelect');
+            if (!select) return;
+            Array.from(select.options).forEach(option => {
+                const key = option.value;
+                if (!key) return; // 「不限」不追加数量
+                const label = DURATION_LABELS[key] || option.textContent;
+                let count = 0;
+                videos.forEach(video => { if (matchesDurationFilter(video, key)) count += 1; });
+                option.textContent = `${label} (${count})`;
+            });
+        }
+
+        function bindDurationFilter() {
+            $(document).on('change', '#durationSelect', function () {
+                currentDurationFilter = this.value;
                 if ($.fn.DataTable.isDataTable('#videosTable')) {
                     $('#videosTable').DataTable().draw();
                 }
@@ -1676,6 +1777,7 @@
                     createTagCloud();
                     initializeTable(videos);
                     renderStatusChips(videos);
+                    updateDurationOptionCounts(videos);
                     renderHeroBand(videos);
                     $('#loading').hide();
                     $('#videosTable').show();
@@ -1735,6 +1837,7 @@
             ]);
 
             registerStatusFilter();
+            registerDurationFilter();
 
             $('#videosTable').DataTable({
                 data: tableData,
