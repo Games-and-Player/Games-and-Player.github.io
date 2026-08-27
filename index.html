@@ -282,7 +282,7 @@
             margin-bottom: 20px;
         }
 
-        /* ── 台账 / 卡片：工具条与视图切换 ────────────────────────────────
+        /* ── 表格 / 卡片：工具条与视图切换 ────────────────────────────────
            .table-toolbar 一行两端：左边状态 chips，右边视图切换组；
            空间不够时整组换行，靠 margin-left:auto 继续贴右。 */
         .table-toolbar {
@@ -1306,8 +1306,8 @@
             <div class="table-toolbar" id="tableToolbar">
                 <div class="status-chips" id="statusChips"></div>
                 <div class="view-toggle" id="viewToggle" role="group" aria-label="视图">
-                    <button type="button" class="view-btn" data-view="table" aria-pressed="true"><svg class="icon" aria-hidden="true"><use href="#i-list"/></svg> 台账</button>
-                    <button type="button" class="view-btn" data-view="cards" aria-pressed="false"><svg class="icon" aria-hidden="true"><use href="#i-grid"/></svg> 卡片</button>
+                    <button type="button" class="view-btn" data-view="table" aria-pressed="false"><svg class="icon" aria-hidden="true"><use href="#i-list"/></svg> 表格</button>
+                    <button type="button" class="view-btn" data-view="cards" aria-pressed="true"><svg class="icon" aria-hidden="true"><use href="#i-grid"/></svg> 卡片</button>
                 </div>
             </div>
 
@@ -1380,7 +1380,7 @@
             bindTagCloud();
             // 绑定表格行内的委托事件（标签展开、封面放大）
             bindRowEvents();
-            // 台账/卡片视图切换：先把上次选的视图应用到 body，避免加载完再闪一下
+            // 表格/卡片视图切换：先把上次选的视图应用到 body，避免加载完再闪一下
             bindViewToggle();
             // 加载视频数据
             loadVideoData();
@@ -1454,13 +1454,13 @@
             });
         }
         
-        // ===== 视图模式：台账（表格） / 卡片 =====
+        // ===== 视图模式：表格 / 卡片 =====
         const VIEW_STORAGE_KEY = 'view_mode';
-        const TABLE_PAGE_LEN = 25;   // 台账每页行数
+        const TABLE_PAGE_LEN = 25;   // 表格每页行数
         const CARDS_PAGE_LEN = 24;   // 卡片每页张数：2/3/4 列都能排满
         let viewMode = 'table';
 
-        // 没有记录时按视口猜：窄屏默认卡片，宽屏默认台账
+        // 没有记录时默认卡片（不分视口）
         function storedViewMode() {
             try {
                 const saved = localStorage.getItem(VIEW_STORAGE_KEY);
@@ -1468,7 +1468,7 @@
             } catch (e) {
                 // 隐私模式下 localStorage 可能直接抛错，忽略
             }
-            return window.matchMedia && window.matchMedia('(max-width: 767px)').matches ? 'cards' : 'table';
+            return 'cards';
         }
 
         function bindViewToggle() {
