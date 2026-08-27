@@ -35,6 +35,7 @@
             --accent: #1F4E9C;
             --accent-rgb: 31, 78, 156;
             --bg-rgb: 243, 245, 247;
+            --ink-rgb: 20, 32, 43;
             --on-accent: #FFFFFF;
             /* 签条底色是 --lost / --backup，浅色下是深底配白字，深色下是亮底配暗字 */
             --ribbon-ink: #FFFFFF;
@@ -67,6 +68,7 @@
                 --accent: #7FA6E8;
                 --accent-rgb: 127, 166, 232;
                 --bg-rgb: 15, 21, 27;
+                --ink-rgb: 230, 235, 240;
                 --on-accent: #0F151B;
                 --ribbon-ink: #0F151B;
                 --ok: #20A392;
@@ -88,6 +90,8 @@
 
             font-family: 'Noto Sans SC', 'Helvetica Neue', Arial, sans-serif;
             background-color: var(--bg);
+            background-image: radial-gradient(circle, rgba(var(--ink-rgb), .07) 1px, transparent 1.3px);
+            background-size: 22px 22px;
             color: var(--ink);
             min-height: 100vh;
             margin: 0;
@@ -112,58 +116,61 @@
             overflow-x: hidden;
         }
 
-        .background-mosaic {
-            position: fixed;
+        /* 页眉封面带：往年同期投稿的封面，绝对定位在 .header 内，
+           z-index: -1 沉在标题下面，纯装饰用 aria-hidden 挡在无障碍树外 */
+        .hero-band {
+            position: absolute;
             inset: 0;
             z-index: -1;
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-            gap: 16px;
-            padding: 32px;
-            opacity: 0.18;
-            pointer-events: none;
-        }
-
-        .background-mosaic::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background: linear-gradient(180deg, rgba(var(--bg-rgb), 0.55), rgba(var(--bg-rgb), 0.86)),
-                repeating-linear-gradient(135deg, rgba(var(--accent-rgb), 0.08) 0 4px, transparent 4px 12px);
-            z-index: 1;
-        }
-
-        .mosaic-tile {
-            position: relative;
-            min-height: 120px;
-            border-radius: 16px;
+            grid-template-columns: repeat(8, 1fr);
+            gap: 8px;
+            padding: 0 8px;
             overflow: hidden;
-            background: linear-gradient(135deg, rgba(var(--accent-rgb), 0.2), rgba(var(--accent-rgb), 0.05)),
-                repeating-linear-gradient(135deg, rgba(var(--bg-rgb), 0.1) 0 3px, rgba(var(--accent-rgb), 0.08) 3px 9px);
+            pointer-events: none;
+            opacity: .28;
+            -webkit-mask-image: linear-gradient(180deg, #000 0%, rgba(0, 0, 0, .8) 50%, transparent 100%);
+            mask-image: linear-gradient(180deg, #000 0%, rgba(0, 0, 0, .8) 50%, transparent 100%);
         }
 
-        .mosaic-tile img {
-            position: absolute;
-            inset: 0;
+        .hero-band__tile {
+            aspect-ratio: 16 / 10;
+            border-radius: 8px;
+            overflow: hidden;
+            background: rgba(var(--accent-rgb), .12);
+        }
+
+        .hero-band__tile img {
+            display: block;
             width: 100%;
             height: 100%;
             object-fit: cover;
-            border-radius: 16px;
-            filter: saturate(0.9) brightness(0.9);
+            filter: saturate(.85);
         }
 
-        @media (max-width: 768px) {
-            .background-mosaic {
-                padding: 16px;
-                gap: 12px;
+        .hero-band__tile--deleted img {
+            filter: grayscale(.6) saturate(.85);
+        }
+
+        .hero-caption {
+            margin: 6px 0 0;
+            font-size: .78rem;
+            color: var(--ink-3);
+        }
+
+        @media (max-width: 767px) {
+            .hero-band {
+                grid-template-columns: repeat(4, 1fr);
+                opacity: .24;
             }
-            .mosaic-tile {
-                min-height: 100px;
+            .hero-band__tile:nth-child(n + 5) {
+                display: none;
             }
         }
 
 
         .header {
+            position: relative;
             text-align: center;
             margin-bottom: 32px;
         }
@@ -1170,13 +1177,14 @@
                 background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='4' height='5' viewBox='0 0 4 5'%3e%3cpath fill='%23A7B3BE' d='M2 0L0 2h4zm0 5L0 3h4z'/%3e%3c/svg%3e");
             }
 
-            /* 深色下封面墙压得更暗，免得整片封面在暗背景上发光 */
-            .background-mosaic {
-                opacity: 0.12;
+            /* 深色下点纹更淡，避免在暗背景上过于显眼 */
+            body {
+                background-image: radial-gradient(circle, rgba(var(--ink-rgb), .06) 1px, transparent 1.3px);
             }
 
-            .mosaic-tile img {
-                filter: saturate(0.8) brightness(0.7);
+            /* 深色下封面带压得更暗，免得整片封面在暗背景上发光 */
+            .hero-band {
+                opacity: .22;
             }
         }
 
@@ -1202,24 +1210,13 @@
       <symbol id="i-list" viewBox="0 0 24 24"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></symbol>
       <symbol id="i-grid" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></symbol>
     </svg>
-    <div class="background-mosaic">
-        <div class="mosaic-tile"></div>
-        <div class="mosaic-tile"></div>
-        <div class="mosaic-tile"></div>
-        <div class="mosaic-tile"></div>
-        <div class="mosaic-tile"></div>
-        <div class="mosaic-tile"></div>
-        <div class="mosaic-tile"></div>
-        <div class="mosaic-tile"></div>
-        <div class="mosaic-tile"></div>
-        <div class="mosaic-tile"></div>
-    </div>
-
     <div class="container-fluid">
         <!-- 头部 -->
         <div class="header">
+            <div class="hero-band" id="heroBand" aria-hidden="true"></div>
             <h1><svg class="icon" aria-hidden="true"><use href="#i-gamepad"/></svg> 宋少弘（原游戏公民大会）视频投稿存档</h1>
             <p>永不退场的闯关族</p>
+            <p class="hero-caption" id="heroCaption" hidden></p>
         </div>
         
         <!-- 统计卡片 -->
@@ -1679,7 +1676,7 @@
                     createTagCloud();
                     initializeTable(videos);
                     renderStatusChips(videos);
-                    appendMosaicCovers();
+                    renderHeroBand(videos);
                     $('#loading').hide();
                     $('#videosTable').show();
                 })
@@ -1858,37 +1855,122 @@
                     <button type="button" class="copy-btn" data-copy="desc" data-aid="${aid}" title="复制完整简介"><svg class="icon" aria-hidden="true"><use href="#i-copy"/></svg> 复制简介</button>`;
         }
         
-        function appendMosaicCovers() {
-            const mosaicTiles = document.querySelectorAll('.mosaic-tile');
-            if (!mosaicTiles.length) return;
-            // 只从有本地镜像封面的视频里抽，正常打开首页就不会有任何 hdslb 请求；
-            // 整份数据都没有镜像时才退回 https 原图
-            const all = window.videosData || [];
-            const mirrored = all.filter(v => v.cover_local);
-            const videosWithCovers = mirrored.length ? mirrored : all.filter(v => v.cover);
-            if (!videosWithCovers.length) return;
-            const covers = shuffleAndSlice(videosWithCovers, mosaicTiles.length);
-            mosaicTiles.forEach((tile, index) => {
-                const video = covers[index % covers.length];
-                const img = document.createElement('img');
-                img.src = video.cover_local || video.cover;
-                img.loading = 'lazy';
-                img.referrerPolicy = 'no-referrer';
-                img.crossOrigin = 'anonymous';
-                img.onerror = () => {
-                    img.remove();
-                };
-                tile.appendChild(img);
-            });
+        // ===== 页眉封面带：往年同期投稿 =====
+        // 月-日一律映射到 2000 年（闰年，装得下 2 月 29 日）算循环距离，
+        // 不看年份，纯日历意义上的"同一天/同一周"
+        function heroDayIndex(month, day) {
+            return Date.UTC(2000, month - 1, day) / 86400000;
         }
 
-        function shuffleAndSlice(source, limit) {
-            const arr = source.slice();
-            for (let i = arr.length - 1; i > 0; i--) {
-                const j = Math.floor(Math.random() * (i + 1));
-                [arr[i], arr[j]] = [arr[j], arr[i]];
+        function parseCreatedYmd(video) {
+            const m = /^(\d{4})-(\d{2})-(\d{2})/.exec(String((video && video.created_at) || ''));
+            return m ? { year: Number(m[1]), month: Number(m[2]), day: Number(m[3]) } : null;
+        }
+
+        // 最多挑 8 条「历史上这几天」发的稿子：候选只取有本地镜像封面的视频
+        // （零外部请求；整份数据都没有镜像时才退回 cover），排除今年的记录；
+        // 按与今天的月日距离升序、同距离已删除优先、再按投稿时间升序取前 8，
+        // 返回时按投稿时间升序排列（时间线感）
+        function pickHeroVideos(videos, today) {
+            today = (today instanceof Date) ? today : new Date();
+            const thisYear = today.getFullYear();
+            const todayIdx = heroDayIndex(today.getMonth() + 1, today.getDate());
+
+            const mirrored = videos.filter(v => v.cover_local);
+            const pool = mirrored.length ? mirrored : videos.filter(v => v.cover);
+
+            const scored = [];
+            pool.forEach(video => {
+                const ymd = parseCreatedYmd(video);
+                if (!ymd || ymd.year === thisYear) return; // 排掉"今年"的记录
+                const diff = Math.abs(heroDayIndex(ymd.month, ymd.day) - todayIdx);
+                const distance = Math.min(diff, 366 - diff);
+                scored.push({ video, distance });
+            });
+
+            scored.sort((a, b) => {
+                if (a.distance !== b.distance) return a.distance - b.distance;
+                const aDeleted = statusOf(a.video) !== 'available' ? 0 : 1;
+                const bDeleted = statusOf(b.video) !== 'available' ? 0 : 1;
+                if (aDeleted !== bDeleted) return aDeleted - bDeleted;
+                return a.video.created_at < b.video.created_at ? -1 : (a.video.created_at > b.video.created_at ? 1 : 0);
+            });
+
+            return scored.slice(0, 8)
+                .map(item => item.video)
+                .sort((a, b) => (a.created_at < b.created_at ? -1 : (a.created_at > b.created_at ? 1 : 0)));
+        }
+
+        // picked 是 pickHeroVideos() 的结果（按投稿时间升序）；用同一个 today 把每条
+        // 与今天的距离重新算出带符号的偏移（正负天数，处理跨年环绕），取偏移的
+        // 最小/最大值拼出日期范围
+        function heroCaptionText(picked, today) {
+            if (!picked.length) return '';
+            today = (today instanceof Date) ? today : new Date();
+            const todayIdx = heroDayIndex(today.getMonth() + 1, today.getDate());
+
+            const years = Array.from(new Set(picked.map(v => parseCreatedYmd(v).year))).sort((a, b) => a - b);
+            const yearsText = years.join('、') + ' 年';
+
+            let allToday = true;
+            const displayDates = picked.map(video => {
+                const ymd = parseCreatedYmd(video);
+                const rawDiff = heroDayIndex(ymd.month, ymd.day) - todayIdx;
+                let offset = rawDiff;
+                if (offset > 183) offset -= 366;
+                else if (offset < -183) offset += 366;
+                if (offset !== 0) allToday = false;
+                return new Date(Date.UTC(today.getFullYear(), today.getMonth(), today.getDate() + offset));
+            });
+
+            if (allToday) {
+                return `背景：往年今日的投稿（${yearsText}）`;
             }
-            return arr.slice(0, limit);
+
+            const minDate = new Date(Math.min.apply(null, displayDates));
+            const maxDate = new Date(Math.max.apply(null, displayDates));
+            const minMonth = minDate.getUTCMonth() + 1;
+            const maxMonth = maxDate.getUTCMonth() + 1;
+            const rangeText = (minMonth === maxMonth)
+                ? `${minMonth} 月 ${minDate.getUTCDate()}–${maxDate.getUTCDate()} 日`
+                : `${minMonth} 月 ${minDate.getUTCDate()} 日–${maxMonth} 月 ${maxDate.getUTCDate()} 日`;
+
+            return `背景：往年同期的投稿（${rangeText}；${yearsText}）`;
+        }
+
+        function heroTileHtml(video) {
+            const deleted = statusOf(video) !== 'available';
+            const src = video.cover_local || video.cover;
+            return `<div class="hero-band__tile${deleted ? ' hero-band__tile--deleted' : ''}">` +
+                `<img src="${escapeHtml(src)}" alt="" decoding="async" fetchpriority="low" referrerpolicy="no-referrer">` +
+                `</div>`;
+        }
+
+        function renderHeroBand(videos) {
+            const band = document.getElementById('heroBand');
+            const caption = document.getElementById('heroCaption');
+            if (!band) return;
+
+            const today = new Date();
+            const picked = pickHeroVideos(videos, today);
+            band.innerHTML = picked.map(heroTileHtml).join('');
+            // 镜像封面偶尔会缺文件，加载失败就把整块摘掉，不留裂图占位
+            band.querySelectorAll('img').forEach(img => {
+                img.onerror = () => {
+                    const tile = img.closest('.hero-band__tile');
+                    if (tile) tile.remove();
+                };
+            });
+
+            if (!caption) return;
+            const text = heroCaptionText(picked, today);
+            if (text) {
+                caption.textContent = text;
+                caption.hidden = false;
+            } else {
+                caption.textContent = '';
+                caption.hidden = true;
+            }
         }
         
         function formatTags(tags, aid) {
