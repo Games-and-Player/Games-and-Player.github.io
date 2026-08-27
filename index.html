@@ -1282,11 +1282,11 @@
         <div class="chart-container collapsible">
             <div class="chart-header" onclick="toggleChart('heatmap')">
                 <div class="header-content">
-                    <h3><svg class="icon" aria-hidden="true"><use href="#i-calendar"/></svg> 失落日历</h3>
+                    <h3><svg class="icon" aria-hidden="true"><use href="#i-calendar"/></svg> 投稿日历</h3>
                     <p>每格一天，颜色是当天投稿的存续状态；点击方块筛选当天投稿</p>
                 </div>
                 <button type="button" class="collapse-btn" id="heatmapToggle"
-                        aria-expanded="true" aria-controls="heatmapCalendar" aria-label="折叠或展开失落日历"
+                        aria-expanded="true" aria-controls="heatmapCalendar" aria-label="折叠或展开投稿日历"
                         onclick="event.stopPropagation(); toggleChart('heatmap')">
                     <svg class="icon" aria-hidden="true"><use href="#i-chevron-up"/></svg>
                 </button>
@@ -1295,7 +1295,7 @@
                 <div id="heatmapCalendar" class="heatmap-container">
                     <div class="heatmap-loading">
                         <svg class="icon spin" aria-hidden="true"><use href="#i-spinner"/></svg>
-                        <span>正在生成失落日历...</span>
+                        <span>正在生成投稿日历...</span>
                     </div>
                 </div>
             </div>
@@ -2412,7 +2412,7 @@
             ['backup', '含已补档'],
             ['hidden', '仅自见'],
             ['lost', '全部待补档'],
-            ['mixed', '部分失落']
+            ['mixed', '部分已删除']
         ];
         
         function createHeatmapLegend() {
