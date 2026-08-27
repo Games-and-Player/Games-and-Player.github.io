@@ -1,7 +1,39 @@
 {
     "schema_version": 2,
-    "generated_at": "2026-08-26T15:52:27+08:00",
+    "generated_at": "2026-08-27T10:22:29+08:00",
     "videos": [
+        {
+            "aid": 117156440315348,
+            "bvid": "BV1Qth56uEt7",
+            "title": "新手村乡愁，与我们终将抵达的旷野",
+            "cover": "https://i2.hdslb.com/bfs/archive/bac71a4cf13a50a8cc911eb583f7f8139ba9fc2c.jpg",
+            "desc": "走出新手村，是游戏的设计，也是人生的必然。我们眷恋那片低伤害、高容错的原乡，可系统的防护罩终将隐去，风暴与未知的旷野必然在眼前展开。\n本期早餐车，我们就从新手村这个设计说开去，聊聊游戏与人生。",
+            "tags": [
+                "游戏人生",
+                "游戏杂谈",
+                "新手村",
+                "游戏文化"
+            ],
+            "cid": 41257012996,
+            "created_at": "2026-08-27 07:30",
+            "created_timestamp": 1787787000,
+            "duration": 1034,
+            "status_code": 0,
+            "status_description": "OK",
+            "is_available": true,
+            "status_check_time": "2026-08-27T10:22:24",
+            "deleted_found_at": null,
+            "restored_at": null,
+            "stat": {
+                "view": 4209,
+                "like": 436,
+                "coin": 176,
+                "favorite": 126,
+                "danmaku": 18,
+                "at": "2026-08-27"
+            },
+            "cover_local": "covers/117156440315348.webp"
+        },
         {
             "aid": 117154896748329,
             "bvid": "BV1uMhV6PEdQ",
@@ -70752,8 +70784,8 @@
         }
     ],
     "metadata": {
-        "total": 2031,
-        "available": 1087,
+        "total": 2032,
+        "available": 1088,
         "deleted": 939,
         "self_visible": 5,
         "reuploaded": 483,
@@ -70801,7 +70833,7 @@
                 "deleted": 0
             },
             "2026": {
-                "available": 148,
+                "available": 149,
                 "deleted": 1
             }
         },
