@@ -1,7 +1,45 @@
 {
     "schema_version": 2,
-    "generated_at": "2026-08-27T10:56:10+08:00",
+    "generated_at": "2026-08-29T00:32:07+08:00",
     "videos": [
+        {
+            "aid": 117167714668953,
+            "bvid": "BV1Ti496YEwv",
+            "title": "免费重置，蠢驴的良心在算什么账",
+            "cover": "https://i1.hdslb.com/bfs/archive/3259e3bd84cdcf43154d2029b75c0ac82a1494e1.jpg",
+            "desc": "巫师3重置版免费升级，是福利更是商业撬棒。蠢驴的良心不假，但算盘也还要打。\n本期早餐车，我们就来聊聊这个话题。",
+            "tags": [
+                "上B站看播客",
+                "游戏杂谈",
+                "巫师3",
+                "DLC",
+                "科隆电玩展",
+                "旧时曲",
+                "CDPR",
+                "游戏文化",
+                "REMASTER",
+                "巫师4"
+            ],
+            "cid": 41330413254,
+            "created_at": "2026-08-28 07:30",
+            "created_timestamp": 1787873400,
+            "duration": 827,
+            "status_code": 0,
+            "status_description": "OK",
+            "is_available": true,
+            "status_check_time": "2026-08-29T00:32:02",
+            "deleted_found_at": null,
+            "restored_at": null,
+            "stat": {
+                "view": 27939,
+                "like": 1402,
+                "coin": 406,
+                "favorite": 290,
+                "danmaku": 194,
+                "at": "2026-08-29"
+            },
+            "cover_local": "covers/117167714668953.webp"
+        },
         {
             "aid": 117156440315348,
             "bvid": "BV1Qth56uEt7",
@@ -70784,8 +70822,8 @@
         }
     ],
     "metadata": {
-        "total": 2032,
-        "available": 1088,
+        "total": 2033,
+        "available": 1089,
         "deleted": 939,
         "self_visible": 5,
         "reuploaded": 483,
@@ -70833,7 +70871,7 @@
                 "deleted": 0
             },
             "2026": {
-                "available": 149,
+                "available": 150,
                 "deleted": 1
             }
         },
