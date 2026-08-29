@@ -150,13 +150,14 @@
             height: 100%;
             object-fit: cover;
             filter: saturate(.85);
+            transition: filter .2s;
         }
 
         .hero-band__tile--deleted img {
             filter: grayscale(.6) saturate(.85);
         }
 
-        /* 显出态下已删除瓦片允许悬停看清封面原色，transition 已在 img 规则里 */
+        /* 显出态下已删除瓦片允许悬停看清封面原色 */
         .hero-reveal .hero-band__tile--deleted:hover img {
             filter: none;
         }
@@ -2205,7 +2206,8 @@
             window.addEventListener('touchmove', heroHandleTouchMove, { passive: true });
             window.addEventListener('scroll', heroHandleScroll, { passive: true });
             document.addEventListener('keydown', heroHandleKeydown, { passive: true });
-            document.addEventListener('click', heroHandleOutsideClick, { passive: true });
+            // 用捕获阶段，绕开个别控件 onclick 里的 stopPropagation（如两个折叠按钮）
+            document.addEventListener('click', heroHandleOutsideClick, { passive: true, capture: true });
 
             $(document).on('click', '#heroBand [data-locate-aid]', function (e) {
                 e.preventDefault();
