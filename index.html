@@ -431,7 +431,7 @@
             right: calc(50% - 536px - 60px);
         }
 
-        .side-pager--on {
+        .side-pager--on:not(:disabled) {
             opacity: 1;
             pointer-events: auto;
         }
@@ -2065,23 +2065,15 @@
         }
 
         // 上一页/下一页共用的入口：先判断越界再翻页——键盘那条路径没有 disabled
-        // 属性可挡，所以不能只靠按钮自身的禁用状态
+        // 属性可挡，所以不能只靠按钮自身的禁用状态。焦点还原的防御挪到 page.dt
+        // 处理器里做了（见 bindPagerControls），因为直接点/回车原生底部分页
+        // 不经过这里，只在这里挡挡不住那条路径
         function stepPage(direction) {
             if (!$.fn.DataTable.isDataTable('#videosTable')) return;
             const table = $('#videosTable').DataTable();
             const info = table.page.info();
             if (direction === 'prev' && info.page <= 0) return;
             if (direction === 'next' && info.page >= info.pages - 1) return;
-            // dataTables.bootstrap4 重绘底部原生分页时，若焦点还留在旧的分页按钮上，
-            // 会把焦点还原到重绘出来的同位置新按钮（浏览器随之把视口拉过去）——
-            // 从别的入口（顶部/侧边/键盘）翻页时，这个焦点可能是上一次点底部分页留下的，
-            // 与这里的翻页回顶互相打架，表现为翻着翻着视口突然跳去表格最下面。
-            // 翻页前把这种"焦点还停在底部分页里"的情况挪开，让 dataTables.bootstrap4
-            // 内部 `$(paginateEl).find(document.activeElement)` 找不到东西，不触发还原
-            const active = document.activeElement;
-            if (active && active !== document.body && active.closest && active.closest('#videosTable_paginate')) {
-                active.blur();
-            }
             table.page(direction === 'next' ? 'next' : 'previous').draw('page');
         }
 
@@ -2096,9 +2088,20 @@
             document.getElementById('sideNext')?.addEventListener('click', () => stepPage('next'));
 
             // 底部原生分页、顶部翻页条、侧边按钮、键盘翻页都会触发 page.dt；搜索/筛选不会。
-            // 只有列表已经滚出视口上方时才拉回去，本来就在顶部时不动视口
+            // page.dt 在 dataTables.bootstrap4 重绘分页控件（含它自带的焦点还原）之前触发，
+            // 不管这次翻页从哪个入口来的——包括直接点/回车原生底部分页本身，那条路径走的是
+            // vendor 自己的 _fnBindAction，不经过 stepPage()，只在那边挡是挡不住这条路径的。
+            // 焦点还留在旧分页按钮上就先挪开，vendor 内部
+            // `$(paginateEl).find(document.activeElement)` 才会查无此人，重绘后不会把焦点
+            // （以及浏览器伴随的"聚焦元素滚入视口"）还原到可能已经离屏的按钮上，
+            // 和紧接着这里做的翻页回顶互相打架。只有列表已经滚出视口上方时才拉回去，
+            // 本来就在顶部时不动视口
             if (container && $.fn.DataTable.isDataTable('#videosTable')) {
                 $('#videosTable').DataTable().on('page.dt', function () {
+                    const active = document.activeElement;
+                    if (active && active.closest && active.closest('#videosTable_paginate')) {
+                        active.blur();
+                    }
                     const rect = container.getBoundingClientRect();
                     if (rect.top < -8) {
                         container.scrollIntoView({ behavior: prefersReducedMotion() ? 'auto' : 'smooth' });
@@ -2117,6 +2120,9 @@
             }
 
             document.addEventListener('keydown', function (e) {
+                // 按住不放会连续触发 keydown 自动重复，每次都是一次完整重绘——
+                // 只认第一次按下，按住期间的重复事件直接跳过
+                if (e.repeat) return;
                 if (e.key !== 'ArrowLeft' && e.key !== 'ArrowRight') return;
                 if (e.altKey || e.ctrlKey || e.metaKey || e.shiftKey) return;
                 if (e.target.closest('input, select, textarea, [contenteditable]')) return;
