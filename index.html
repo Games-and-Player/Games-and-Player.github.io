@@ -363,6 +363,101 @@
             color: var(--on-accent);
         }
 
+        /* ── 翻页辅助：顶部迷你翻页条 + 两侧悬浮按钮 ──────────────────────
+           两者都只是 table.page() 的快捷方式，disabled/隐藏状态统一由
+           syncPagers() 刷新；hidden 属性走仓库既有的 [hidden]!important 语义。 */
+        .mini-pager {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-size: .8rem;
+            color: var(--ink-2);
+        }
+
+        .mini-pager__btn {
+            border: 1px solid var(--line);
+            background: var(--surface);
+            color: var(--ink-2);
+            border-radius: 999px;
+            padding: 2px 10px;
+            font-size: .8rem;
+            cursor: pointer;
+        }
+
+        .mini-pager__btn:disabled {
+            opacity: .4;
+            cursor: default;
+        }
+
+        .mini-pager__btn:not(:disabled):hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        .mini-pager__info {
+            white-space: nowrap;
+        }
+
+        /* 桌面宽屏下贴在列表两侧的翻页按钮：默认不占布局（display: none），
+           ≥1280px 且列表滚入视野时才出现（.side-pager--on 控制淡入） */
+        .side-pager {
+            position: fixed;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            border: 1px solid var(--line);
+            background: var(--surface);
+            color: var(--ink-2);
+            font-size: 20px;
+            line-height: 1;
+            cursor: pointer;
+            z-index: 900;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, .10);
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity .2s;
+            display: none;
+        }
+
+        /* 536px = 内容列宽 1072px（.container-fluid max-width 1120px 减去左右 padding 各 24px）的一半；
+           已在 1440px 宽度下用 .table-container 实测边界核对过，按钮与内容边缘留 16px 间隙、不重叠、不引起横向溢出 */
+        .side-pager--prev {
+            left: calc(50% - 536px - 60px);
+        }
+
+        .side-pager--next {
+            right: calc(50% - 536px - 60px);
+        }
+
+        .side-pager--on {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .side-pager:not(:disabled):hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        .side-pager:disabled {
+            opacity: .25;
+            pointer-events: none;
+        }
+
+        @media (min-width: 1280px) {
+            .side-pager {
+                display: block;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .side-pager {
+                transition: none;
+            }
+        }
+
         /* ── 卡片视图 ──────────────────────────────────────────────────
            卡片模式下只把表格本体收起来，DataTables 的搜索/信息/分页照常。 */
         body.view-cards .table-scroll {
@@ -887,7 +982,7 @@
         .cloud-tag:focus-visible, .heatmap-day[tabindex]:focus-visible, .tag-more:focus-visible, .chip:focus-visible,
         .copy-btn:focus-visible, .collapse-btn:focus-visible, .cover-container:focus-visible, .lightbox-close:focus-visible,
         .btn-link-like:focus-visible, .view-btn:focus-visible, #cardSortSelect:focus-visible,
-        #durationSelect:focus-visible {
+        #durationSelect:focus-visible, .mini-pager__btn:focus-visible, .side-pager:focus-visible {
             outline: 2px solid var(--accent);
             outline-offset: 2px;
         }
@@ -1352,6 +1447,11 @@
                     <div class="view-toggle" id="viewToggle" role="group" aria-label="视图">
                         <button type="button" class="view-btn" data-view="table" aria-pressed="false"><svg class="icon" aria-hidden="true"><use href="#i-list"/></svg> 表格</button>
                         <button type="button" class="view-btn" data-view="cards" aria-pressed="true"><svg class="icon" aria-hidden="true"><use href="#i-grid"/></svg> 卡片</button>
+                    </div>
+                    <div class="mini-pager" id="miniPager" hidden>
+                        <button type="button" class="mini-pager__btn" id="pagerPrev" aria-label="上一页">‹ 上页</button>
+                        <span class="mini-pager__info num" id="pagerInfo" aria-live="polite"></span>
+                        <button type="button" class="mini-pager__btn" id="pagerNext" aria-label="下一页">下页 ›</button>
                     </div>
                 </div>
             </div>
@@ -1899,6 +1999,8 @@
                     bindEvents();
                     // 卡片必须在懒加载之前渲染出来，新封面才能在同一趟里挂上观察器
                     renderCards(new $.fn.dataTable.Api(settings));
+                    // 顶部/侧边翻页条的页码文案与按钮状态跟着每次重绘刷新
+                    syncPagers(new $.fn.dataTable.Api(settings));
                     // 在空闲时间初始化懒加载，降低重绘压力
                     if ('requestIdleCallback' in window) {
                         // 带 timeout：连续打字时浏览器一直不空闲，没有上限的话
@@ -1915,10 +2017,114 @@
                     $('#videosTable').wrap('<div class="table-scroll"></div>');
                     // 卡片网格插在滚动容器后面，并把上次选的视图应用上
                     setupCardView(new $.fn.dataTable.Api(settings));
+                    // 翻页辅助（顶部迷你翻页条、翻页回顶、侧边按钮、键盘翻页）只需要绑一次事件
+                    bindPagerControls();
                 }
             });
         }
-        
+
+        // ===== 翻页辅助：顶部迷你翻页条 + 翻页回顶 + 两侧悬浮按钮 + 键盘翻页 =====
+        // 表格/卡片两个视图共用同一个 DataTables 实例，四种入口最终都走
+        // table.page() + draw('page')，页码文案/禁用态统一由 syncPagers() 刷新
+
+        // 侧边按钮是否该露出：由 IntersectionObserver（.table-container 是否在视野内）
+        // 和 syncPagers（是否多于一页）共同决定，两边谁变了都重算一次，互不覆盖
+        let sidePagersInView = false;
+
+        function prefersReducedMotion() {
+            return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        }
+
+        // 每次 draw 后刷新：页码文案、四个按钮的 disabled、miniPager 与侧边按钮的 pages<=1 隐藏
+        function syncPagers(table) {
+            const info = table.page.info();
+            const isFirst = info.page <= 0;
+            const isLast = info.page >= info.pages - 1;
+            const multiPage = info.pages > 1;
+
+            const pagerInfo = document.getElementById('pagerInfo');
+            if (pagerInfo) pagerInfo.textContent = `第 ${info.page + 1} / ${info.pages} 页`;
+
+            const miniPager = document.getElementById('miniPager');
+            if (miniPager) miniPager.hidden = !multiPage;
+
+            const pagerPrev = document.getElementById('pagerPrev');
+            const pagerNext = document.getElementById('pagerNext');
+            if (pagerPrev) pagerPrev.disabled = isFirst;
+            if (pagerNext) pagerNext.disabled = isLast;
+
+            const showSide = multiPage && sidePagersInView;
+            [[document.getElementById('sidePrev'), isFirst], [document.getElementById('sideNext'), isLast]]
+                .forEach(([btn, disabled]) => {
+                    if (!btn) return;
+                    btn.disabled = disabled;
+                    btn.hidden = !showSide;
+                    btn.tabIndex = showSide ? 0 : -1;
+                    btn.classList.toggle('side-pager--on', showSide);
+                });
+        }
+
+        // 上一页/下一页共用的入口：先判断越界再翻页——键盘那条路径没有 disabled
+        // 属性可挡，所以不能只靠按钮自身的禁用状态
+        function stepPage(direction) {
+            if (!$.fn.DataTable.isDataTable('#videosTable')) return;
+            const table = $('#videosTable').DataTable();
+            const info = table.page.info();
+            if (direction === 'prev' && info.page <= 0) return;
+            if (direction === 'next' && info.page >= info.pages - 1) return;
+            // dataTables.bootstrap4 重绘底部原生分页时，若焦点还留在旧的分页按钮上，
+            // 会把焦点还原到重绘出来的同位置新按钮（浏览器随之把视口拉过去）——
+            // 从别的入口（顶部/侧边/键盘）翻页时，这个焦点可能是上一次点底部分页留下的，
+            // 与这里的翻页回顶互相打架，表现为翻着翻着视口突然跳去表格最下面。
+            // 翻页前把这种"焦点还停在底部分页里"的情况挪开，让 dataTables.bootstrap4
+            // 内部 `$(paginateEl).find(document.activeElement)` 找不到东西，不触发还原
+            const active = document.activeElement;
+            if (active && active !== document.body && active.closest && active.closest('#videosTable_paginate')) {
+                active.blur();
+            }
+            table.page(direction === 'next' ? 'next' : 'previous').draw('page');
+        }
+
+        // 只需要绑一次：四个按钮的点击、page.dt 触发的翻页回顶、侧边按钮显隐的
+        // IntersectionObserver、全局 ← / → 翻页。table 初始化完成后（initComplete）调用
+        function bindPagerControls() {
+            const container = document.querySelector('.table-container');
+
+            document.getElementById('pagerPrev')?.addEventListener('click', () => stepPage('prev'));
+            document.getElementById('pagerNext')?.addEventListener('click', () => stepPage('next'));
+            document.getElementById('sidePrev')?.addEventListener('click', () => stepPage('prev'));
+            document.getElementById('sideNext')?.addEventListener('click', () => stepPage('next'));
+
+            // 底部原生分页、顶部翻页条、侧边按钮、键盘翻页都会触发 page.dt；搜索/筛选不会。
+            // 只有列表已经滚出视口上方时才拉回去，本来就在顶部时不动视口
+            if (container && $.fn.DataTable.isDataTable('#videosTable')) {
+                $('#videosTable').DataTable().on('page.dt', function () {
+                    const rect = container.getBoundingClientRect();
+                    if (rect.top < -8) {
+                        container.scrollIntoView({ behavior: prefersReducedMotion() ? 'auto' : 'smooth' });
+                    }
+                });
+            }
+
+            if (container && 'IntersectionObserver' in window) {
+                const observer = new IntersectionObserver((entries) => {
+                    sidePagersInView = entries[0].isIntersecting;
+                    if ($.fn.DataTable.isDataTable('#videosTable')) {
+                        syncPagers($('#videosTable').DataTable());
+                    }
+                }, { threshold: 0 });
+                observer.observe(container);
+            }
+
+            document.addEventListener('keydown', function (e) {
+                if (e.key !== 'ArrowLeft' && e.key !== 'ArrowRight') return;
+                if (e.altKey || e.ctrlKey || e.metaKey || e.shiftKey) return;
+                if (e.target.closest('input, select, textarea, [contenteditable]')) return;
+                if (document.querySelector('.modal.show')) return;
+                stepPage(e.key === 'ArrowRight' ? 'next' : 'prev');
+            });
+        }
+
         function formatCover(coverUrl, coverLocal, aid) {
             if (!coverUrl) return '<span class="text-muted">无封面</span>';
 
@@ -3196,7 +3402,9 @@
                       .replace(/"/g, '&quot;')
                       .replace(/'/g, '&#039;');
         }
-        
+
     </script>
+    <button type="button" class="side-pager side-pager--prev" id="sidePrev" aria-label="上一页" tabindex="-1" hidden>‹</button>
+    <button type="button" class="side-pager side-pager--next" id="sideNext" aria-label="下一页" tabindex="-1" hidden>›</button>
 </body>
 </html>
