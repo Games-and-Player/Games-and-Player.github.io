@@ -499,9 +499,18 @@
             display: flex;
             align-items: center;
             gap: 8px;
-            margin: 0 0 12px;
+            /* 与搜索框同行（长度控件的列里），行距交给 DataTables 的栅格 */
+            margin: 0;
+            min-height: 35px;
             font-size: 0.85rem;
             color: var(--ink-2);
+        }
+
+        @media (max-width: 767px) {
+            /* 窄屏时栅格上下堆叠，给排序和搜索之间留口气 */
+            .card-sort {
+                margin-bottom: 8px;
+            }
         }
 
         .card-sort label {
@@ -1724,13 +1733,17 @@
             applyViewMode(storedViewMode(), { initial: true });
         }
 
-        // 卡片模式专用的排序行 + 网格容器：initComplete 里插到 .table-scroll 后面，
-        // 这样 DataTables 的信息行和分页仍然在它们下面
+        // 网格容器：initComplete 里插到 .table-scroll 后面，这样 DataTables 的
+        // 信息行和分页仍然在它们下面。排序下拉则塞进"每页长度"控件所在的那一列——
+        // 卡片模式下长度控件是隐藏的（见 body.view-cards 规则），排序正好补上这个空位，
+        // 和右侧的搜索框同一行同一高度，不再各占一行
         function setupCardView(table) {
             const scroll = $('#videosTable').closest('.table-scroll');
             if (!scroll.length || document.getElementById('cardGrid')) return;
             scroll.after('<div id="cardGrid" class="card-grid" role="list" hidden></div>');
-            $('#cardGrid').before(
+            const lengthEl = document.querySelector('#videosTable_wrapper .dataTables_length');
+            const cardSortHost = lengthEl ? $(lengthEl) : $('#cardGrid');
+            cardSortHost[lengthEl ? 'after' : 'before'](
                 '<div class="card-sort" id="cardSort" hidden>' +
                     '<label for="cardSortSelect">排序</label>' +
                     '<select id="cardSortSelect" class="custom-select custom-select-sm">' +
