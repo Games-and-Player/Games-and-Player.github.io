@@ -97,6 +97,8 @@
             margin: 0;
             padding: 32px 0;
             overflow-x: hidden;
+            /* 关掉浏览器原生的下拉刷新，顶部下拉手势让给封面带彩蛋 */
+            overscroll-behavior-y: contain;
         }
 
         /* 台账的数字一律等宽 + 定宽数位，纵向能对齐 */
@@ -120,20 +122,22 @@
            z-index: -1 沉在标题下面，纯装饰用 aria-hidden 挡在无障碍树外 */
         .hero-band {
             position: absolute;
-            inset: 0 0 auto 0;
+            inset: 0;
             z-index: -1;
             display: grid;
             grid-template-columns: repeat(8, 1fr);
+            align-items: center;
             gap: 8px;
             padding: 0 8px;
             overflow: hidden;
             pointer-events: none;
-            opacity: .42;
+            opacity: .30;
             -webkit-mask-image: linear-gradient(180deg, #000 0%, rgba(0, 0, 0, .9) 45%, transparent 100%);
             mask-image: linear-gradient(180deg, #000 0%, rgba(0, 0, 0, .9) 45%, transparent 100%);
         }
 
         .hero-band__tile {
+            display: block;
             aspect-ratio: 16 / 10;
             border-radius: 8px;
             overflow: hidden;
@@ -152,24 +156,16 @@
             filter: grayscale(.6) saturate(.85);
         }
 
-        .hero-caption {
-            margin: 6px 0 0;
-            font-size: .78rem;
-            color: var(--ink-3);
+        /* 显出态下已删除瓦片允许悬停看清封面原色，transition 已在 img 规则里 */
+        .hero-reveal .hero-band__tile--deleted:hover img {
+            filter: none;
         }
 
         @media (max-width: 767px) {
             .hero-band {
                 grid-template-columns: repeat(4, 1fr);
-                opacity: .36;
             }
             .hero-band__tile:nth-child(n + 5) {
-                display: none;
-            }
-            .header {
-                padding-top: 60px;
-            }
-            .hero-caption__years {
                 display: none;
             }
         }
@@ -180,7 +176,6 @@
             z-index: 0;
             text-align: center;
             margin-bottom: 32px;
-            padding-top: 88px;
         }
 
         /* flex 让图标与标题之间只留一个受控的 gap，
@@ -205,6 +200,35 @@
             margin: 0;
             color: var(--muted-color);
             font-size: 1rem;
+        }
+
+        /* 封面带彩蛋显出态：封面带盖过标题，标题淡出但留在原地；
+           JS 里的 reveal()/hide() 只负责挂/摘 body.hero-reveal */
+        .hero-reveal .hero-band {
+            opacity: 1;
+            -webkit-mask-image: none;
+            mask-image: none;
+            pointer-events: auto;
+        }
+
+        .hero-reveal .header h1,
+        .hero-reveal .header p {
+            opacity: .08;
+            pointer-events: none;
+        }
+
+        .hero-band,
+        .header h1,
+        .header p {
+            transition: opacity .35s;
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .hero-band,
+            .header h1,
+            .header p {
+                transition: none;
+            }
         }
 
         .stats-cards {
@@ -1219,7 +1243,7 @@
 
             /* 深色下封面带压得更暗，免得整片封面在暗背景上发光 */
             .hero-band {
-                opacity: .30;
+                opacity: .22;
             }
         }
 
@@ -1248,10 +1272,9 @@
     <div class="container-fluid">
         <!-- 头部 -->
         <div class="header">
-            <div class="hero-band" id="heroBand" aria-hidden="true"></div>
+            <div class="hero-band" id="heroBand" inert aria-hidden="true"></div>
             <h1><svg class="icon" aria-hidden="true"><use href="#i-gamepad"/></svg> 宋少弘（原游戏公民大会）视频投稿存档</h1>
             <p>永不退场的闯关族</p>
-            <p class="hero-caption" id="heroCaption" hidden></p>
         </div>
         
         <!-- 统计卡片 -->
@@ -1427,6 +1450,8 @@
             bindTagCloud();
             // 绑定表格行内的委托事件（标签展开、封面放大）
             bindRowEvents();
+            // 绑定封面带彩蛋：上滑/下拉显出手势，以及已删除瓦片的站内定位
+            bindHeroBand();
             // 表格/卡片视图切换：先把上次选的视图应用到 body，避免加载完再闪一下
             bindViewToggle();
             // 加载视频数据
@@ -2005,95 +2030,84 @@
             return m ? { year: Number(m[1]), month: Number(m[2]), day: Number(m[3]) } : null;
         }
 
-        // 最多挑 8 条「历史上这几天」发的稿子：候选只取有本地镜像封面的视频
-        // （零外部请求；整份数据都没有镜像时才退回 cover），排除今年的记录；
-        // 按与今天的月日距离升序、同距离已删除优先、再按投稿时间升序取前 8，
-        // 返回时按投稿时间升序排列（时间线感）
-        function pickHeroVideos(videos, today) {
-            // today 默认用访问者本地时区的 new Date()——这里的"今天"就是访问者的当地日期，故意不转 UTC
-            today = (today instanceof Date) ? today : new Date();
+        // Fisher–Yates，返回新数组，不改原数组
+        function shuffleArray(list) {
+            const arr = list.slice();
+            for (let i = arr.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                const tmp = arr[i];
+                arr[i] = arr[j];
+                arr[j] = tmp;
+            }
+            return arr;
+        }
+
+        // 每次访问随机挑最多 count 条「历史同期」投稿做封面带：候选只取有本地
+        // 镜像封面的视频（零外部请求；整份数据都没有镜像时才退回 cover）；
+        // pool 是候选里往年同期的一批（排除今年，月日环形距离 ≤ 2 天），够数就
+        // 从 pool 里洗牌抽 count 张；不够就把 pool 全用上，再从候选里剩下的
+        // 视频随机补足到 count（还不够就有多少用多少）。不做任何持久化，每次
+        // 刷新都重新抽。返回按投稿时间升序排列（时间线感，也是瓦片的渲染顺序）
+        function pickHeroVideos(videos, count = 8) {
+            // today 用访问者本地时区的 new Date()——这里的"今天"就是访问者的当地日期，故意不转 UTC
+            const today = new Date();
             const thisYear = today.getFullYear();
             const todayIdx = heroDayIndex(today.getMonth() + 1, today.getDate());
 
             const mirrored = videos.filter(v => v.cover_local);
-            const pool = mirrored.length ? mirrored : videos.filter(v => v.cover);
+            const candidates = mirrored.length ? mirrored : videos.filter(v => v.cover);
 
-            const scored = [];
-            pool.forEach(video => {
+            const pool = [];
+            const rest = [];
+            candidates.forEach(video => {
                 const ymd = parseCreatedYmd(video);
-                if (!ymd || ymd.year === thisYear) return; // 排掉"今年"的记录
-                const diff = Math.abs(heroDayIndex(ymd.month, ymd.day) - todayIdx);
-                const distance = Math.min(diff, 366 - diff);
-                scored.push({ video, distance });
+                if (ymd && ymd.year < thisYear) {
+                    const diff = Math.abs(heroDayIndex(ymd.month, ymd.day) - todayIdx);
+                    const distance = Math.min(diff, 366 - diff);
+                    if (distance <= 2) {
+                        pool.push(video);
+                        return;
+                    }
+                }
+                rest.push(video); // 候选中未入选 pool 的其余视频，数量不够时从这里随机补
             });
 
-            scored.sort((a, b) => {
-                if (a.distance !== b.distance) return a.distance - b.distance;
-                const aDeleted = statusOf(a.video) !== 'available' ? 0 : 1;
-                const bDeleted = statusOf(b.video) !== 'available' ? 0 : 1;
-                if (aDeleted !== bDeleted) return aDeleted - bDeleted;
-                return a.video.created_at < b.video.created_at ? -1 : (a.video.created_at > b.video.created_at ? 1 : 0);
-            });
+            const picked = pool.length >= count
+                ? shuffleArray(pool).slice(0, count)
+                : pool.concat(shuffleArray(rest).slice(0, count - pool.length));
 
-            return scored.slice(0, 8)
-                .map(item => item.video)
-                .sort((a, b) => (a.created_at < b.created_at ? -1 : (a.created_at > b.created_at ? 1 : 0)));
+            return picked.sort((a, b) => (a.created_at < b.created_at ? -1 : (a.created_at > b.created_at ? 1 : 0)));
         }
 
-        // picked 是 pickHeroVideos() 的结果（按投稿时间升序）；用同一个 today 把每条
-        // 与今天的距离重新算出带符号的偏移（正负天数，处理跨年环绕），取偏移的
-        // 最小/最大值拼出日期范围
-        function heroCaptionText(picked, today) {
-            if (!picked.length) return '';
-            today = (today instanceof Date) ? today : new Date();
-            const todayIdx = heroDayIndex(today.getMonth() + 1, today.getDate());
-
-            const years = Array.from(new Set(picked.map(v => parseCreatedYmd(v).year))).sort((a, b) => a - b);
-            const yearsText = years.join('、') + ' 年';
-
-            let allToday = true;
-            const displayDates = picked.map(video => {
-                const ymd = parseCreatedYmd(video);
-                const rawDiff = heroDayIndex(ymd.month, ymd.day) - todayIdx;
-                let offset = rawDiff;
-                if (offset > 183) offset -= 366;
-                else if (offset < -183) offset += 366;
-                if (offset !== 0) allToday = false;
-                return new Date(Date.UTC(today.getFullYear(), today.getMonth(), today.getDate() + offset));
-            });
-
-            // 年份单独包一层 span，窄屏隐藏它来缩短说明文字，避免换行；
-            // 拼起来的可见文本（不算 span 标签本身）与隐藏前逐字一致
-            if (allToday) {
-                return `背景：往年今日的投稿<span class="hero-caption__years">（${yearsText}）</span>`;
-            }
-
-            const minDate = new Date(Math.min.apply(null, displayDates));
-            const maxDate = new Date(Math.max.apply(null, displayDates));
-            const minMonth = minDate.getUTCMonth() + 1;
-            const maxMonth = maxDate.getUTCMonth() + 1;
-            const rangeText = (minMonth === maxMonth)
-                ? `${minMonth} 月 ${minDate.getUTCDate()}–${maxDate.getUTCDate()} 日`
-                : `${minMonth} 月 ${minDate.getUTCDate()} 日–${maxMonth} 月 ${maxDate.getUTCDate()} 日`;
-
-            return `背景：往年同期的投稿（${rangeText}<span class="hero-caption__years">；${yearsText}</span>）`;
-        }
-
+        // 瓦片本体：现存/已补档直接链到B站原片/补档新开标签页；已删除（待补档
+        // 或仅自见）没有外链可去，链回本页表格并带上 data-locate-aid，点击行为
+        // 见 bindHeroBand() 里对 [data-locate-aid] 的委托处理
         function heroTileHtml(video) {
-            const deleted = statusOf(video) !== 'available';
+            const status = statusOf(video);
+            const deleted = status !== 'available';
             const src = video.cover_local || video.cover;
-            return `<div class="hero-band__tile${deleted ? ' hero-band__tile--deleted' : ''}">` +
+            const dateText = video.created_at ? escapeHtml(String(video.created_at).slice(0, 10)) : '';
+            const titleText = video.title ? escapeHtml(video.title) : '无标题';
+            const statusText = escapeHtml(STATUS_LABEL[status]);
+            const tileTitle = `${dateText} ${titleText}（${statusText}）`;
+            const cls = `hero-band__tile${deleted ? ' hero-band__tile--deleted' : ''}`;
+
+            const linkAttrs = status === 'available'
+                ? `href="https://www.bilibili.com/video/av${video.aid}" target="_blank" rel="noopener"`
+                : status === 'backup'
+                    ? `href="https://www.bilibili.com/video/av${video.reupload_aid}" target="_blank" rel="noopener"`
+                    : `href="#videosTable" data-locate-aid="${video.aid}"`;
+
+            return `<a class="${cls}" ${linkAttrs} title="${tileTitle}">` +
                 `<img src="${escapeHtml(src)}" alt="" decoding="async" fetchpriority="low" referrerpolicy="no-referrer">` +
-                `</div>`;
+                `</a>`;
         }
 
         function renderHeroBand(videos) {
             const band = document.getElementById('heroBand');
-            const caption = document.getElementById('heroCaption');
             if (!band) return;
 
-            const today = new Date();
-            const picked = pickHeroVideos(videos, today);
+            const picked = pickHeroVideos(videos);
             band.innerHTML = picked.map(heroTileHtml).join('');
             // 镜像封面偶尔会缺文件，加载失败就把整块摘掉，不留裂图占位
             band.querySelectorAll('img').forEach(img => {
@@ -2102,18 +2116,101 @@
                     if (tile) tile.remove();
                 };
             });
+        }
 
-            if (!caption) return;
-            const text = heroCaptionText(picked, today);
-            if (text) {
-                // text 里带 <span class="hero-caption__years">，都是我们自己拼的数字/中文字面量，
-                // 没有任何视频字段流入，innerHTML 是安全的
-                caption.innerHTML = text;
-                caption.hidden = false;
-            } else {
-                caption.textContent = '';
-                caption.hidden = true;
+        // ===== 封面带彩蛋：顶部上滑/下拉显出，Esc 或点击别处收起 =====
+        function heroPrefersReducedMotion() {
+            return window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        }
+
+        function heroIsRevealed() {
+            return document.body.classList.contains('hero-reveal');
+        }
+
+        // 没有瓦片（数据还没加载完，或全部镜像加载失败被摘掉了）就没什么好显出的
+        function revealHeroBand() {
+            const band = document.getElementById('heroBand');
+            if (!band || !band.children.length) return;
+            document.body.classList.add('hero-reveal');
+            band.removeAttribute('inert');
+            band.setAttribute('aria-hidden', 'false');
+        }
+
+        function hideHeroBand() {
+            document.body.classList.remove('hero-reveal');
+            const band = document.getElementById('heroBand');
+            if (!band) return;
+            band.setAttribute('inert', '');
+            band.setAttribute('aria-hidden', 'true');
+        }
+
+        function heroHandleWheel(e) {
+            if (!heroIsRevealed() && window.scrollY <= 0 && e.deltaY < 0) {
+                revealHeroBand();
+            } else if (heroIsRevealed() && e.deltaY > 0) {
+                hideHeroBand();
             }
+        }
+
+        let heroTouchStartY = null;
+
+        function heroHandleTouchStart(e) {
+            heroTouchStartY = (window.scrollY <= 0 && e.touches && e.touches.length)
+                ? e.touches[0].clientY
+                : null;
+        }
+
+        function heroHandleTouchMove(e) {
+            if (heroTouchStartY === null || !e.touches || !e.touches.length) return;
+            if (window.scrollY <= 0 && (e.touches[0].clientY - heroTouchStartY) >= 60) {
+                revealHeroBand();
+            }
+        }
+
+        function heroHandleScroll() {
+            if (heroIsRevealed() && window.scrollY > 0) {
+                hideHeroBand();
+            }
+        }
+
+        function heroHandleKeydown(e) {
+            if (e.key === 'Escape' && heroIsRevealed()) {
+                hideHeroBand();
+            }
+        }
+
+        // 显出时点 .header 以外任意处收起；瓦片本身在 .header 内，点瓦片不会触发这条
+        function heroHandleOutsideClick(e) {
+            if (!heroIsRevealed()) return;
+            if (e.target.closest('.header')) return;
+            hideHeroBand();
+        }
+
+        // 点击已删除（待补档/仅自见）瓦片：收起彩蛋，把表格搜索定位到那条 aid，
+        // 表格视图、卡片视图共用同一份 DataTables 搜索，两边都会显示出那一条
+        function heroLocateAid(aid) {
+            hideHeroBand();
+            const table = $('#videosTable').DataTable();
+            table.search(String(aid)).draw();
+            $('#videosTable_filter input').val(String(aid));
+            document.querySelector('.table-container').scrollIntoView({
+                behavior: heroPrefersReducedMotion() ? 'auto' : 'smooth'
+            });
+        }
+
+        function bindHeroBand() {
+            // 手势监听器都不 preventDefault，标 passive 让浏览器不必等 JS 决定就能滚动
+            window.addEventListener('wheel', heroHandleWheel, { passive: true });
+            window.addEventListener('touchstart', heroHandleTouchStart, { passive: true });
+            window.addEventListener('touchmove', heroHandleTouchMove, { passive: true });
+            window.addEventListener('scroll', heroHandleScroll, { passive: true });
+            document.addEventListener('keydown', heroHandleKeydown, { passive: true });
+            document.addEventListener('click', heroHandleOutsideClick, { passive: true });
+
+            $(document).on('click', '#heroBand [data-locate-aid]', function (e) {
+                e.preventDefault();
+                heroLocateAid(this.dataset.locateAid);
+            });
         }
         
         function formatTags(tags, aid) {
