@@ -409,6 +409,9 @@
             position: absolute;
             left: 50%;
             transform: translateX(-50%);
+            /* 栅格列自带 position:relative 且排在后面，同为 auto 层级时会把
+               翻页器的右半边透明地盖住（下页点不到）——抬一层 */
+            z-index: 5;
         }
 
         @media (max-width: 991px) {
