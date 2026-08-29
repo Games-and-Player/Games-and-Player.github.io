@@ -399,6 +399,26 @@
             color: var(--ink-2);
         }
 
+        /* 长度(排序)/搜索那一行：翻页器绝对居中，行内三样同高 */
+        .table-controls-row {
+            position: relative;
+            align-items: center;
+        }
+
+        .table-controls-row .mini-pager {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        @media (max-width: 991px) {
+            .table-controls-row .mini-pager {
+                position: static;
+                transform: none;
+                margin: 0 auto 8px;
+            }
+        }
+
         .mini-pager__btn {
             border: 1px solid var(--line);
             background: var(--surface);
@@ -1481,12 +1501,12 @@
                         <button type="button" class="view-btn" data-view="table" aria-pressed="false"><svg class="icon" aria-hidden="true"><use href="#i-list"/></svg> 表格</button>
                         <button type="button" class="view-btn" data-view="cards" aria-pressed="true"><svg class="icon" aria-hidden="true"><use href="#i-grid"/></svg> 卡片</button>
                     </div>
-                    <div class="mini-pager" id="miniPager" hidden>
-                        <button type="button" class="mini-pager__btn" id="pagerPrev" aria-label="上一页">‹ 上页</button>
-                        <span class="mini-pager__info num" id="pagerInfo" aria-live="polite"></span>
-                        <button type="button" class="mini-pager__btn" id="pagerNext" aria-label="下一页">下页 ›</button>
-                    </div>
                 </div>
+            </div>
+            <div class="mini-pager" id="miniPager" hidden>
+                <button type="button" class="mini-pager__btn" id="pagerPrev" aria-label="上一页">‹ 上页</button>
+                <span class="mini-pager__info num" id="pagerInfo" aria-live="polite"></span>
+                <button type="button" class="mini-pager__btn" id="pagerNext" aria-label="下一页">下页 ›</button>
             </div>
 
             <div class="loading" id="loading">
@@ -1742,6 +1762,14 @@
             if (!scroll.length || document.getElementById('cardGrid')) return;
             scroll.after('<div id="cardGrid" class="card-grid" role="list" hidden></div>');
             const lengthEl = document.querySelector('#videosTable_wrapper .dataTables_length');
+            // 「上页/下页」挪进长度/搜索那一行的正中间：第一行只留 chips 和 时长+视图，
+            // 1022px 的工具条宽度就够一行放下了；窄屏（<992px）退化为独占一行居中
+            const controlsRow = lengthEl ? lengthEl.closest('.row') : null;
+            const miniPager = document.getElementById('miniPager');
+            if (controlsRow && miniPager) {
+                controlsRow.classList.add('table-controls-row');
+                controlsRow.insertBefore(miniPager, controlsRow.children[1] || null);
+            }
             const cardSortHost = lengthEl ? $(lengthEl) : $('#cardGrid');
             cardSortHost[lengthEl ? 'after' : 'before'](
                 '<div class="card-sort" id="cardSort" hidden>' +
