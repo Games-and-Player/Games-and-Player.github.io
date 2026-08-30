@@ -1,6 +1,6 @@
 {
     "schema_version": 2,
-    "generated_at": "2026-08-30T07:07:39+08:00",
+    "generated_at": "2026-08-30T08:12:28+08:00",
     "videos": [
         {
             "aid": 117167714668953,
@@ -46460,7 +46460,8 @@
             "cover_local": "covers/55387956.webp",
             "duration": null,
             "restored_at": null,
-            "deleted_found_at": "2026-04-04"
+            "deleted_found_at": "2026-04-04",
+            "reupload_aid": 117177193599291
         },
         {
             "aid": 55272404,
@@ -46948,7 +46949,8 @@
             "cover_local": "covers/52909603.webp",
             "duration": null,
             "restored_at": null,
-            "deleted_found_at": "2026-04-04"
+            "deleted_found_at": "2026-04-04",
+            "reupload_aid": 117177025896191
         },
         {
             "aid": 52761326,
@@ -48165,7 +48167,8 @@
             "cover_local": "covers/48392160.webp",
             "duration": null,
             "restored_at": null,
-            "deleted_found_at": "2026-04-04"
+            "deleted_found_at": "2026-04-04",
+            "reupload_aid": 117177512434967
         },
         {
             "aid": 48275861,
@@ -50405,7 +50408,8 @@
             "cover_local": "covers/39082029.webp",
             "duration": null,
             "restored_at": null,
-            "deleted_found_at": "2026-04-04"
+            "deleted_found_at": "2026-04-04",
+            "reupload_aid": 117177495654806
         },
         {
             "aid": 39062407,
@@ -55176,7 +55180,8 @@
             "cover_local": "covers/25059828.webp",
             "duration": null,
             "restored_at": null,
-            "deleted_found_at": "2026-04-04"
+            "deleted_found_at": "2026-04-04",
+            "reupload_aid": 117177193599192
         },
         {
             "aid": 24937372,
@@ -58337,7 +58342,8 @@
             "cover_local": "covers/20601668.webp",
             "duration": null,
             "restored_at": null,
-            "deleted_found_at": "2026-04-04"
+            "deleted_found_at": "2026-04-04",
+            "reupload_aid": 117177495592709
         },
         {
             "aid": 20556610,
@@ -58688,7 +58694,8 @@
             "cover_local": "covers/20116713.webp",
             "duration": null,
             "restored_at": null,
-            "deleted_found_at": "2026-04-04"
+            "deleted_found_at": "2026-04-04",
+            "reupload_aid": 117177277487318
         },
         {
             "aid": 20094886,
@@ -62868,7 +62875,8 @@
             "cover_local": "covers/16566589.webp",
             "duration": null,
             "restored_at": null,
-            "deleted_found_at": "2026-04-04"
+            "deleted_found_at": "2026-04-04",
+            "reupload_aid": 117177478815618
         },
         {
             "aid": 16562544,
@@ -70826,8 +70834,8 @@
         "available": 1089,
         "deleted": 939,
         "self_visible": 5,
-        "reuploaded": 483,
-        "pending_reupload": 461,
+        "reuploaded": 491,
+        "pending_reupload": 453,
         "reupload_dead": 0,
         "by_year": {
             "2016": {
