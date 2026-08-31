@@ -1,7 +1,45 @@
 {
     "schema_version": 2,
-    "generated_at": "2026-08-30T08:12:28+08:00",
+    "generated_at": "2026-08-31T18:46:34+08:00",
     "videos": [
+        {
+            "aid": 117183870931028,
+            "bvid": "BV1XF4X6TE2f",
+            "title": "追求沉浸，GTA 6核心玩法更为拟真",
+            "cover": "https://i1.hdslb.com/bfs/archive/cdb5b61e0819d5ba1cd0a066622dfdd7548e5fc9.jpg",
+            "desc": "千呼万唤始出来，GTA 6官方实机预告正式发布。\n显然，这一作的拟真度会进一步提升，但这也可能带来节奏的放缓。\n本期早餐车，我们就来聊聊这个话题。",
+            "tags": [
+                "上B站看播客",
+                "游戏杂谈",
+                "ROCKSTAR",
+                "PS5",
+                "GTA6",
+                "实机",
+                "游戏文化",
+                "罪恶都市",
+                "荒野大镖客2",
+                "拟真度"
+            ],
+            "cid": 41427142455,
+            "created_at": "2026-08-31 07:30",
+            "created_timestamp": 1788132600,
+            "duration": 859,
+            "status_code": 0,
+            "status_description": "OK",
+            "is_available": true,
+            "status_check_time": "2026-08-31T18:46:29",
+            "deleted_found_at": null,
+            "restored_at": null,
+            "stat": {
+                "view": 16076,
+                "like": 1133,
+                "coin": 418,
+                "favorite": 300,
+                "danmaku": 124,
+                "at": "2026-08-31"
+            },
+            "cover_local": "covers/117183870931028.webp"
+        },
         {
             "aid": 117167714668953,
             "bvid": "BV1Ti496YEwv",
@@ -70830,8 +70868,8 @@
         }
     ],
     "metadata": {
-        "total": 2033,
-        "available": 1089,
+        "total": 2034,
+        "available": 1090,
         "deleted": 939,
         "self_visible": 5,
         "reuploaded": 491,
@@ -70879,7 +70917,7 @@
                 "deleted": 0
             },
             "2026": {
-                "available": 150,
+                "available": 151,
                 "deleted": 1
             }
         },
