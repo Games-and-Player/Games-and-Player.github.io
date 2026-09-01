@@ -1,7 +1,45 @@
 {
     "schema_version": 2,
-    "generated_at": "2026-08-31T18:46:34+08:00",
+    "generated_at": "2026-09-01T17:21:03+08:00",
     "videos": [
+        {
+            "aid": 117189944351401,
+            "bvid": "BV1Y4t865Ezz",
+            "title": "dlss 5争议，开发权暂难下放玩家",
+            "cover": "https://i1.hdslb.com/bfs/archive/bcea7ec4d3f0c263a554a07e482a557d61dea7cb.jpg",
+            "desc": "《NBA 2K27》预览版泄露的 DLSS 5 神经库文件，被 Mod 社区解密后引发争议。DLSS 5可能是革命性的，但面临的问题，也不在少数。\n本期早餐车，我们就来聊聊这个话题。",
+            "tags": [
+                "上B站看播客",
+                "NVIDIA",
+                "AI",
+                "游戏杂谈",
+                "美术",
+                "游戏开发",
+                "DLSS 5",
+                "争议",
+                "游戏文化",
+                "业界分析"
+            ],
+            "cid": 41461941632,
+            "created_at": "2026-09-01 07:30",
+            "created_timestamp": 1788219000,
+            "duration": 960,
+            "status_code": 0,
+            "status_description": "OK",
+            "is_available": true,
+            "status_check_time": "2026-09-01T17:20:58",
+            "deleted_found_at": null,
+            "restored_at": null,
+            "stat": {
+                "view": 19335,
+                "like": 884,
+                "coin": 265,
+                "favorite": 210,
+                "danmaku": 139,
+                "at": "2026-09-01"
+            },
+            "cover_local": "covers/117189944351401.webp"
+        },
         {
             "aid": 117183870931028,
             "bvid": "BV1XF4X6TE2f",
@@ -70868,8 +70906,8 @@
         }
     ],
     "metadata": {
-        "total": 2034,
-        "available": 1090,
+        "total": 2035,
+        "available": 1091,
         "deleted": 939,
         "self_visible": 5,
         "reuploaded": 491,
@@ -70917,7 +70955,7 @@
                 "deleted": 0
             },
             "2026": {
-                "available": 151,
+                "available": 152,
                 "deleted": 1
             }
         },
