@@ -1,7 +1,44 @@
 {
     "schema_version": 2,
-    "generated_at": "2026-09-01T17:21:03+08:00",
+    "generated_at": "2026-09-02T16:43:13+08:00",
     "videos": [
+        {
+            "aid": 117194474197157,
+            "bvid": "BV1Wutu6KEHY",
+            "title": "口袋巨幕，都市玩家的终极自由",
+            "cover": "https://i2.hdslb.com/bfs/archive/072ea603b25fb52c5d41734cdaa196ecfb8b6668.jpg",
+            "desc": "告别笨重与小屏！VITURE Pro 2凭借63g无感佩戴、内置近视调节与索尼巨幕，带你在都市角落随时解锁沉浸大屏自由。",
+            "tags": [
+                "上B站看播客",
+                "游戏杂谈",
+                "XR眼镜",
+                "移动巨幕",
+                "VITURE Pro 2",
+                "NS2",
+                "AR眼镜",
+                "游戏文化",
+                "VITURE"
+            ],
+            "cid": 41486451899,
+            "created_at": "2026-09-02 07:30",
+            "created_timestamp": 1788305400,
+            "duration": 524,
+            "status_code": 0,
+            "status_description": "OK",
+            "is_available": true,
+            "status_check_time": "2026-09-02T16:43:08",
+            "deleted_found_at": null,
+            "restored_at": null,
+            "stat": {
+                "view": 6207,
+                "like": 668,
+                "coin": 233,
+                "favorite": 101,
+                "danmaku": 25,
+                "at": "2026-09-02"
+            },
+            "cover_local": "covers/117194474197157.webp"
+        },
         {
             "aid": 117189944351401,
             "bvid": "BV1Y4t865Ezz",
@@ -70906,8 +70943,8 @@
         }
     ],
     "metadata": {
-        "total": 2035,
-        "available": 1091,
+        "total": 2036,
+        "available": 1092,
         "deleted": 939,
         "self_visible": 5,
         "reuploaded": 491,
@@ -70955,7 +70992,7 @@
                 "deleted": 0
             },
             "2026": {
-                "available": 152,
+                "available": 153,
                 "deleted": 1
             }
         },
