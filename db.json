@@ -1,7 +1,45 @@
 {
     "schema_version": 2,
-    "generated_at": "2026-09-02T16:43:13+08:00",
+    "generated_at": "2026-09-03T12:46:06+08:00",
     "videos": [
+        {
+            "aid": 117201487008888,
+            "bvid": "BV1EDtU66E56",
+            "title": "人面桃花，鬼武者新作DEMO玩后感",
+            "cover": "https://i0.hdslb.com/bfs/archive/ec9f7e7846e6a930111906d24d60be9780e7acb3.jpg",
+            "desc": "试玩了steam和ns2版本的鬼武者新作，游戏依旧水准在线，但我却兴奋不起来。也许，终究是人面桃花。\n本期早餐车，我们就来聊聊这个话题。",
+            "tags": [
+                "上B站看播客",
+                "游戏杂谈",
+                "steam",
+                "卡普空",
+                "鬼武者",
+                "感慨",
+                "NS2",
+                "游戏试玩",
+                "游戏文化",
+                "demo"
+            ],
+            "cid": 41523873360,
+            "created_at": "2026-09-03 07:30",
+            "created_timestamp": 1788391800,
+            "duration": 854,
+            "status_code": 0,
+            "status_description": "OK",
+            "is_available": true,
+            "status_check_time": "2026-09-03T12:46:01",
+            "deleted_found_at": null,
+            "restored_at": null,
+            "stat": {
+                "view": 10237,
+                "like": 687,
+                "coin": 215,
+                "favorite": 137,
+                "danmaku": 131,
+                "at": "2026-09-03"
+            },
+            "cover_local": "covers/117201487008888.webp"
+        },
         {
             "aid": 117194474197157,
             "bvid": "BV1Wutu6KEHY",
@@ -70943,8 +70981,8 @@
         }
     ],
     "metadata": {
-        "total": 2036,
-        "available": 1092,
+        "total": 2037,
+        "available": 1093,
         "deleted": 939,
         "self_visible": 5,
         "reuploaded": 491,
@@ -70992,7 +71030,7 @@
                 "deleted": 0
             },
             "2026": {
-                "available": 153,
+                "available": 154,
                 "deleted": 1
             }
         },
