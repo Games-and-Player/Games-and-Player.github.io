@@ -11,13 +11,11 @@ import time
 from datetime import datetime
 from pathlib import Path
 
-import pytz
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
-from scripts.enrich import now_iso, recompute_metadata, write_db  # noqa: E402
+from scripts.enrich import TZ, now_iso, recompute_metadata, write_db  # noqa: E402
 from utils.bilibili_api import BilibiliAPI  # noqa: E402
 
-TZ = pytz.timezone("Asia/Shanghai")
 DB = Path("db.json")
 GONE = {62002: "稿件不可见（已删除）", 62012: "仅UP主自己可见", -404: "啥都木有"}
 # 62004「稿件审核中」是临时状态，按未知处理：不改动记录，等下一轮巡检

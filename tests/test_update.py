@@ -3,13 +3,13 @@ import json
 from datetime import datetime
 
 import pytest
-import pytz
 from PIL import Image
 
 from scripts import update
+from scripts.enrich import TZ  # noqa: E402
 from scripts.update import fetch_new, make_record
 
-NOW = pytz.timezone("Asia/Shanghai").localize(datetime(2026, 8, 25, 12, 48, 2))
+NOW = datetime(2026, 8, 25, 12, 48, 2, tzinfo=TZ)
 ITEM = {"aid": 117132146908944, "title": "深巷的汤包店", "pic": "http://i2.hdslb.com/bfs/archive/x.jpg",
         "description": "d", "created": 1787295071}
 

@@ -1911,21 +1911,9 @@
                 const empty = document.createElement('p');
                 empty.className = 'card-grid__empty';
                 empty.setAttribute('role', 'status');
-                empty.textContent = cardGridEmptyText(table);
+                empty.textContent = '没有匹配结果';
                 grid.appendChild(empty);
             }
-        }
-
-        // 优先读 DataTables 语言包里配置的"无匹配结果"文案（表格本体就是显示这句），
-        // 取不到就退回字面量兜底
-        function cardGridEmptyText(table) {
-            try {
-                const lang = table.settings()[0].oLanguage;
-                if (lang && lang.sZeroRecords) return lang.sZeroRecords;
-            } catch (e) {
-                // 忽略，走兜底文案
-            }
-            return '没有匹配结果';
         }
 
         function cardRibbon(status) {

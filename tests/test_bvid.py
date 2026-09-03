@@ -1,7 +1,7 @@
 import json
 from pathlib import Path
 
-from generator.bvid import av2bv, bv2av
+from scripts.enrich import av2bv, bv2av
 
 
 def test_known_pair():

@@ -6,16 +6,13 @@ import time
 from datetime import datetime
 from pathlib import Path
 
-import pytz
 import requests
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
-from generator.bvid import av2bv  # noqa: E402
-from scripts.enrich import now_iso, recompute_metadata, write_db  # noqa: E402
+from scripts.enrich import TZ, av2bv, now_iso, recompute_metadata, write_db  # noqa: E402
 from scripts.mirror_covers import COVER_DIR, fetch, to_webp  # noqa: E402
 from utils.bilibili_api import BilibiliAPI  # noqa: E402
 
-TZ = pytz.timezone("Asia/Shanghai")
 DB = Path("db.json")
 MID = "67390259"
 STAT_KEYS = ("view", "like", "coin", "favorite", "danmaku")

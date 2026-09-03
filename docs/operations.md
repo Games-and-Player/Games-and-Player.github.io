@@ -10,7 +10,6 @@
 | `scripts/enrich.py` | 迁移与补数据时手动 | 升级到 schema v2 并补 `bvid`/https 封面/`cover_local`；加 `--durations` 用 view 接口补 `duration`/`stat` |
 | `scripts/mirror_covers.py` | 有新记录时手动 | 把封面下载成 `covers/{aid}.webp`，已存在的跳过 |
 | `scripts/validate.py` | 每次改完 `db.json` | 字段、类型、唯一性、状态一致性校验，出错退出码 1 |
-| `scripts/report_unmatched.py` | 整理栏目规则时 | 列出未识别栏目的视频，供填 `data/overrides.json` |
 
 `enrich.py`、`mirror_covers.py`、`update_reupload.py` 都是幂等的，可以放心重跑。
 

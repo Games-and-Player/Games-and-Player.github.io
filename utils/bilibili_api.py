@@ -1,9 +1,11 @@
 #!/usr/bin/python3
 
 import json
+import logging
 import os
 import random
 import time
+from dataclasses import dataclass, field
 from functools import reduce
 from hashlib import md5
 from typing import Any, Dict, Optional
@@ -12,9 +14,29 @@ from urllib.parse import urlencode
 import qrcode
 import requests
 
-from .config import LoginConfig, UserInfo
-from .exceptions import BilibiliError
-from .logger import setup_logger
+
+COOKIE_FILE = "./data/cookie.json"
+LOG_FILE = "./data/login.log"
+
+
+@dataclass
+class UserInfo:
+    ban: bool = False
+    coins: int = 0
+    face: str = ""
+    level: int = 0
+    nickname: str = ""
+    live_room: dict = field(default_factory=dict)
+
+
+class BilibiliError(Exception):
+    """B站相关异常"""
+
+
+os.makedirs(os.path.dirname(LOG_FILE), exist_ok=True)
+logging.basicConfig(level=logging.INFO, format="[%(asctime)s] %(name)s - %(levelname)s: %(message)s",
+                    handlers=[logging.FileHandler(LOG_FILE, encoding="utf-8"), logging.StreamHandler()])
+logger = logging.getLogger("bilibili_api")
 
 # 配置常量
 APPKEY = "4409e2ce8ffd12b8"
@@ -25,10 +47,9 @@ class BilibiliAPI:
     """B站API封装类"""
 
     def __init__(self):
-        self.config = LoginConfig
         self.session = requests.Session()
         self.user_info = UserInfo()
-        self.logger = setup_logger("bilibili_api", self.config.log_file)
+        self.logger = logger
 
         user_agents = [
             "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
@@ -95,52 +116,11 @@ class BilibiliAPI:
         # w_rid = md5((ae + mixin_key).encode(encoding="utf-8")).hexdigest()
         return w_rid
 
-    def get_tags(self, aid):
-        url = f"https://api.bilibili.com/x/web-interface/view/detail/tag?" + \
-              f"aid={aid}"
-        response = self._request("get", url=url, headers=self.api_headers)
-        return response
-
-    def get_cid(self, aid):
-        url = f"https://api.bilibili.com/x/player/pagelist?" + \
-              f"aid={aid}"
-        response = self._request("get", url=url, headers=self.api_headers)
-        return response
-
-    def get_vinfo(self, aid):
-        # url = f"https://api.bilibili.com/x/web-interface/view?" + \
-        #       f"aid={aid}"
-        url = f"https://api.bilibili.com/x/web-interface/view/detail?" + \
-              f"aid={aid}"
-        response = self._request("get", url=url, headers=self.api_headers)
-        print(response)
-        return response
-
     def get_view(self, aid) -> dict:
         """/x/web-interface/view：返回完整响应（code/message/data）。无需登录也可用。"""
         url = f"https://api.bilibili.com/x/web-interface/view?aid={aid}"
         response = self._request("get", url=url, headers=self.api_headers)
         return response or {"code": -1, "message": "network"}
-
-    def get_vids(self, mid, pn) -> dict:
-        """获取用户动态信息"""
-        for _ in range(5):
-            time.sleep(0.5)  # 重试之间必须留间隔，连打空间接口会吃 -412
-            try:
-                wts = int(time.time())
-                params = {"mid": mid, "pn": pn, "wts": wts}
-                w_rid = self.sign_params(params)
-                url = f"https://api.bilibili.com/x/space/wbi/arc/search?" + \
-                      f"mid={mid}&pn={pn}&w_rid={w_rid}&wts={wts}"
-                response = self._request("get", url, headers=self.api_headers)
-                if response and response.get("code") == 0:
-                    data = response["data"]
-                    return data
-                else:
-                    continue
-            except Exception as e:
-                self.logger.error(f"获取用户(mid={mid})视频信息失败：{e}")
-        return {}
 
     def get_user_info(self) -> bool:
         """用于获取用户信息，并返回当前的登录状态"""
@@ -218,7 +198,7 @@ class BilibiliAPI:
                 return False
         else:
             # 如果没有环境变量，则使用文件
-            cookie_file = cookie_file or self.config.cookie_file
+            cookie_file = cookie_file or COOKIE_FILE
             try:
                 with open(cookie_file, "r", encoding="utf-8") as f:
                     temp_cookie = json.load(f)
@@ -256,7 +236,7 @@ class BilibiliAPI:
 
     def login_with_qrcode(self, cookie_file: Optional[str] = None) -> bool:
         """使用二维码登录"""
-        cookie_file = cookie_file or self.config.cookie_file
+        cookie_file = cookie_file or COOKIE_FILE
         params = {
             "appkey": APPKEY,
             "local_id": 0,
