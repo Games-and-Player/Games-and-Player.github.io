@@ -116,11 +116,43 @@ class BilibiliAPI:
         # w_rid = md5((ae + mixin_key).encode(encoding="utf-8")).hexdigest()
         return w_rid
 
+    def get_tags(self, aid):
+        url = f"https://api.bilibili.com/x/web-interface/view/detail/tag?" + \
+              f"aid={aid}"
+        response = self._request("get", url=url, headers=self.api_headers)
+        return response
+
+    def get_cid(self, aid):
+        url = f"https://api.bilibili.com/x/player/pagelist?" + \
+              f"aid={aid}"
+        response = self._request("get", url=url, headers=self.api_headers)
+        return response
+
     def get_view(self, aid) -> dict:
         """/x/web-interface/view：返回完整响应（code/message/data）。无需登录也可用。"""
         url = f"https://api.bilibili.com/x/web-interface/view?aid={aid}"
         response = self._request("get", url=url, headers=self.api_headers)
         return response or {"code": -1, "message": "network"}
+
+    def get_vids(self, mid, pn) -> dict:
+        """获取用户动态信息"""
+        for _ in range(5):
+            time.sleep(0.5)  # 重试之间必须留间隔，连打空间接口会吃 -412
+            try:
+                wts = int(time.time())
+                params = {"mid": mid, "pn": pn, "wts": wts}
+                w_rid = self.sign_params(params)
+                url = f"https://api.bilibili.com/x/space/wbi/arc/search?" + \
+                      f"mid={mid}&pn={pn}&w_rid={w_rid}&wts={wts}"
+                response = self._request("get", url, headers=self.api_headers)
+                if response and response.get("code") == 0:
+                    data = response["data"]
+                    return data
+                else:
+                    continue
+            except Exception as e:
+                self.logger.error(f"获取用户(mid={mid})视频信息失败：{e}")
+        return {}
 
     def get_user_info(self) -> bool:
         """用于获取用户信息，并返回当前的登录状态"""

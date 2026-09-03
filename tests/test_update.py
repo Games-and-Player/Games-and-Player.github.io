@@ -8,6 +8,7 @@ from PIL import Image
 from scripts import update
 from scripts.enrich import TZ  # noqa: E402
 from scripts.update import fetch_new, make_record
+from utils.bilibili_api import BilibiliAPI
 
 NOW = datetime(2026, 8, 25, 12, 48, 2, tzinfo=TZ)
 ITEM = {"aid": 117132146908944, "title": "深巷的汤包店", "pic": "http://i2.hdslb.com/bfs/archive/x.jpg",
@@ -149,3 +150,11 @@ def test_main_mirrors_cover_when_image_decodes(tmp_path, monkeypatch):
     v = json.loads(db_path.read_text(encoding="utf-8"))["videos"][0]
     assert v["cover_local"] == f"covers/{ITEM['aid']}.webp"
     assert (covers / f"{ITEM['aid']}.webp").exists()
+
+
+def test_fake_api_surface_exists_on_real_api():
+    """update.py 把 api.get_vids / get_tags / get_cid 当函数引用传给 paced()，
+    普通的“.name(”grep 找不到；假 API 的每个公开方法都必须真的存在于 BilibiliAPI。"""
+    for name in dir(FakeApi):
+        if not name.startswith("_"):
+            assert callable(getattr(BilibiliAPI, name, None)), f"BilibiliAPI 缺少 {name}"
