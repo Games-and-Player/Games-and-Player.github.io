@@ -1,7 +1,45 @@
 {
     "schema_version": 2,
-    "generated_at": "2026-09-03T13:17:38+08:00",
+    "generated_at": "2026-09-05T16:18:09+08:00",
     "videos": [
+        {
+            "aid": 117211855329490,
+            "bvid": "BV1d7tz63E8W",
+            "title": "吃晕碳了，城墙上一碗销魂干挑面",
+            "cover": "https://i0.hdslb.com/bfs/archive/21c480b6d910baa0e09d5356832ea64590cf6d97.jpg",
+            "desc": "今天，去吃一碗特色干挑面。\n明城墙上大快朵颐，直接给吃晕碳了，哈哈哈。",
+            "tags": [
+                "风味美食图鉴",
+                "街头美食",
+                "吃播",
+                "天妃宫",
+                "户外",
+                "明城墙",
+                "Vlog",
+                "静海寺",
+                "干挑面",
+                "挹江门"
+            ],
+            "cid": 41575582049,
+            "created_at": "2026-09-04 16:53",
+            "created_timestamp": 1788512001,
+            "duration": 575,
+            "status_code": 0,
+            "status_description": "OK",
+            "is_available": true,
+            "status_check_time": "2026-09-05T16:18:03",
+            "deleted_found_at": null,
+            "restored_at": null,
+            "stat": {
+                "view": 11606,
+                "like": 1138,
+                "coin": 529,
+                "favorite": 179,
+                "danmaku": 164,
+                "at": "2026-09-05"
+            },
+            "cover_local": "covers/117211855329490.webp"
+        },
         {
             "aid": 117201487008888,
             "bvid": "BV1EDtU66E56",
@@ -70983,8 +71021,8 @@
         }
     ],
     "metadata": {
-        "total": 2037,
-        "available": 1093,
+        "total": 2038,
+        "available": 1094,
         "deleted": 939,
         "self_visible": 5,
         "reuploaded": 493,
@@ -71032,7 +71070,7 @@
                 "deleted": 0
             },
             "2026": {
-                "available": 154,
+                "available": 155,
                 "deleted": 1
             }
         },
