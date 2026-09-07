@@ -97,8 +97,6 @@
             margin: 0;
             padding: 32px 0;
             overflow-x: hidden;
-            /* 关掉浏览器原生的下拉刷新，顶部下拉手势让给封面带彩蛋 */
-            overscroll-behavior-y: contain;
         }
 
         /* 台账的数字一律等宽 + 定宽数位，纵向能对齐 */
@@ -117,60 +115,6 @@
             padding: 0 24px;
             overflow-x: hidden;
         }
-
-        /* 页眉封面带：往年同期投稿的封面，绝对定位在 .header 内，
-           z-index: -1 沉在标题下面，纯装饰用 aria-hidden 挡在无障碍树外 */
-        .hero-band {
-            position: absolute;
-            inset: 0;
-            z-index: -1;
-            display: grid;
-            grid-template-columns: repeat(8, 1fr);
-            align-items: center;
-            gap: 8px;
-            padding: 0 8px;
-            overflow: hidden;
-            pointer-events: none;
-            opacity: .30;
-            -webkit-mask-image: linear-gradient(180deg, #000 0%, rgba(0, 0, 0, .9) 45%, transparent 100%);
-            mask-image: linear-gradient(180deg, #000 0%, rgba(0, 0, 0, .9) 45%, transparent 100%);
-        }
-
-        .hero-band__tile {
-            display: block;
-            aspect-ratio: 16 / 10;
-            border-radius: 8px;
-            overflow: hidden;
-            background: rgba(var(--accent-rgb), .12);
-        }
-
-        .hero-band__tile img {
-            display: block;
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            filter: saturate(.85);
-            transition: filter .2s;
-        }
-
-        .hero-band__tile--deleted img {
-            filter: grayscale(.6) saturate(.85);
-        }
-
-        /* 显出态下已删除瓦片允许悬停看清封面原色 */
-        .hero-reveal .hero-band__tile--deleted:hover img {
-            filter: none;
-        }
-
-        @media (max-width: 767px) {
-            .hero-band {
-                grid-template-columns: repeat(4, 1fr);
-            }
-            .hero-band__tile:nth-child(n + 5) {
-                display: none;
-            }
-        }
-
 
         .header {
             position: relative;
@@ -201,35 +145,6 @@
             margin: 0;
             color: var(--muted-color);
             font-size: 1rem;
-        }
-
-        /* 封面带彩蛋显出态：封面带盖过标题，标题淡出但留在原地；
-           JS 里的 reveal()/hide() 只负责挂/摘 body.hero-reveal */
-        .hero-reveal .hero-band {
-            opacity: 1;
-            -webkit-mask-image: none;
-            mask-image: none;
-            pointer-events: auto;
-        }
-
-        .hero-reveal .header h1,
-        .hero-reveal .header p {
-            opacity: .08;
-            pointer-events: none;
-        }
-
-        .hero-band,
-        .header h1,
-        .header p {
-            transition: opacity .35s;
-        }
-
-        @media (prefers-reduced-motion: reduce) {
-            .hero-band,
-            .header h1,
-            .header p {
-                transition: none;
-            }
         }
 
         .stats-cards {
@@ -504,6 +419,9 @@
             .side-pager {
                 transition: none;
             }
+            .today-item__cover img {
+                transition: none;
+            }
         }
 
         /* ── 卡片视图 ──────────────────────────────────────────────────
@@ -741,6 +659,17 @@
         .collapsible.collapsed .collapse-btn .icon {
             transform: rotate(180deg);
         }
+
+        .today-list { display: flex; flex-direction: column; gap: 10px; }
+        .today-item { display: grid; grid-template-columns: 96px 1fr; gap: 12px; align-items: center; color: inherit; text-decoration: none; border-radius: 8px; }
+        .today-item:hover .today-item__title { color: var(--accent); }
+        .today-item__cover { display: block; aspect-ratio: 16 / 10; border-radius: 6px; overflow: hidden; background: rgba(var(--accent-rgb), .12); }
+        .today-item__cover img { width: 100%; height: 100%; object-fit: cover; display: block; filter: saturate(.9); transition: filter .2s; }
+        .today-item--deleted .today-item__cover img { filter: grayscale(.6) saturate(.9); }
+        .today-item--deleted:hover .today-item__cover img { filter: none; }
+        .today-item__title { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; font-size: .9rem; line-height: 1.4; }
+        .today-item__meta { display: block; font-size: .75rem; color: var(--ink-3); margin-top: 4px; }
+        .today-date { font-size: .85rem; color: var(--ink-3); font-weight: 400; margin-left: 6px; }
 
         .video-title {
             max-width: 320px;
@@ -1039,7 +968,8 @@
         .cloud-tag:focus-visible, .heatmap-day[tabindex]:focus-visible, .tag-more:focus-visible, .chip:focus-visible,
         .copy-btn:focus-visible, .collapse-btn:focus-visible, .cover-container:focus-visible, .lightbox-close:focus-visible,
         .btn-link-like:focus-visible, .view-btn:focus-visible, #cardSortSelect:focus-visible,
-        #durationSelect:focus-visible, .mini-pager__btn:focus-visible, .side-pager:focus-visible {
+        #durationSelect:focus-visible, .mini-pager__btn:focus-visible, .side-pager:focus-visible,
+        .today-item:focus-visible {
             outline: 2px solid var(--accent);
             outline-offset: 2px;
         }
@@ -1368,11 +1298,6 @@
             body {
                 background-image: radial-gradient(circle, rgba(var(--ink-rgb), .06) 1px, transparent 1.3px);
             }
-
-            /* 深色下封面带压得更暗，免得整片封面在暗背景上发光 */
-            .hero-band {
-                opacity: .22;
-            }
         }
 
         .icon { width: 1em; height: 1em; vertical-align: -0.125em; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
@@ -1400,7 +1325,6 @@
     <div class="container-fluid">
         <!-- 头部 -->
         <div class="header">
-            <div class="hero-band" id="heroBand" inert aria-hidden="true"></div>
             <h1><svg class="icon" aria-hidden="true"><use href="#i-gamepad"/></svg> 宋少弘（原游戏公民大会）视频投稿存档</h1>
             <p>永不退场的闯关族</p>
         </div>
@@ -1483,7 +1407,23 @@
                 </div>
             </div>
         </div>
-        
+
+        <!-- 往年今日 -->
+        <div class="chart-container collapsible" id="todayCard" hidden>
+            <div class="chart-header" onclick="toggleChart('today')">
+                <div class="header-content">
+                    <h3><svg class="icon" aria-hidden="true"><use href="#i-calendar"/></svg> 往年今日 <span class="today-date num" id="todayDate"></span></h3>
+                    <p class="chart-subtitle" id="todaySubtitle">往年同一天的投稿</p>
+                </div>
+                <button type="button" class="collapse-btn" id="todayToggle"
+                        aria-expanded="false" aria-controls="todayList" aria-label="折叠或展开往年今日"
+                        onclick="event.stopPropagation(); toggleChart('today')">
+                    <svg class="icon" aria-hidden="true"><use href="#i-chevron-up"/></svg>
+                </button>
+            </div>
+            <div class="chart-content"><div class="today-list" id="todayList" role="list"></div></div>
+        </div>
+
         <!-- 表格容器 -->
         <div class="table-container">
             <div class="table-toolbar" id="tableToolbar">
@@ -1583,8 +1523,11 @@
             bindTagCloud();
             // 绑定表格行内的委托事件（标签展开、封面放大）
             bindRowEvents();
-            // 绑定封面带彩蛋：上滑/下拉显出手势，以及已删除瓦片的站内定位
-            bindHeroBand();
+            // 绑定往年今日：已删除条目点击后定位到表格
+            $(document).on('click', '#todayList [data-locate-aid]', function (e) {
+                e.preventDefault();
+                locateRecord(this.dataset.locateAid);
+            });
             // 表格/卡片视图切换：先把上次选的视图应用到 body，避免加载完再闪一下
             bindViewToggle();
             // 加载视频数据
@@ -1971,7 +1914,7 @@
                     initializeTable(videos);
                     renderStatusChips(videos);
                     updateDurationOptionCounts(videos);
-                    renderHeroBand(videos);
+                    renderToday(videos);
                     $('#loading').hide();
                     $('#videosTable').show();
                 })
@@ -2263,7 +2206,7 @@
                     <button type="button" class="copy-btn" data-copy="desc" data-aid="${aid}" title="复制完整简介"><svg class="icon" aria-hidden="true"><use href="#i-copy"/></svg> 复制简介</button>`;
         }
         
-        // ===== 页眉封面带：往年同期投稿 =====
+        // ===== 往年今日：与今天月-日最近的往年投稿 =====
         // 月-日一律映射到 2000 年（闰年，装得下 2 月 29 日）算循环距离，
         // 不看年份，纯日历意义上的"同一天/同一周"
         function heroDayIndex(month, day) {
@@ -2275,67 +2218,52 @@
             return m ? { year: Number(m[1]), month: Number(m[2]), day: Number(m[3]) } : null;
         }
 
-        // Fisher–Yates，返回新数组，不改原数组
-        function shuffleArray(list) {
-            const arr = list.slice();
-            for (let i = arr.length - 1; i > 0; i--) {
-                const j = Math.floor(Math.random() * (i + 1));
-                const tmp = arr[i];
-                arr[i] = arr[j];
-                arr[j] = tmp;
-            }
-            return arr;
-        }
-
-        // 每次访问随机挑最多 count 条「历史同期」投稿做封面带：候选只取有本地
-        // 镜像封面的视频（零外部请求；整份数据都没有镜像时才退回 cover）；
-        // pool 是候选里往年同期的一批（排除今年，月日环形距离 ≤ 2 天），够数就
-        // 从 pool 里洗牌抽 count 张；不够就把 pool 全用上，再从候选里剩下的
-        // 视频随机补足到 count（还不够就有多少用多少）。不做任何持久化，每次
-        // 刷新都重新抽。返回按投稿时间升序排列（时间线感，也是瓦片的渲染顺序）
-        function pickHeroVideos(videos, count = 8) {
-            // today 用访问者本地时区的 new Date()——这里的"今天"就是访问者的当地日期，故意不转 UTC
-            const today = new Date();
+        // 候选只取有本地镜像封面的视频（零外部请求；整份数据都没有镜像时才退回
+        // cover），排除今年投稿。先取月-日环形距离为 0（同一天）的全部；不足 4
+        // 条依次放宽到 ≤1、≤2、≤3 天；最终按 created_at 降序取前 4（最近年份在
+        // 上）。全程无随机，同一天内多次调用结果一致
+        function pickTodayVideos(videos, today = new Date()) {
             const thisYear = today.getFullYear();
             const todayIdx = heroDayIndex(today.getMonth() + 1, today.getDate());
 
             const mirrored = videos.filter(v => v.cover_local);
             const candidates = mirrored.length ? mirrored : videos.filter(v => v.cover);
 
-            const pool = [];
-            const rest = [];
+            const withDistance = [];
             candidates.forEach(video => {
                 const ymd = parseCreatedYmd(video);
-                if (ymd && ymd.year < thisYear) {
-                    const diff = Math.abs(heroDayIndex(ymd.month, ymd.day) - todayIdx);
-                    const distance = Math.min(diff, 366 - diff);
-                    if (distance <= 2) {
-                        pool.push(video);
-                        return;
-                    }
-                }
-                rest.push(video); // 候选中未入选 pool 的其余视频，数量不够时从这里随机补
+                if (!ymd || ymd.year >= thisYear) return;
+                const diff = Math.abs(heroDayIndex(ymd.month, ymd.day) - todayIdx);
+                withDistance.push({ video, distance: Math.min(diff, 366 - diff) });
             });
 
-            const picked = pool.length >= count
-                ? shuffleArray(pool).slice(0, count)
-                : pool.concat(shuffleArray(rest).slice(0, count - pool.length));
+            let maxDistance = 0;
+            let pool = withDistance.filter(x => x.distance === 0);
+            while (pool.length < 4 && maxDistance < 3) {
+                maxDistance += 1;
+                pool = withDistance.filter(x => x.distance <= maxDistance);
+            }
 
-            return picked.sort((a, b) => (a.created_at < b.created_at ? -1 : (a.created_at > b.created_at ? 1 : 0)));
+            const items = pool
+                .map(x => x.video)
+                .sort((a, b) => (a.created_at < b.created_at ? 1 : (a.created_at > b.created_at ? -1 : 0)))
+                .slice(0, 4);
+
+            return { items, widened: maxDistance > 0 };
         }
 
-        // 瓦片本体：现存/已补档直接链到B站原片/补档新开标签页；已删除（待补档
+        // 卡片本体：现存/已补档直接链到B站原片/补档新开标签页；已删除（待补档
         // 或仅自见）没有外链可去，链回本页表格并带上 data-locate-aid，点击行为
-        // 见 bindHeroBand() 里对 [data-locate-aid] 的委托处理
-        function heroTileHtml(video) {
+        // 见 $(document).ready 里对 #todayList [data-locate-aid] 的委托处理
+        function todayItemHtml(video) {
             const status = statusOf(video);
             const deleted = status !== 'available';
             const src = video.cover_local || video.cover;
             const dateText = video.created_at ? escapeHtml(String(video.created_at).slice(0, 10)) : '';
             const titleText = video.title ? escapeHtml(video.title) : '无标题';
             const statusText = escapeHtml(STATUS_LABEL[status]);
-            const tileTitle = `${dateText} ${titleText}（${statusText}）`;
-            const cls = `hero-band__tile${deleted ? ' hero-band__tile--deleted' : ''}`;
+            const itemTitle = `${dateText} ${titleText}`;
+            const cls = `today-item${deleted ? ' today-item--deleted' : ''}`;
 
             const linkAttrs = status === 'available'
                 ? `href="https://www.bilibili.com/video/av${video.aid}" target="_blank" rel="noopener"`
@@ -2343,122 +2271,44 @@
                     ? `href="https://www.bilibili.com/video/av${video.reupload_aid}" target="_blank" rel="noopener"`
                     : `href="#videosTable" data-locate-aid="${video.aid}"`;
 
-            return `<a class="${cls}" ${linkAttrs} title="${tileTitle}">` +
-                `<img src="${escapeHtml(src)}" alt="" decoding="async" fetchpriority="low" referrerpolicy="no-referrer">` +
-                `</a>`;
+            return `<a class="${cls}" role="listitem" ${linkAttrs} title="${itemTitle}">` +
+                `<span class="today-item__cover"><img src="${escapeHtml(src)}" alt="" loading="lazy" decoding="async"></span>` +
+                `<span class="today-item__body">` +
+                `<span class="today-item__title">${titleText}</span>` +
+                `<span class="today-item__meta num">${dateText} · ${statusText}</span>` +
+                `</span></a>`;
         }
 
-        function renderHeroBand(videos) {
-            const band = document.getElementById('heroBand');
-            if (!band) return;
+        function renderToday(videos, today = new Date()) {
+            const card = document.getElementById('todayCard');
+            const list = document.getElementById('todayList');
+            if (!card || !list) return;
 
-            const picked = pickHeroVideos(videos);
-            band.innerHTML = picked.map(heroTileHtml).join('');
-            // 镜像封面偶尔会缺文件，加载失败就把整块摘掉，不留裂图占位
-            band.querySelectorAll('img').forEach(img => {
-                img.onerror = () => {
-                    const tile = img.closest('.hero-band__tile');
-                    if (tile) tile.remove();
-                };
-            });
-        }
-
-        // ===== 封面带彩蛋：顶部上滑/下拉显出，Esc 或点击别处收起 =====
-        function heroPrefersReducedMotion() {
-            return window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-        }
-
-        function heroIsRevealed() {
-            return document.body.classList.contains('hero-reveal');
-        }
-
-        // 没有瓦片（数据还没加载完，或全部镜像加载失败被摘掉了）就没什么好显出的
-        function revealHeroBand() {
-            const band = document.getElementById('heroBand');
-            if (!band || !band.children.length) return;
-            document.body.classList.add('hero-reveal');
-            band.removeAttribute('inert');
-            band.setAttribute('aria-hidden', 'false');
-        }
-
-        function hideHeroBand() {
-            document.body.classList.remove('hero-reveal');
-            const band = document.getElementById('heroBand');
-            if (!band) return;
-            band.setAttribute('inert', '');
-            band.setAttribute('aria-hidden', 'true');
-        }
-
-        function heroHandleWheel(e) {
-            if (!heroIsRevealed() && window.scrollY <= 0 && e.deltaY < 0) {
-                revealHeroBand();
-            } else if (heroIsRevealed() && e.deltaY > 0) {
-                hideHeroBand();
+            const { items, widened } = pickTodayVideos(videos, today);
+            if (!items.length) {
+                card.hidden = true;
+                return;
             }
+
+            document.getElementById('todayDate').textContent = `${today.getMonth() + 1} 月 ${today.getDate()} 日`;
+            document.getElementById('todaySubtitle').textContent = widened
+                ? '往年同期（前后三天内）的投稿'
+                : '往年同一天的投稿';
+            list.innerHTML = items.map(todayItemHtml).join('');
+            card.hidden = false;
         }
 
-        let heroTouchStartY = null;
-
-        function heroHandleTouchStart(e) {
-            heroTouchStartY = (window.scrollY <= 0 && e.touches && e.touches.length)
-                ? e.touches[0].clientY
-                : null;
-        }
-
-        function heroHandleTouchMove(e) {
-            if (heroTouchStartY === null || !e.touches || !e.touches.length) return;
-            if (window.scrollY <= 0 && (e.touches[0].clientY - heroTouchStartY) >= 60) {
-                revealHeroBand();
-            }
-        }
-
-        function heroHandleScroll() {
-            if (heroIsRevealed() && window.scrollY > 0) {
-                hideHeroBand();
-            }
-        }
-
-        function heroHandleKeydown(e) {
-            if (e.key === 'Escape' && heroIsRevealed()) {
-                hideHeroBand();
-            }
-        }
-
-        // 显出时点 .header 以外任意处收起；瓦片本身在 .header 内，点瓦片不会触发这条
-        function heroHandleOutsideClick(e) {
-            if (!heroIsRevealed()) return;
-            if (e.target.closest('.header')) return;
-            hideHeroBand();
-        }
-
-        // 点击已删除（待补档/仅自见）瓦片：收起彩蛋，把表格搜索定位到那条 aid，
-        // 表格视图、卡片视图共用同一份 DataTables 搜索，两边都会显示出那一条
-        function heroLocateAid(aid) {
-            hideHeroBand();
+        // 点击已删除（待补档/仅自见）条目：把表格搜索定位到该 aid，表格视图、
+        // 卡片视图共用同一份 DataTables 搜索，两边都会显示出那一条
+        function locateRecord(aid) {
             const table = $('#videosTable').DataTable();
             table.search(String(aid)).draw();
             $('#videosTable_filter input').val(String(aid));
             document.querySelector('.table-container').scrollIntoView({
-                behavior: heroPrefersReducedMotion() ? 'auto' : 'smooth'
+                behavior: prefersReducedMotion() ? 'auto' : 'smooth'
             });
         }
 
-        function bindHeroBand() {
-            // 手势监听器都不 preventDefault，标 passive 让浏览器不必等 JS 决定就能滚动
-            window.addEventListener('wheel', heroHandleWheel, { passive: true });
-            window.addEventListener('touchstart', heroHandleTouchStart, { passive: true });
-            window.addEventListener('touchmove', heroHandleTouchMove, { passive: true });
-            window.addEventListener('scroll', heroHandleScroll, { passive: true });
-            document.addEventListener('keydown', heroHandleKeydown, { passive: true });
-            // 用捕获阶段，绕开个别控件 onclick 里的 stopPropagation（如两个折叠按钮）
-            document.addEventListener('click', heroHandleOutsideClick, { passive: true, capture: true });
-
-            $(document).on('click', '#heroBand [data-locate-aid]', function (e) {
-                e.preventDefault();
-                heroLocateAid(this.dataset.locateAid);
-            });
-        }
-        
         function formatTags(tags, aid) {
             if (!tags || tags.length === 0) return '<span class="text-muted">无标签</span>';
 
@@ -3487,7 +3337,7 @@
         }
         
         function toggleChart(chartType) {
-            const elementId = chartType === 'heatmap' ? 'heatmapCalendar' : 'tagCloud';
+            const elementId = chartType === 'heatmap' ? 'heatmapCalendar' : chartType === 'today' ? 'todayList' : 'tagCloud';
             const container = document.getElementById(elementId)?.closest('.collapsible');
             
             if (!container) return;
@@ -3509,16 +3359,19 @@
         
         function loadCollapseStates() {
             try {
-                // 热力图默认展开，标签云默认折叠
+                // 热力图默认展开，标签云、往年今日默认折叠
                 const heatmapCollapsed = localStorage.getItem('chart_heatmap_collapsed') === 'true';
                 const tagcloudCollapsed = localStorage.getItem('chart_tagcloud_collapsed') !== 'false';
-                
+                const todayCollapsed = localStorage.getItem('chart_today_collapsed') !== 'false';
+
                 applyCollapseState('heatmap', 'heatmapCalendar', heatmapCollapsed);
                 applyCollapseState('tagcloud', 'tagCloud', tagcloudCollapsed);
+                applyCollapseState('today', 'todayList', todayCollapsed);
             } catch (e) {
                 console.log('无法加载折叠状态');
-                // 如果出错，热力图默认展开，标签云默认折叠
+                // 如果出错，热力图默认展开，标签云、往年今日默认折叠
                 applyCollapseState('tagcloud', 'tagCloud', true);
+                applyCollapseState('today', 'todayList', true);
             }
         }
 
