@@ -2257,7 +2257,8 @@
         // 见 $(document).ready 里对 #todayList [data-locate-aid] 的委托处理
         function todayItemHtml(video) {
             const status = statusOf(video);
-            const deleted = status !== 'available';
+            // 与卡片视图一致：只有待补档/仅自见的封面灰度，已补档的保持原色
+            const deleted = status === 'lost' || status === 'hidden';
             const src = video.cover_local || video.cover;
             const dateText = video.created_at ? escapeHtml(String(video.created_at).slice(0, 10)) : '';
             const titleText = video.title ? escapeHtml(video.title) : '无标题';
