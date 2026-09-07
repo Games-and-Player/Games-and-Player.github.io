@@ -50,8 +50,10 @@ def find_original(title: str, videos: list[dict]) -> int | None:
     clean, day = parse_title(title)
     nt = normalize(clean)
     if day:
-        # 标题里写的是节目日期，有几期是隔天才投的，所以当天和次日都算候选
-        days = {day, (date.fromisoformat(day) + timedelta(days=1)).isoformat()}
+        # 标题里写的是节目日期，有几期隔天才投，也有前一晚就投的（如 20190220 那期
+        # 投于 2019-02-19 22:20），所以前一天、当天、次日都算候选；标题相似度那道闸不变
+        d0 = date.fromisoformat(day)
+        days = {(d0 + timedelta(days=k)).isoformat() for k in (-1, 0, 1)}
         best, best_ratio = None, 0.0
         for i, v in enumerate(videos):
             if v["created_at"][:10] not in days:

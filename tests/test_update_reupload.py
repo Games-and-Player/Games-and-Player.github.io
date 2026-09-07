@@ -38,6 +38,15 @@ def test_next_day_upload_still_matches():
     assert find_original("最终幻想，最初心动 游戏今日谈 (20171218) | 附弹幕", NEXT_DAY) == 0
 
 
+# 反过来的情况：节目日期 20190220，实际前一晚 22:20 就投了（真实案例 av44104147）
+PREV_EVENING = [{"aid": 6, "title": "地铁发行商边道歉边赚钱，日本2018年度销量出炉 游戏早餐车 20190220",
+                 "created_at": "2019-02-19 22:20"}]
+
+
+def test_previous_evening_upload_still_matches():
+    assert find_original("地铁发行商边道歉边赚钱，日本2018年度销量出炉 游戏早餐车 20190220 | 附弹幕", PREV_EVENING) == 0
+
+
 def test_next_day_but_unrelated_title_is_rejected():
     """放宽到隔天不等于放弃标题相似度这道闸。"""
     assert find_original("完全无关的标题 (20171218) | 附弹幕", NEXT_DAY) is None
