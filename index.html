@@ -1163,6 +1163,14 @@
             outline: 2px solid var(--accent);
         }
 
+        /* 宽屏（≥1440px）按月一行渲染；日格颜色沿用上面的 .day-* 规则 */
+        .month-rows { display: grid; grid-template-columns: 34px 1fr; row-gap: 4px; align-items: center; }
+        .month-row { display: contents; }
+        .month-row__label { font-size: 11px; color: var(--ink-3); }
+        .month-row__days { display: flex; gap: 2px; }
+        .heatmap-year--rows .heatmap-day { width: 7px; height: 10px; border-radius: 1px; }
+        .heatmap-year--rows .heatmap-year-label { margin: 8px 0 4px; }
+
         .heatmap-tooltip {
             position: absolute;
             background: var(--surface-color);
@@ -2686,6 +2694,9 @@
             });
         }
         
+        // 宽屏（≥1440px）日历改用「按月一行」渲染；Task 3 复用同一个 matchMedia 实例
+        const WIDE_MQ = window.matchMedia('(min-width: 1440px)');
+
         const RECENT_YEAR_COUNT = 2;
 
         let availableYears = [];
@@ -2747,8 +2758,9 @@
             let heatmapHTML = '<div class="heatmap-calendar">';
             heatmapHTML += createHeatmapLegend();
 
+            const renderYear = WIDE_MQ.matches ? createYearMonthRows : createYearHeatmap;
             yearsToRender.forEach(year => {
-                heatmapHTML += createYearHeatmap(year, heatmapDailyData);
+                heatmapHTML += renderYear(year, heatmapDailyData);
             });
 
             if (allYears.length > RECENT_YEAR_COUNT) {
@@ -2771,7 +2783,13 @@
             bindHeatmapEvents();
             updateHeatmapSelection();
         }
-        
+
+        // 跨 1440px 断点切一次渲染方式；筛选状态在 heatmapDailyData/currentDateFilter
+        // 里，renderHeatmapCalendar 重绘后 updateHeatmapSelection 会自动保留选中态
+        WIDE_MQ.addEventListener('change', () => {
+            if (Object.keys(heatmapDailyData).length) renderHeatmapCalendar();
+        });
+
         function processDailyData(videos) {
             const daily = {};
             
@@ -2841,6 +2859,17 @@
             return `<div class="heatmap-legend">${items}</div>`;
         }
         
+        // 单个日格的 HTML：周网格版与按月一行版共用，保证 class/data-*/tabindex/
+        // aria-label 完全一致，事件绑定、选中态、tooltip 不用为两种渲染各写一套
+        function dayCellHtml(dateKey, dayData) {
+            const count = dayData ? dayData.count : 0;
+            const code = dayStatusCode(dayData);
+            const hasVideos = count > 0 ? ' has-videos' : '';
+            // 只有有投稿的日格能点，也就只有它们进 Tab 序列
+            const focusable = count > 0 ? ` role="button" tabindex="0" aria-label="${dateKey} · ${count} 期"` : '';
+            return `<div class="heatmap-day day-${code}${hasVideos}" data-date="${dateKey}" data-count="${count}"${focusable}></div>`;
+        }
+
         function createYearHeatmap(year, dailyData) {
             let html = `
                 <div class="heatmap-year" id="year-${year}">
@@ -2852,62 +2881,68 @@
                     </div>
                     <div class="heatmap-days">
             `;
-            
+
             // 创建一个7行53列的网格（按列填充）
             const grid = [];
             for (let row = 0; row < 7; row++) {
                 grid[row] = new Array(53).fill(null);
             }
-            
+
             // 计算一年的第一天是星期几
             const firstDay = new Date(year, 0, 1);
             const firstDayWeek = firstDay.getDay();
-            
+
             // 填充每一天到网格中
             const daysInYear = isLeapYear(year) ? 366 : 365;
             for (let day = 0; day < daysInYear; day++) {
                 const currentDate = new Date(year, 0, 1 + day);
                 const dateKey = formatDateKey(currentDate);
-                const dayData = dailyData[dateKey];
-                const count = dayData ? dayData.count : 0;
-                const code = dayStatusCode(dayData);
-                const hasVideos = count > 0 ? ' has-videos' : '';
-                
+
                 // 计算在网格中的位置
                 const totalDays = firstDayWeek + day;
                 const col = Math.floor(totalDays / 7);
                 const row = totalDays % 7;
-                
+
                 if (col < 53) {
-                    grid[row][col] = {
-                        dateKey,
-                        count,
-                        code,
-                        hasVideos
-                    };
+                    grid[row][col] = dateKey;
                 }
             }
-            
+
             // 按行输出网格（这样CSS Grid会按列排列）
             for (let row = 0; row < 7; row++) {
                 for (let col = 0; col < 53; col++) {
-                    const dayData = grid[row][col];
-                    if (dayData) {
-                        // 只有有投稿的日格能点，也就只有它们进 Tab 序列
-                        const focusable = dayData.count > 0 ? ` role="button" tabindex="0" aria-label="${dayData.dateKey} · ${dayData.count} 期"` : '';
-                        html += `<div class="heatmap-day day-${dayData.code}${dayData.hasVideos}" 
-                                      data-date="${dayData.dateKey}" 
-                                      data-count="${dayData.count}"${focusable}></div>`;
-                    } else {
-                        html += '<div class="heatmap-day" style="opacity: 0;"></div>';
-                    }
+                    const dateKey = grid[row][col];
+                    html += dateKey
+                        ? dayCellHtml(dateKey, dailyData[dateKey])
+                        : '<div class="heatmap-day" style="opacity: 0;"></div>';
                 }
             }
-            
+
             html += '</div></div>';
             return html;
         }
-        
+
+        // 宽屏版：每年按月分 12 行，每行按当月实际天数（28/29/30/31）铺日格，不补空格
+        function createYearMonthRows(year, dailyData) {
+            const monthNames = ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'];
+            let rows = '';
+            for (let month = 0; month < 12; month++) {
+                const daysInMonth = new Date(year, month + 1, 0).getDate();
+                let days = '';
+                for (let d = 1; d <= daysInMonth; d++) {
+                    const dateKey = formatDateKey(new Date(year, month, d));
+                    days += dayCellHtml(dateKey, dailyData[dateKey]);
+                }
+                rows += `<div class="month-row"><span class="month-row__label num">${monthNames[month]}</span><span class="month-row__days">${days}</span></div>`;
+            }
+            return `
+                <div class="heatmap-year heatmap-year--rows" id="year-${year}">
+                    <div class="heatmap-year-label num">${year}</div>
+                    <div class="month-rows">${rows}</div>
+                </div>
+            `;
+        }
+
         function isLeapYear(year) {
             return (year % 4 === 0 && year % 100 !== 0) || (year % 400 === 0);
         }
