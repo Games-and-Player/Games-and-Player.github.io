@@ -1296,6 +1296,121 @@
             }
         }
 
+        /* ≥1440px：三栏布局，左右为 sticky 侧栏（筛选 + 标签云 / 日历 + 往年今日），
+           中间是表格/卡片列表。窄屏下 .page-grid / .side* 均无样式，aside 只是普通块容器。 */
+        @media (min-width: 1440px) {
+            .container-fluid {
+                max-width: 1560px;
+                /* 基础 overflow-x:hidden 会把这层变成一个（因 overflow-y 隐式转 auto 的）
+                   滚动容器，导致内部 .side 的 position:sticky 找错滚动祖先、直接失效；
+                   宽屏改回 visible，横向溢出交给内部各自的横向滚动容器兜底 */
+                overflow-x: visible;
+            }
+
+            .page-grid {
+                display: grid;
+                grid-template-columns: 300px minmax(0, 1fr) 300px;
+                grid-template-areas:
+                    "hero hero hero"
+                    "stats stats stats"
+                    "survival survival survival"
+                    "legend legend legend"
+                    "left main right";
+                column-gap: 20px;
+                align-items: start;
+            }
+
+            .header { grid-area: hero; }
+            .stats-cards { grid-area: stats; max-width: 1060px; margin-left: auto; margin-right: auto; }
+            /* 存续条与图例是两个兄弟元素，各占一行、都居中到 1060px，避免同一 grid-area 互相重叠 */
+            .survival { grid-area: survival; max-width: 1060px; margin-left: auto; margin-right: auto; }
+            .survival-legend { grid-area: legend; max-width: 1060px; margin-left: auto; margin-right: auto; }
+            .side--left { grid-area: left; }
+            .side--right { grid-area: right; }
+            .table-container { grid-area: main; min-width: 0; }
+
+            .side {
+                position: sticky;
+                top: 16px;
+                max-height: calc(100vh - 32px);
+                overflow-y: auto;
+            }
+
+            .side .chart-container {
+                padding: 16px;
+                margin-bottom: 16px;
+            }
+
+            /* 宽屏侧栏卡片永远展开，折叠按钮隐藏；不动折叠态存储，窄屏切回时按原样恢复。
+               .collapsible.collapsed .chart-content 除了 display 还压了 max-height/opacity/
+               pointer-events，这里要逐条盖掉，否则折叠态的卡片视觉展开了但摸不到、点不到 */
+            .side .collapsible .chart-content,
+            .side .collapsible .tag-cloud {
+                display: block !important;
+                visibility: visible;
+                overflow: visible;
+                max-height: none;
+                opacity: 1;
+                pointer-events: auto;
+            }
+
+            .side .collapse-btn {
+                display: none;
+            }
+
+            .side .chart-header {
+                cursor: default;
+            }
+
+            .filter-card__title {
+                margin: 0 0 12px;
+                font-size: 1rem;
+                font-weight: 600;
+            }
+
+            #filterCard[hidden] {
+                display: none;
+            }
+
+            /* 筛选卡里的 chips/时长搬进来后竖排展示 */
+            #filterChipsHost .status-chips {
+                flex-direction: column;
+                align-items: stretch;
+                gap: 6px;
+                margin: 0;
+            }
+
+            #filterChipsHost .chip {
+                display: flex;
+                justify-content: space-between;
+            }
+
+            #filterDurationHost .duration-filter {
+                margin-top: 12px;
+                width: 100%;
+            }
+
+            #filterDurationHost select {
+                flex: 1;
+            }
+
+            /* chips 与时长都搬进左侧栏了，工具条只剩视图切换，靠右 */
+            .table-toolbar {
+                justify-content: flex-end;
+            }
+
+            /* 中栏卡片视图约 3 列 */
+            .card-grid {
+                grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            }
+
+            /* 右侧栏日历收进 300px：月行版统计行/年份切换按钮字号调小 */
+            .side--right .heatmap-stats,
+            .side--right .heatmap-years-toggle {
+                font-size: 11px;
+            }
+        }
+
         @media (prefers-color-scheme: dark) {
             /* Bootstrap 把 select 的下拉箭头写死成深灰 data URI，深色下换浅色 */
             .custom-select {
@@ -1330,7 +1445,7 @@
       <symbol id="i-list" viewBox="0 0 24 24"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></symbol>
       <symbol id="i-grid" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></symbol>
     </svg>
-    <div class="container-fluid">
+    <div class="container-fluid page-grid">
         <!-- 头部 -->
         <div class="header">
             <h1><svg class="icon" aria-hidden="true"><use href="#i-gamepad"/></svg> 宋少弘（原游戏公民大会）视频投稿存档</h1>
@@ -1370,67 +1485,79 @@
         <div class="survival" id="survivalBar" role="img" aria-label="视频存续比例"></div>
         <div class="survival-legend" id="survivalLegend"></div>
 
-        <!-- 标签云 -->
-        <div class="chart-container collapsible">
-            <div class="chart-header" onclick="toggleChart('tagcloud')">
-                <div class="header-content">
-                    <h3><svg class="icon" aria-hidden="true"><use href="#i-tag"/></svg> 标签热力云</h3>
-                    <p>点击标签可筛选相关视频，标签大小表示使用频率</p>
-                </div>
-                <button type="button" class="collapse-btn" id="tagcloudToggle"
-                        aria-expanded="true" aria-controls="tagCloud" aria-label="折叠或展开标签热力云"
-                        onclick="event.stopPropagation(); toggleChart('tagcloud')">
-                    <svg class="icon" aria-hidden="true"><use href="#i-chevron-up"/></svg>
-                </button>
+        <!-- 宽屏左侧栏：筛选卡 + 标签云 -->
+        <aside class="side side--left" id="sideLeft">
+            <div class="chart-container filter-card" id="filterCard" hidden>
+                <h3 class="filter-card__title">筛选</h3>
+                <div id="filterChipsHost"></div>
+                <div id="filterDurationHost"></div>
             </div>
-            <div class="chart-content">
-                <div class="tag-cloud" id="tagCloud">
-                    <div class="tag-cloud-loading">
-                        <svg class="icon spin" aria-hidden="true"><use href="#i-spinner"/></svg>
-                        <span>正在生成标签云...</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-        
-        <!-- 热力日历 -->
-        <div class="chart-container collapsible">
-            <div class="chart-header" onclick="toggleChart('heatmap')">
-                <div class="header-content">
-                    <h3><svg class="icon" aria-hidden="true"><use href="#i-calendar"/></svg> 投稿日历</h3>
-                    <p>每格一天，颜色是当天投稿的存续状态；点击方块筛选当天投稿</p>
-                </div>
-                <button type="button" class="collapse-btn" id="heatmapToggle"
-                        aria-expanded="true" aria-controls="heatmapCalendar" aria-label="折叠或展开投稿日历"
-                        onclick="event.stopPropagation(); toggleChart('heatmap')">
-                    <svg class="icon" aria-hidden="true"><use href="#i-chevron-up"/></svg>
-                </button>
-            </div>
-            <div class="chart-content">
-                <div id="heatmapCalendar" class="heatmap-container">
-                    <div class="heatmap-loading">
-                        <svg class="icon spin" aria-hidden="true"><use href="#i-spinner"/></svg>
-                        <span>正在生成投稿日历...</span>
-                    </div>
-                </div>
-            </div>
-        </div>
 
-        <!-- 往年今日 -->
-        <div class="chart-container collapsible" id="todayCard" hidden>
-            <div class="chart-header" onclick="toggleChart('today')">
-                <div class="header-content">
-                    <h3><svg class="icon" aria-hidden="true"><use href="#i-calendar"/></svg> 往年今日 <span class="today-date num" id="todayDate"></span></h3>
-                    <p class="chart-subtitle" id="todaySubtitle">往年同一天的投稿</p>
+            <!-- 标签云 -->
+            <div class="chart-container collapsible">
+                <div class="chart-header" onclick="toggleChart('tagcloud')">
+                    <div class="header-content">
+                        <h3><svg class="icon" aria-hidden="true"><use href="#i-tag"/></svg> 标签热力云</h3>
+                        <p>点击标签可筛选相关视频，标签大小表示使用频率</p>
+                    </div>
+                    <button type="button" class="collapse-btn" id="tagcloudToggle"
+                            aria-expanded="true" aria-controls="tagCloud" aria-label="折叠或展开标签热力云"
+                            onclick="event.stopPropagation(); toggleChart('tagcloud')">
+                        <svg class="icon" aria-hidden="true"><use href="#i-chevron-up"/></svg>
+                    </button>
                 </div>
-                <button type="button" class="collapse-btn" id="todayToggle"
-                        aria-expanded="false" aria-controls="todayList" aria-label="折叠或展开往年今日"
-                        onclick="event.stopPropagation(); toggleChart('today')">
-                    <svg class="icon" aria-hidden="true"><use href="#i-chevron-up"/></svg>
-                </button>
+                <div class="chart-content">
+                    <div class="tag-cloud" id="tagCloud">
+                        <div class="tag-cloud-loading">
+                            <svg class="icon spin" aria-hidden="true"><use href="#i-spinner"/></svg>
+                            <span>正在生成标签云...</span>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="chart-content"><div class="today-list" id="todayList" role="list"></div></div>
-        </div>
+        </aside>
+
+        <!-- 宽屏右侧栏：投稿日历 + 往年今日 -->
+        <aside class="side side--right" id="sideRight">
+            <!-- 热力日历 -->
+            <div class="chart-container collapsible">
+                <div class="chart-header" onclick="toggleChart('heatmap')">
+                    <div class="header-content">
+                        <h3><svg class="icon" aria-hidden="true"><use href="#i-calendar"/></svg> 投稿日历</h3>
+                        <p>每格一天，颜色是当天投稿的存续状态；点击方块筛选当天投稿</p>
+                    </div>
+                    <button type="button" class="collapse-btn" id="heatmapToggle"
+                            aria-expanded="true" aria-controls="heatmapCalendar" aria-label="折叠或展开投稿日历"
+                            onclick="event.stopPropagation(); toggleChart('heatmap')">
+                        <svg class="icon" aria-hidden="true"><use href="#i-chevron-up"/></svg>
+                    </button>
+                </div>
+                <div class="chart-content">
+                    <div id="heatmapCalendar" class="heatmap-container">
+                        <div class="heatmap-loading">
+                            <svg class="icon spin" aria-hidden="true"><use href="#i-spinner"/></svg>
+                            <span>正在生成投稿日历...</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 往年今日 -->
+            <div class="chart-container collapsible" id="todayCard" hidden>
+                <div class="chart-header" onclick="toggleChart('today')">
+                    <div class="header-content">
+                        <h3><svg class="icon" aria-hidden="true"><use href="#i-calendar"/></svg> 往年今日 <span class="today-date num" id="todayDate"></span></h3>
+                        <p class="chart-subtitle" id="todaySubtitle">往年同一天的投稿</p>
+                    </div>
+                    <button type="button" class="collapse-btn" id="todayToggle"
+                            aria-expanded="false" aria-controls="todayList" aria-label="折叠或展开往年今日"
+                            onclick="event.stopPropagation(); toggleChart('today')">
+                        <svg class="icon" aria-hidden="true"><use href="#i-chevron-up"/></svg>
+                    </button>
+                </div>
+                <div class="chart-content"><div class="today-list" id="todayList" role="list"></div></div>
+            </div>
+        </aside>
 
         <!-- 表格容器 -->
         <div class="table-container">
@@ -1527,6 +1654,8 @@
             bindStatusChips();
             // 绑定时长筛选下拉
             bindDurationFilter();
+            // 宽屏把 chips/时长搬进左侧筛选卡（窄屏保持工具条原位）
+            syncFilterPlacement();
             // 绑定标签云点击
             bindTagCloud();
             // 绑定表格行内的委托事件（标签展开、封面放大）
@@ -2789,6 +2918,31 @@
         WIDE_MQ.addEventListener('change', () => {
             if (Object.keys(heatmapDailyData).length) renderHeatmapCalendar();
         });
+
+        // Task 3：宽屏把状态 chips（#statusChips）与时长筛选（.duration-filter）
+        // 搬进左侧筛选卡；窄屏搬回工具条原位。两者都用委托事件/id 查找，搬家不丢绑定。
+        function syncFilterPlacement() {
+            const chips = document.getElementById('statusChips');
+            const duration = document.querySelector('.duration-filter');
+            const filterCard = document.getElementById('filterCard');
+            const chipsHost = document.getElementById('filterChipsHost');
+            const durationHost = document.getElementById('filterDurationHost');
+            const toolbar = document.getElementById('tableToolbar');
+            const toolbarTools = toolbar?.querySelector('.toolbar-tools');
+            if (!chips || !duration || !filterCard || !chipsHost || !durationHost || !toolbar || !toolbarTools) return;
+
+            if (WIDE_MQ.matches) {
+                chipsHost.appendChild(chips);
+                durationHost.appendChild(duration);
+                filterCard.hidden = false;
+            } else {
+                toolbar.insertBefore(chips, toolbar.firstChild);
+                toolbarTools.insertBefore(duration, toolbarTools.firstChild);
+                filterCard.hidden = true;
+            }
+        }
+
+        WIDE_MQ.addEventListener('change', syncFilterPlacement);
 
         function processDailyData(videos) {
             const daily = {};
