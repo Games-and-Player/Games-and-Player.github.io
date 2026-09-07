@@ -1322,8 +1322,10 @@
 
             .header { grid-area: hero; }
             .stats-cards { grid-area: stats; max-width: 1060px; margin-left: auto; margin-right: auto; }
-            /* 存续条与图例是两个兄弟元素，各占一行、都居中到 1060px，避免同一 grid-area 互相重叠 */
-            .survival { grid-area: survival; max-width: 1060px; margin-left: auto; margin-right: auto; }
+            /* 存续条与图例是两个兄弟元素，各占一行、都居中到 1060px，避免同一 grid-area 互相重叠。
+               .survival 是 flex 容器、四个色块没有内在宽度，grid item 上的 auto margin 会把它
+               收缩到内容宽度（实测塌成 6px）；改用 width:100%+justify-self:center 撑满再居中 */
+            .survival { grid-area: survival; width: 100%; max-width: 1060px; justify-self: center; margin-left: 0; margin-right: 0; }
             .survival-legend { grid-area: legend; max-width: 1060px; margin-left: auto; margin-right: auto; }
             .side--left { grid-area: left; }
             .side--right { grid-area: right; }
@@ -1418,6 +1420,14 @@
             .side--right .heatmap-stats,
             .side--right .heatmap-years-toggle {
                 font-size: 11px;
+            }
+
+            /* ≥1280 的 @media 把 .side-pager 打开成 display:block；宽屏三栏后它们的
+               固定坐标正好落在侧栏上面，这里覆盖回 none（写在那条规则之后，源码顺序
+               赢）。宽屏翻页交给工具条里居中的 #miniPager，JS 切 hidden/--on 不影响
+               display:none 的优先级 */
+            .side-pager {
+                display: none;
             }
         }
 
@@ -3541,7 +3551,9 @@
             const container = document.getElementById(elementId)?.closest('.collapsible');
             
             if (!container) return;
-            
+            // 侧栏在宽屏永远展开，点标题不能动折叠状态，否则会把错误的状态存进 localStorage 带回窄屏
+            if (WIDE_MQ.matches && container.closest('.side')) return;
+
             const willExpand = container.classList.contains('collapsed');
             
             container.classList.toggle('collapsed', !willExpand);
