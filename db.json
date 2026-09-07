@@ -1,7 +1,45 @@
 {
     "schema_version": 2,
-    "generated_at": "2026-09-07T13:02:36+08:00",
+    "generated_at": "2026-09-07T17:15:10+08:00",
     "videos": [
+        {
+            "aid": 117225360986551,
+            "bvid": "BV1P4bx6QEgM",
+            "title": "无需恐慌，关于最近的NS2 BAN机事件",
+            "cover": "https://i2.hdslb.com/bfs/archive/1a4286647d5e165f301fb27ef51fa626c7bcb7d3.jpg",
+            "desc": "最近NS2的ban机事件，引起一些玩家朋友的恐慌。\n本期早餐车，我们就来聊聊这个话题。",
+            "tags": [
+                "上B站看播客",
+                "游戏杂谈",
+                "任天堂",
+                "烧录卡",
+                "游戏文化",
+                "点卡",
+                "NS",
+                "NS2",
+                "二手机",
+                "BAN机"
+            ],
+            "cid": 41646424231,
+            "created_at": "2026-09-07 07:30",
+            "created_timestamp": 1788737400,
+            "duration": 664,
+            "status_code": 0,
+            "status_description": "OK",
+            "is_available": true,
+            "status_check_time": "2026-09-07T17:15:05",
+            "deleted_found_at": null,
+            "restored_at": null,
+            "stat": {
+                "view": 23308,
+                "like": 945,
+                "coin": 256,
+                "favorite": 217,
+                "danmaku": 100,
+                "at": "2026-09-07"
+            },
+            "cover_local": "covers/117225360986551.webp"
+        },
         {
             "aid": 117211855329490,
             "bvid": "BV1d7tz63E8W",
@@ -71028,8 +71066,8 @@
         }
     ],
     "metadata": {
-        "total": 2038,
-        "available": 1094,
+        "total": 2039,
+        "available": 1095,
         "deleted": 939,
         "self_visible": 5,
         "reuploaded": 500,
@@ -71077,7 +71115,7 @@
                 "deleted": 0
             },
             "2026": {
-                "available": 155,
+                "available": 156,
                 "deleted": 1
             }
         },
