@@ -1,6 +1,6 @@
 {
     "schema_version": 2,
-    "generated_at": "2026-09-06T06:31:09+08:00",
+    "generated_at": "2026-09-07T12:43:39+08:00",
     "videos": [
         {
             "aid": 117211855329490,
@@ -48050,7 +48050,8 @@
             "cover_local": "covers/49443507.webp",
             "duration": null,
             "restored_at": null,
-            "deleted_found_at": "2026-04-04"
+            "deleted_found_at": "2026-04-04",
+            "reupload_aid": 117221737173449
         },
         {
             "aid": 49333823,
@@ -49616,7 +49617,8 @@
             "cover_local": "covers/44682290.webp",
             "duration": null,
             "restored_at": null,
-            "deleted_found_at": "2026-04-04"
+            "deleted_found_at": "2026-04-04",
+            "reupload_aid": 117221820995182
         },
         {
             "aid": 44492937,
@@ -49937,7 +49939,8 @@
             "cover_local": "covers/43336977.webp",
             "duration": null,
             "restored_at": null,
-            "deleted_found_at": "2026-04-04"
+            "deleted_found_at": "2026-04-04",
+            "reupload_aid": 117224924780452
         },
         {
             "aid": 42964581,
@@ -50065,7 +50068,8 @@
             "cover_local": "covers/42062566.webp",
             "duration": null,
             "restored_at": null,
-            "deleted_found_at": "2026-04-04"
+            "deleted_found_at": "2026-04-04",
+            "reupload_aid": 117224924781070
         },
         {
             "aid": 41845701,
@@ -66547,7 +66551,8 @@
             "cover_local": "covers/12916284.webp",
             "duration": null,
             "restored_at": null,
-            "deleted_found_at": "2026-04-04"
+            "deleted_found_at": "2026-04-04",
+            "reupload_aid": 117224908003909
         },
         {
             "aid": 12878533,
@@ -67188,7 +67193,8 @@
             "cover_local": "covers/12197256.webp",
             "duration": null,
             "restored_at": null,
-            "deleted_found_at": "2026-04-04"
+            "deleted_found_at": "2026-04-04",
+            "reupload_aid": 117224891224293
         },
         {
             "aid": 12185291,
@@ -71025,8 +71031,8 @@
         "available": 1094,
         "deleted": 939,
         "self_visible": 5,
-        "reuploaded": 493,
-        "pending_reupload": 451,
+        "reuploaded": 499,
+        "pending_reupload": 445,
         "reupload_dead": 0,
         "by_year": {
             "2016": {
