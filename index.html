@@ -1311,7 +1311,7 @@
                 display: grid;
                 grid-template-columns: 300px minmax(0, 1fr) 300px;
                 grid-template-areas:
-                    "hero hero hero"
+                    "header header header"
                     "stats stats stats"
                     "survival survival survival"
                     "legend legend legend"
@@ -1320,15 +1320,19 @@
                 align-items: start;
             }
 
-            .header { grid-area: hero; }
+            .header { grid-area: header; }
             .stats-cards { grid-area: stats; max-width: 1060px; margin-left: auto; margin-right: auto; }
             /* 存续条与图例是两个兄弟元素，各占一行、都居中到 1060px，避免同一 grid-area 互相重叠。
                .survival 是 flex 容器、四个色块没有内在宽度，grid item 上的 auto margin 会把它
                收缩到内容宽度（实测塌成 6px）；改用 width:100%+justify-self:center 撑满再居中 */
-            .survival { grid-area: survival; width: 100%; max-width: 1060px; justify-self: center; margin-left: 0; margin-right: 0; }
+            .survival { grid-area: survival; width: 100%; max-width: 1060px; justify-self: center; }
             .survival-legend { grid-area: legend; max-width: 1060px; margin-left: auto; margin-right: auto; }
             .side--left { grid-area: left; }
-            .side--right { grid-area: right; }
+            /* DOM 顺序仍是 日历→往年今日（窄屏堆叠顺序不变），这里只用 flex order
+               把往年今日挪到视觉上方——它比日历矮很多，放最上面才不会被 900px 高的
+               视口挤到 aside 底部滚不到 */
+            .side--right { grid-area: right; display: flex; flex-direction: column; }
+            #todayCard { order: -1; }
             .table-container { grid-area: main; min-width: 0; }
 
             .side {
@@ -1344,11 +1348,12 @@
             }
 
             /* 宽屏侧栏卡片永远展开，折叠按钮隐藏；不动折叠态存储，窄屏切回时按原样恢复。
-               .collapsible.collapsed .chart-content 除了 display 还压了 max-height/opacity/
-               pointer-events，这里要逐条盖掉，否则折叠态的卡片视觉展开了但摸不到、点不到 */
+               .collapsible.collapsed 从没设过 display，这里不用管；它压的是
+               max-height/opacity/pointer-events/visibility/overflow，逐条盖掉，
+               否则折叠态的卡片视觉展开了但摸不到、点不到。display 不能强改成 block——
+               .tag-cloud 自己是 flex（横排+居中），block!important 会把它压成竖排贴左 */
             .side .collapsible .chart-content,
             .side .collapsible .tag-cloud {
-                display: block !important;
                 visibility: visible;
                 overflow: visible;
                 max-height: none;
@@ -1362,16 +1367,13 @@
 
             .side .chart-header {
                 cursor: default;
+                color: inherit;
             }
 
             .filter-card__title {
                 margin: 0 0 12px;
                 font-size: 1rem;
                 font-weight: 600;
-            }
-
-            #filterCard[hidden] {
-                display: none;
             }
 
             /* 筛选卡里的 chips/时长搬进来后竖排展示 */
@@ -1424,7 +1426,8 @@
 
             /* ≥1280 的 @media 把 .side-pager 打开成 display:block；宽屏三栏后它们的
                固定坐标正好落在侧栏上面，这里覆盖回 none（写在那条规则之后，源码顺序
-               赢）。宽屏翻页交给工具条里居中的 #miniPager，JS 切 hidden/--on 不影响
+               赢）。宽屏翻页交给 #miniPager——它被 setupCardView 挪进了 DataTables
+               的 .table-controls-row（居中那一行），JS 切 hidden/--on 不影响
                display:none 的优先级 */
             .side-pager {
                 display: none;
@@ -1507,7 +1510,7 @@
 
         <!-- 宽屏左侧栏：筛选卡 + 标签云 -->
         <aside class="side side--left" id="sideLeft">
-            <div class="chart-container filter-card" id="filterCard" hidden>
+            <div class="chart-container" id="filterCard" hidden>
                 <h3 class="filter-card__title">筛选</h3>
                 <div id="filterChipsHost"></div>
                 <div id="filterDurationHost"></div>
@@ -1567,7 +1570,7 @@
                 <div class="chart-header" onclick="toggleChart('today')">
                     <div class="header-content">
                         <h3><svg class="icon" aria-hidden="true"><use href="#i-calendar"/></svg> 往年今日 <span class="today-date num" id="todayDate"></span></h3>
-                        <p class="chart-subtitle" id="todaySubtitle">往年同一天的投稿</p>
+                        <p id="todaySubtitle">往年同一天的投稿</p>
                     </div>
                     <button type="button" class="collapse-btn" id="todayToggle"
                             aria-expanded="false" aria-controls="todayList" aria-label="折叠或展开往年今日"
@@ -1575,7 +1578,7 @@
                         <svg class="icon" aria-hidden="true"><use href="#i-chevron-up"/></svg>
                     </button>
                 </div>
-                <div class="chart-content"><div class="today-list" id="todayList" role="list"></div></div>
+                <div class="chart-content"><div class="today-list" id="todayList"></div></div>
             </div>
         </aside>
 
@@ -2401,12 +2404,14 @@
                 pool = withDistance.filter(x => x.distance <= maxDistance);
             }
 
-            const items = pool
-                .map(x => x.video)
-                .sort((a, b) => (a.created_at < b.created_at ? 1 : (a.created_at > b.created_at ? -1 : 0)))
+            // widened 要看实际选中的 4 条里有没有非当天的，不能看循环变量 maxDistance——
+            // pool 太小时 maxDistance 会一路加到 3 却始终一条新的都没加进来（pool 没变），
+            // 这种情况下 4 条其实全是当天，不该显示「前后三天内」
+            const picked = pool
+                .sort((a, b) => (a.video.created_at < b.video.created_at ? 1 : (a.video.created_at > b.video.created_at ? -1 : 0)))
                 .slice(0, 4);
 
-            return { items, widened: maxDistance > 0 };
+            return { items: picked.map(x => x.video), widened: picked.some(x => x.distance > 0) };
         }
 
         // 卡片本体：现存/已补档直接链到B站原片/补档新开标签页；已删除（待补档
@@ -2429,7 +2434,7 @@
                     ? `href="https://www.bilibili.com/video/av${video.reupload_aid}" target="_blank" rel="noopener"`
                     : `href="#videosTable" data-locate-aid="${video.aid}"`;
 
-            return `<a class="${cls}" role="listitem" ${linkAttrs} title="${itemTitle}">` +
+            return `<a class="${cls}" ${linkAttrs} title="${itemTitle}">` +
                 `<span class="today-item__cover"><img src="${escapeHtml(src)}" alt="" loading="lazy" decoding="async"></span>` +
                 `<span class="today-item__body">` +
                 `<span class="today-item__title">${titleText}</span>` +
@@ -2928,6 +2933,9 @@
                 tooltip.className = 'heatmap-tooltip';
                 document.body.appendChild(tooltip);
             }
+            // 重绘把所有 .heatmap-day 换成新节点，正悬停中的格子不会触发 mouseleave，
+            // 提示框会带着旧坐标卡住（真实复现过：390 宽度下 scrollWidth 溢出到 1246）
+            tooltip.classList.remove('show');
 
             bindHeatmapEvents();
             updateHeatmapSelection();
