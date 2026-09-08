@@ -1307,7 +1307,7 @@
             }
         }
 
-        /* ≥1440px：三栏布局，左右为 sticky 侧栏（筛选 + 标签云 / 日历 + 往年今日），
+        /* ≥1440px：三栏布局，左右为 sticky 侧栏（筛选 + 标签云 / 日历 + 历年今日），
            中间是表格/卡片列表。窄屏下 .page-grid / .side* 均无样式，aside 只是普通块容器。 */
         /* 卡片视图：视频卡片直接落在页面底色上，与侧栏卡同一层级（不再白卡套白底）；
            表格视图仍保留白底面板承托表格 */
@@ -1347,8 +1347,8 @@
             .survival { grid-area: survival; width: 100%; }
             .survival-legend { grid-area: legend; width: 100%; }
             .side--left { grid-area: left; }
-            /* DOM 顺序仍是 日历→往年今日（窄屏堆叠顺序不变），这里只用 flex order
-               把往年今日挪到视觉上方——它比日历矮很多，放最上面才不会被 900px 高的
+            /* DOM 顺序仍是 日历→历年今日（窄屏堆叠顺序不变），这里只用 flex order
+               把历年今日挪到视觉上方——它比日历矮很多，放最上面才不会被 900px 高的
                视口挤到 aside 底部滚不到 */
             .side--right { grid-area: right; display: flex; flex-direction: column; }
             #todayCard { order: -1; }
@@ -1588,7 +1588,7 @@
         <div class="section-bar" id="sectionBar" role="group" aria-label="展开面板">
             <button type="button" class="section-bar__btn" data-chart="tagcloud" aria-expanded="false" aria-controls="tagCloud">标签</button>
             <button type="button" class="section-bar__btn" data-chart="heatmap" aria-expanded="false" aria-controls="heatmapCalendar">日历</button>
-            <button type="button" class="section-bar__btn" data-chart="today" aria-expanded="false" aria-controls="todayList" hidden>往年今日</button>
+            <button type="button" class="section-bar__btn" data-chart="today" aria-expanded="false" aria-controls="todayList" hidden>历年今日</button>
         </div>
 
         <!-- 宽屏左侧栏：筛选卡 + 标签云 -->
@@ -1622,7 +1622,7 @@
             </div>
         </aside>
 
-        <!-- 宽屏右侧栏：日历 + 往年今日 -->
+        <!-- 宽屏右侧栏：日历 + 历年今日 -->
         <aside class="side side--right" id="sideRight">
             <!-- 热力日历 -->
             <div class="chart-container collapsible">
@@ -1647,15 +1647,15 @@
                 </div>
             </div>
 
-            <!-- 往年今日 -->
+            <!-- 历年今日 -->
             <div class="chart-container collapsible" id="todayCard" hidden>
                 <div class="chart-header" onclick="toggleChart('today')">
                     <div class="header-content">
-                        <h3><svg class="icon" aria-hidden="true"><use href="#i-calendar"/></svg> 往年今日 <span class="today-date num" id="todayDate"></span></h3>
-                        <p id="todaySubtitle">往年同一天的投稿</p>
+                        <h3><svg class="icon" aria-hidden="true"><use href="#i-calendar"/></svg> 历年今日 <span class="today-date num" id="todayDate"></span></h3>
+                        <p id="todaySubtitle">历年同一天的投稿</p>
                     </div>
                     <button type="button" class="collapse-btn" id="todayToggle"
-                            aria-expanded="false" aria-controls="todayList" aria-label="折叠或展开往年今日"
+                            aria-expanded="false" aria-controls="todayList" aria-label="折叠或展开历年今日"
                             onclick="event.stopPropagation(); toggleChart('today')">
                         <svg class="icon" aria-hidden="true"><use href="#i-chevron-up"/></svg>
                     </button>
@@ -1768,7 +1768,7 @@
             });
             // 绑定表格行内的委托事件（标签展开、封面放大）
             bindRowEvents();
-            // 绑定往年今日：已删除条目点击后定位到表格
+            // 绑定历年今日：已删除条目点击后定位到表格
             $(document).on('click', '#todayList [data-locate-aid]', function (e) {
                 e.preventDefault();
                 locateRecord(this.dataset.locateAid);
@@ -2430,9 +2430,13 @@
             const label = escapeHtml(STATUS_LABEL[status]);
             let stampAttrs = '';
             let stampBody = label;
-            if (status === 'backup') {
+            if (status === 'available') {
+                // 现存只留绿点，文字给屏幕阅读器；鼠标悬停有 title 兜底
+                stampAttrs = ' title="现存"';
+                stampBody = '<span class="sr-only">现存</span>';
+            } else if (status === 'backup') {
                 const reuploadUrl = `https://www.bilibili.com/video/av${video.reupload_aid}`;
-                stampBody = `<a href="${reuploadUrl}" target="_blank" rel="noopener" title="点击查看补档">${label}</a>`;
+                stampBody = `<a href="${reuploadUrl}" target="_blank" rel="noopener" title="打开补档视频">已删除 · 查看补档</a>`;
             } else if (status === 'lost' && video.reupload_dead_at) {
                 stampAttrs = ` title="补档 av${video.reupload_aid} 已于 ${escapeHtml(video.reupload_dead_at)} 发现不可见"`;
             }
@@ -2473,7 +2477,7 @@
                     <button type="button" class="copy-btn" data-copy="desc" data-aid="${aid}" title="复制完整简介"><svg class="icon" aria-hidden="true"><use href="#i-copy"/></svg> 复制简介</button>`;
         }
         
-        // ===== 往年今日：与今天月-日最近的往年投稿 =====
+        // ===== 历年今日：与今天月-日最近的历年投稿 =====
         // 月-日一律映射到 2000 年（闰年，装得下 2 月 29 日）算循环距离，
         // 不看年份，纯日历意义上的"同一天/同一周"
         function heroDayIndex(month, day) {
@@ -2553,7 +2557,7 @@
             const card = document.getElementById('todayCard');
             const list = document.getElementById('todayList');
             if (!card || !list) return;
-            // 窄屏按钮行里的「往年今日」按钮跟卡片同步：没条目就不出现
+            // 窄屏按钮行里的「历年今日」按钮跟卡片同步：没条目就不出现
             const btn = document.querySelector('.section-bar__btn[data-chart="today"]');
 
             const { items, widened } = pickTodayVideos(videos, today);
@@ -2565,8 +2569,8 @@
 
             document.getElementById('todayDate').textContent = `${today.getMonth() + 1} 月 ${today.getDate()} 日`;
             document.getElementById('todaySubtitle').textContent = widened
-                ? '往年同期（前后三天内）的投稿'
-                : '往年同一天的投稿';
+                ? '历年同期（前后三天内）的投稿'
+                : '历年同一天的投稿';
             list.innerHTML = items.map(todayItemHtml).join('');
             card.hidden = false;
             if (btn) btn.hidden = false;
