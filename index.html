@@ -1075,8 +1075,8 @@
         .tag-stats {
             width: 100%;
             text-align: center;
-            color: var(--muted-color);
-            font-size: 0.9rem;
+            color: var(--ink-3);
+            font-size: 11px;
             margin-top: 16px;
         }
 
@@ -1103,8 +1103,8 @@
             display: flex;
             flex-wrap: wrap;
             align-items: center;
-            gap: 6px 16px;
-            font-size: 0.85rem;
+            gap: 6px;
+            font-size: 11px;
             color: var(--muted-color);
         }
 
@@ -1201,8 +1201,8 @@
         .heatmap-stats {
             border-top: 1px solid var(--border-color);
             padding-top: 16px;
-            color: var(--muted-color);
-            font-size: 0.9rem;
+            color: var(--ink-3);
+            font-size: 11px;
         }
 
         .heatmap-stats-filter {
@@ -1304,6 +1304,40 @@
             }
         }
 
+        /* 手机：统计卡缩小成 3 列两行；标题图标搬到标题上方居中 */
+        @media (max-width: 767px) {
+            .stats-cards {
+                grid-template-columns: repeat(3, 1fr);
+                gap: 8px;
+            }
+
+            .stat-card {
+                padding: 10px 8px;
+            }
+
+            .stat-number {
+                font-size: 18px;
+            }
+
+            .stat-number.is-date {
+                font-size: 13px;
+                white-space: nowrap;
+            }
+
+            .stat-label {
+                font-size: 11px;
+            }
+
+            .stat-note {
+                font-size: 10px;
+            }
+
+            .header h1 {
+                flex-direction: column;
+                gap: 4px;
+            }
+        }
+
         /* ≥1440px：三栏布局，左右为 sticky 侧栏（筛选 + 标签云 / 日历 + 往年今日），
            中间是表格/卡片列表。窄屏下 .page-grid / .side* 均无样式，aside 只是普通块容器。 */
         @media (min-width: 1440px) {
@@ -1340,7 +1374,7 @@
                视口挤到 aside 底部滚不到 */
             .side--right { grid-area: right; display: flex; flex-direction: column; }
             #todayCard { order: -1; }
-            .table-container { grid-area: main; min-width: 0; }
+            .table-container { grid-area: main; min-width: 0; padding: 20px; }
 
             /* 统计卡进中栏后只有 752px（≥1600 时 872px）宽，6 张卡挤单行要收紧
                内边距、数字字号用 clamp 跟着栏宽缩放；1440 实测未溢出/换行，两档
@@ -1370,7 +1404,7 @@
             }
 
             .side .chart-container {
-                padding: 16px;
+                padding: 20px;
                 margin-bottom: 16px;
             }
 
@@ -1425,9 +1459,20 @@
                 flex: 1;
             }
 
-            /* chips 与时长都搬进左侧栏了，工具条只剩视图切换，靠右 */
+            /* chips 与时长都搬进左侧栏了，工具条左边空出一整行——Task 1 把 #miniPager
+               塞进来居中填空；justify-content 保持基础的 space-between 不用改，
+               .toolbar-tools 本来就靠自己的 margin-left:auto 贴右，不受它影响 */
             .table-toolbar {
-                justify-content: flex-end;
+                position: relative;
+                min-height: 36px;
+            }
+
+            .table-toolbar .mini-pager {
+                position: absolute;
+                left: 50%;
+                top: 50%;
+                transform: translate(-50%, -50%);
+                z-index: 5;
             }
 
             /* 右侧栏日历收进 300px：卡片内容区实测 268px，原 7×10 日格 + 34px 标签列
@@ -1485,7 +1530,7 @@
 
             /* 深色下点纹更淡，避免在暗背景上过于显眼 */
             body {
-                background-image: radial-gradient(circle, rgba(var(--ink-rgb), .06) 1px, transparent 1.3px);
+                background-image: radial-gradient(circle, rgba(var(--ink-rgb), .035) 1px, transparent 1.3px);
             }
         }
 
@@ -1914,6 +1959,22 @@
             applyViewMode(storedViewMode(), { initial: true });
         }
 
+        // Task 1：#miniPager 随 WIDE_MQ 断点搬家——宽屏塞进工具条（视图切换左边，
+        // 填掉 chips/时长搬走后空出的一整行）；窄屏放回 DataTables 控件行（长度/
+        // 搜索那一行）原位。搬的是同一个节点，按钮上按 id 绑的监听器不丢。
+        // setupCardView（表格初始化时）与 syncFilterPlacement（断点切换时）都调用它。
+        function placeMiniPager() {
+            const miniPager = document.getElementById('miniPager');
+            if (!miniPager) return;
+            if (WIDE_MQ.matches) {
+                const toolbar = document.getElementById('tableToolbar');
+                if (toolbar) toolbar.appendChild(miniPager);
+            } else {
+                const controlsRow = document.querySelector('.table-controls-row');
+                if (controlsRow) controlsRow.insertBefore(miniPager, controlsRow.children[1] || null);
+            }
+        }
+
         // 网格容器：initComplete 里插到 .table-scroll 后面，这样 DataTables 的
         // 信息行和分页仍然在它们下面。排序下拉则塞进"每页长度"控件所在的那一列——
         // 卡片模式下长度控件是隐藏的（见 body.view-cards 规则），排序正好补上这个空位，
@@ -1926,11 +1987,8 @@
             // 「上页/下页」挪进长度/搜索那一行的正中间：第一行只留 chips 和 时长+视图，
             // 1022px 的工具条宽度就够一行放下了；窄屏（<992px）退化为独占一行居中
             const controlsRow = lengthEl ? lengthEl.closest('.row') : null;
-            const miniPager = document.getElementById('miniPager');
-            if (controlsRow && miniPager) {
-                controlsRow.classList.add('table-controls-row');
-                controlsRow.insertBefore(miniPager, controlsRow.children[1] || null);
-            }
+            if (controlsRow) controlsRow.classList.add('table-controls-row');
+            placeMiniPager();
             const cardSortHost = lengthEl ? $(lengthEl) : $('#cardGrid');
             cardSortHost[lengthEl ? 'after' : 'before'](
                 '<div class="card-sort" id="cardSort" hidden>' +
@@ -3027,6 +3085,7 @@
                 toolbarTools.insertBefore(duration, toolbarTools.firstChild);
                 filterCard.hidden = true;
             }
+            placeMiniPager();
         }
 
         WIDE_MQ.addEventListener('change', syncFilterPlacement);
@@ -3398,8 +3457,7 @@
             
             const statsHtml = `
                 <div class="tag-stats">
-                    <strong>标签统计：</strong>共 ${tagVideoCount.size} 个标签，按视频数显示前 ${tagFrequency.length} 个，
-                    最热门：${escapeHtml(tagFrequency[0].tag)} (${tagFrequency[0].count} 个视频)
+                    共 ${tagVideoCount.size} 个标签，显示前 ${tagFrequency.length} 个
                     ${currentTagFilter ? `<br><strong>当前筛选：</strong>${escapeHtml(currentTagFilter)} <a href="javascript:clearTagFilter()" style="color: var(--accent-color); text-decoration: none;">[清除筛选]</a>` : ''}
                 </div>
             `;
