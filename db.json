@@ -1,7 +1,45 @@
 {
     "schema_version": 2,
-    "generated_at": "2026-09-07T17:15:10+08:00",
+    "generated_at": "2026-09-08T16:48:35+08:00",
     "videos": [
+        {
+            "aid": 117228884204938,
+            "bvid": "BV1hSbA6qESf",
+            "title": "乌龙一场，老任BAN机事件新进展",
+            "cover": "https://i0.hdslb.com/bfs/archive/4c38e3eecd3d798d16fbfd49088555fb77b3bb56.jpg",
+            "desc": "NS2 BAN机事件又有新进展，似乎是一次乌龙事件。\n但目前仍有几个谜团未能解开，本期早餐车，我们就来聊聊这个话题。",
+            "tags": [
+                "上B站看播客",
+                "游戏杂谈",
+                "AI",
+                "任天堂",
+                "switch 2",
+                "游戏文化",
+                "主机",
+                "误封",
+                "NS2",
+                "BAN机"
+            ],
+            "cid": 41661237420,
+            "created_at": "2026-09-08 07:30",
+            "created_timestamp": 1788823800,
+            "duration": 873,
+            "status_code": 0,
+            "status_description": "OK",
+            "is_available": true,
+            "status_check_time": "2026-09-08T16:48:30",
+            "deleted_found_at": null,
+            "restored_at": null,
+            "stat": {
+                "view": 15400,
+                "like": 861,
+                "coin": 236,
+                "favorite": 169,
+                "danmaku": 54,
+                "at": "2026-09-08"
+            },
+            "cover_local": "covers/117228884204938.webp"
+        },
         {
             "aid": 117225360986551,
             "bvid": "BV1P4bx6QEgM",
@@ -71066,8 +71104,8 @@
         }
     ],
     "metadata": {
-        "total": 2039,
-        "available": 1095,
+        "total": 2040,
+        "available": 1096,
         "deleted": 939,
         "self_visible": 5,
         "reuploaded": 500,
@@ -71115,7 +71153,7 @@
                 "deleted": 0
             },
             "2026": {
-                "available": 156,
+                "available": 157,
                 "deleted": 1
             }
         },
