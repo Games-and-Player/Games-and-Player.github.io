@@ -645,6 +645,19 @@
         }
 
         .today-list { display: flex; flex-direction: column; gap: 10px; }
+        .today-list:not(.is-expanded) .today-item--extra { display: none; }
+        .today-more {
+            align-self: center;
+            margin-top: 2px;
+            padding: 3px 10px;
+            border-radius: 999px;
+            border: 1px dashed var(--line);
+            background: transparent;
+            color: var(--ink-2);
+            font-size: 11px;
+            cursor: pointer;
+        }
+        .today-more:hover { border-color: var(--accent); color: var(--accent); }
         .today-item { display: grid; grid-template-columns: 96px 1fr; gap: 12px; align-items: center; color: inherit; text-decoration: none; border-radius: 8px; }
         .today-item:hover .today-item__title { color: var(--accent); }
         .today-item__cover { display: block; aspect-ratio: 16 / 10; border-radius: 6px; overflow: hidden; background: rgba(var(--accent-rgb), .12); }
@@ -949,7 +962,7 @@
         }
 
         /* 键盘焦点：新加的可聚焦元素统一用主色描边 */
-        .cloud-tag:focus-visible, .cloud-more:focus-visible, .heatmap-day[tabindex]:focus-visible, .tag-more:focus-visible,
+        .cloud-tag:focus-visible, .cloud-more:focus-visible, .today-more:focus-visible, .heatmap-day[tabindex]:focus-visible, .tag-more:focus-visible,
         .copy-btn:focus-visible, .collapse-btn:focus-visible, .cover-container:focus-visible, .lightbox-close:focus-visible,
         .btn-link-like:focus-visible, .view-btn:focus-visible, #cardSortSelect:focus-visible,
         #durationSelect:focus-visible, .mini-pager__btn:focus-visible, .side-pager:focus-visible,
@@ -2518,17 +2531,19 @@
             // widened 要看实际选中的 4 条里有没有非当天的，不能看循环变量 maxDistance——
             // pool 太小时 maxDistance 会一路加到 3 却始终一条新的都没加进来（pool 没变），
             // 这种情况下 4 条其实全是当天，不该显示「前后三天内」
+            // 返回整个池子（最近年份在前）；默认只露出前 TODAY_VISIBLE 条，其余等「显示全部」
             const picked = pool
-                .sort((a, b) => (a.video.created_at < b.video.created_at ? 1 : (a.video.created_at > b.video.created_at ? -1 : 0)))
-                .slice(0, 4);
+                .sort((a, b) => (a.video.created_at < b.video.created_at ? 1 : (a.video.created_at > b.video.created_at ? -1 : 0)));
 
             return { items: picked.map(x => x.video), widened: picked.some(x => x.distance > 0) };
         }
 
+        const TODAY_VISIBLE = 4;
+
         // 卡片本体：现存/已补档直接链到B站原片/补档新开标签页；已删除（待补档
         // 或仅自见）没有外链可去，链回本页表格并带上 data-locate-aid，点击行为
         // 见 $(document).ready 里对 #todayList [data-locate-aid] 的委托处理
-        function todayItemHtml(video) {
+        function todayItemHtml(video, extra = false) {
             const status = statusOf(video);
             // 与卡片视图一致：只有待补档/仅自见的封面灰度，已补档的保持原色
             const deleted = status === 'lost' || status === 'hidden';
@@ -2537,7 +2552,7 @@
             const titleText = video.title ? escapeHtml(video.title) : '无标题';
             const statusText = escapeHtml(STATUS_LABEL[status]);
             const itemTitle = `${dateText} ${titleText}`;
-            const cls = `today-item${deleted ? ' today-item--deleted' : ''}`;
+            const cls = `today-item${deleted ? ' today-item--deleted' : ''}${extra ? ' today-item--extra' : ''}`;
 
             const linkAttrs = status === 'available'
                 ? `href="https://www.bilibili.com/video/av${video.aid}" target="_blank" rel="noopener"`
@@ -2571,10 +2586,23 @@
             document.getElementById('todaySubtitle').textContent = widened
                 ? '历年同期（前后三天内）的投稿'
                 : '历年同一天的投稿';
-            list.innerHTML = items.map(todayItemHtml).join('');
+            list.classList.remove('is-expanded');
+            const moreHtml = items.length > TODAY_VISIBLE
+                ? `<button type="button" class="today-more" aria-expanded="false">显示全部 (${items.length})</button>`
+                : '';
+            list.innerHTML = items.map((video, index) => todayItemHtml(video, index >= TODAY_VISIBLE)).join('') + moreHtml;
             card.hidden = false;
             if (btn) btn.hidden = false;
         }
+
+        // 「显示全部 / 收起」：只切 #todayList 上的类，条目不重绘
+        $(document).on('click', '#todayList .today-more', function () {
+            const list = document.getElementById('todayList');
+            const expanded = list.classList.toggle('is-expanded');
+            const total = list.querySelectorAll('.today-item').length;
+            this.setAttribute('aria-expanded', String(expanded));
+            this.textContent = expanded ? '收起' : `显示全部 (${total})`;
+        });
 
         // 点击已删除（待补档/仅自见）条目：把表格搜索定位到该 aid，表格视图、
         // 卡片视图共用同一份 DataTables 搜索，两边都会显示出那一条
