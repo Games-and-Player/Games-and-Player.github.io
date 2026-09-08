@@ -1896,7 +1896,7 @@
             });
         }
 
-        // 数量按全部视频统计，不与状态 chips 相交
+        // 数量按全部视频统计，不与状态筛选相交
         function updateDurationOptionCounts(videos) {
             const select = document.getElementById('durationSelect');
             if (!select) return;
@@ -1953,7 +1953,7 @@
         }
 
         // Task 1：#miniPager 随 WIDE_MQ 断点搬家——宽屏塞进工具条（视图切换左边，
-        // 填掉 chips/时长搬走后空出的一整行）；窄屏放回 DataTables 控件行（长度/
+        // 填掉 时长搬走后空出的一整行）；窄屏放回 DataTables 控件行（长度/
         // 搜索那一行）原位。搬的是同一个节点，按钮上按 id 绑的监听器不丢。
         // setupCardView（表格初始化时）与 syncFilterPlacement（断点切换时）都调用它。
         function placeMiniPager() {
@@ -1977,7 +1977,7 @@
             if (!scroll.length || document.getElementById('cardGrid')) return;
             scroll.after('<div id="cardGrid" class="card-grid" role="list" hidden></div>');
             const lengthEl = document.querySelector('#videosTable_wrapper .dataTables_length');
-            // 「上页/下页」挪进长度/搜索那一行的正中间：第一行只留 chips 和 时长+视图，
+            // 「上页/下页」挪进长度/搜索那一行的正中间：第一行只留 时长+视图，
             // 1022px 的工具条宽度就够一行放下了；窄屏（<992px）退化为独占一行居中
             const controlsRow = lengthEl ? lengthEl.closest('.row') : null;
             if (controlsRow) controlsRow.classList.add('table-controls-row');
@@ -2086,7 +2086,7 @@
                 .indexes()
                 .toArray();
             const key = indexes.join(',');
-            // 行集和次序都没变（chips 反复点同一个、灯箱关闭引发的重绘等）就什么都不做
+            // 行集和次序都没变（统计卡反复点同一个、灯箱关闭引发的重绘等）就什么都不做
             if (key === lastCardIndexes && grid.firstChild) return;
             lastCardIndexes = key;
 
@@ -2256,7 +2256,7 @@
                     { width: "200px", targets: 3 }, // 标签列宽度
                     { width: "120px", targets: 4 }, // 时间列宽度
                     { className: "number-cell d-none d-lg-table-cell", targets: [5, 6] }, // AID和CID右对齐，窄屏隐藏
-                    { targets: 7, visible: false, searchable: false } // 状态键，仅供 chips 筛选
+                    { targets: 7, visible: false, searchable: false } // 状态键，仅供统计卡筛选
                 ],
                 order: [[4, 'desc']], // 默认按时间降序排列
                 deferRender: true, // 延迟渲染，提高性能
