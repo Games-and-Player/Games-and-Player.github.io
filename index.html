@@ -982,7 +982,7 @@
             min-height: 220px;
             display: flex;
             flex-wrap: wrap;
-            gap: 8px;
+            gap: 5px;
             justify-content: center;
             padding: 16px;
         }
@@ -1003,12 +1003,13 @@
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            padding: 4px 10px;
+            padding: 3px 8px;
             border-radius: 999px;
             border: 1px solid transparent;
             background: var(--bg);
             color: var(--ink);
-            font-size: 0.75rem;
+            font-size: 11px;   /* 站内说明文字的最小字号，再小影响可读 */
+            line-height: 1.5;
             cursor: pointer;
             transition: border-color 0.2s ease, background-color 0.2s ease, opacity 0.2s ease;
         }
@@ -1039,12 +1040,12 @@
         .cloud-more {
             display: inline-flex;
             align-items: center;
-            padding: 4px 12px;
+            padding: 3px 10px;
             border-radius: 999px;
             border: 1px dashed var(--line);
             background: transparent;
             color: var(--ink-2);
-            font-size: 0.75rem;
+            font-size: 11px;
             cursor: pointer;
         }
 
