@@ -965,7 +965,7 @@
         }
 
         /* 键盘焦点：新加的可聚焦元素统一用主色描边 */
-        .cloud-tag:focus-visible, .heatmap-day[tabindex]:focus-visible, .tag-more:focus-visible, .chip:focus-visible,
+        .cloud-tag:focus-visible, .cloud-more:focus-visible, .heatmap-day[tabindex]:focus-visible, .tag-more:focus-visible, .chip:focus-visible,
         .copy-btn:focus-visible, .collapse-btn:focus-visible, .cover-container:focus-visible, .lightbox-close:focus-visible,
         .btn-link-like:focus-visible, .view-btn:focus-visible, #cardSortSelect:focus-visible,
         #durationSelect:focus-visible, .mini-pager__btn:focus-visible, .side-pager:focus-visible,
@@ -1018,12 +1018,12 @@
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            padding: 6px 14px;
+            padding: 4px 10px;
             border-radius: 999px;
             border: 1px solid transparent;
             background: var(--bg);
             color: var(--ink);
-            font-size: 0.85rem;
+            font-size: 0.75rem;
             cursor: pointer;
             transition: border-color 0.2s ease, background-color 0.2s ease, opacity 0.2s ease;
         }
@@ -1047,6 +1047,23 @@
         .cloud-tag.heat-6 { background: rgba(var(--accent-rgb), 0.78); color: var(--on-accent); }
         .cloud-tag.heat-7 { background: rgba(var(--accent-rgb), 0.90); color: var(--on-accent); }
         .cloud-tag.heat-8 { background: var(--accent); color: var(--on-accent); }
+
+        /* 默认只露出前 TAG_CLOUD_VISIBLE 个，其余等「更多」 */
+        .tag-cloud:not(.is-expanded) .cloud-tag--extra { display: none; }
+
+        .cloud-more {
+            display: inline-flex;
+            align-items: center;
+            padding: 4px 12px;
+            border-radius: 999px;
+            border: 1px dashed var(--line);
+            background: transparent;
+            color: var(--ink-2);
+            font-size: 0.75rem;
+            cursor: pointer;
+        }
+
+        .cloud-more:hover { border-color: var(--accent); color: var(--accent); }
 
         /* 必须排在 heat-* 之后：同权重下靠源序取胜，否则选中态会被热度底色盖掉 */
         .cloud-tag.active {
@@ -3359,11 +3376,13 @@
             const maxFreq = Math.max(...tagFrequency.map(t => t.count));
             const minFreq = Math.min(...tagFrequency.map(t => t.count));
             
-            const tagElements = tagFrequency.map(tagData => {
+            const expanded = tagCloudElement.classList.contains('is-expanded');
+            const tagElements = tagFrequency.map((tagData, index) => {
                 const { tag, count } = tagData;
                 const heatLevel = calculateHeatLevel(count, minFreq, maxFreq);
+                const extra = index >= TAG_CLOUD_VISIBLE ? ' cloud-tag--extra' : '';
 
-                return `<span class="cloud-tag heat-${heatLevel}"
+                return `<span class="cloud-tag heat-${heatLevel}${extra}"
                               data-tag="${escapeHtml(tag)}" 
                               data-count="${count}"
                               role="button" tabindex="0"
@@ -3371,17 +3390,21 @@
                             ${escapeHtml(tag)}
                         </span>`;
             }).join('');
+
+            const hiddenCount = Math.max(0, tagFrequency.length - TAG_CLOUD_VISIBLE);
+            const moreHtml = hiddenCount
+                ? `<button type="button" class="cloud-more" aria-expanded="${expanded}">${expanded ? '收起' : `更多 (+${hiddenCount})`}</button>`
+                : '';
             
             const statsHtml = `
                 <div class="tag-stats">
-                    <strong>标签统计：</strong>共 ${tagFrequency.length} 个标签，
-                    最热门：${escapeHtml(tagFrequency[0].tag)} (${tagFrequency[0].count} 个视频)，
-                    最冷门：${escapeHtml(tagFrequency[tagFrequency.length - 1].tag)} (${tagFrequency[tagFrequency.length - 1].count} 个视频)
+                    <strong>标签统计：</strong>共 ${tagVideoCount.size} 个标签，按视频数显示前 ${tagFrequency.length} 个，
+                    最热门：${escapeHtml(tagFrequency[0].tag)} (${tagFrequency[0].count} 个视频)
                     ${currentTagFilter ? `<br><strong>当前筛选：</strong>${escapeHtml(currentTagFilter)} <a href="javascript:clearTagFilter()" style="color: var(--accent-color); text-decoration: none;">[清除筛选]</a>` : ''}
                 </div>
             `;
             
-            tagCloudElement.innerHTML = tagElements + statsHtml;
+            tagCloudElement.innerHTML = tagElements + moreHtml + statsHtml;
         }
         
         // ===== 标签归一化 =====
@@ -3464,11 +3487,16 @@
             });
         }
 
+        // 标签云：按视频数取前 TAG_CLOUD_MAX 个进候选，默认只露出前 TAG_CLOUD_VISIBLE 个，
+        // 其余藏在「更多」后面（展开状态记在 #tagCloud 的 is-expanded 类上，重绘不丢）
+        const TAG_CLOUD_MAX = 200;
+        const TAG_CLOUD_VISIBLE = 60;
+
         function calculateTagFrequency() {
             return Array.from(tagVideoCount.entries())
                 .map(([tag, count]) => ({ tag, count }))
                 .sort((a, b) => b.count - a.count)
-                .slice(0, 50);
+                .slice(0, TAG_CLOUD_MAX);
         }
 
         function escapeRegex(text) {
@@ -3510,6 +3538,14 @@
                 if (!isActivationKey(e)) return;
                 e.preventDefault();
                 filterByTag(this.getAttribute('data-tag') || '');
+            });
+            // 「更多 / 收起」：只切 #tagCloud 上的类，标签本身不重绘
+            $(document).on('click', '#tagCloud .cloud-more', function () {
+                const cloud = document.getElementById('tagCloud');
+                const expanded = cloud.classList.toggle('is-expanded');
+                const hiddenCount = cloud.querySelectorAll('.cloud-tag--extra').length;
+                this.setAttribute('aria-expanded', String(expanded));
+                this.textContent = expanded ? '收起' : `更多 (+${hiddenCount})`;
             });
         }
         
