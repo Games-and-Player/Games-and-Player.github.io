@@ -1336,6 +1336,15 @@
 
         /* ≥1440px：三栏布局，左右为 sticky 侧栏（筛选 + 标签云 / 日历 + 往年今日），
            中间是表格/卡片列表。窄屏下 .page-grid / .side* 均无样式，aside 只是普通块容器。 */
+        /* 卡片视图：视频卡片直接落在页面底色上，与侧栏卡同一层级（不再白卡套白底）；
+           表格视图仍保留白底面板承托表格 */
+        body.view-cards .table-container {
+            background: transparent;
+            border: 0;
+            padding: 0;
+            box-shadow: none;
+        }
+
         @media (min-width: 1440px) {
             .container-fluid {
                 max-width: 1560px;
@@ -1354,7 +1363,7 @@
                     "left   survival right"
                     "left   legend   right"
                     "left   main     right";
-                column-gap: 20px;
+                column-gap: 28px;   /* 侧栏与中栏留 28px，1440 下中栏 736px 仍放得下三列卡片 */
                 align-items: start;
             }
 
@@ -1534,7 +1543,10 @@
         .icon.spin { animation: spin 1s linear infinite; }
         @keyframes spin { to { transform: rotate(360deg); } }
 
-    </style>
+            @media (min-width: 1600px) {
+            .page-grid { column-gap: 32px; }
+        }
+</style>
 </head>
 <body>
     <svg xmlns="http://www.w3.org/2000/svg" style="display:none">
