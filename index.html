@@ -2160,7 +2160,7 @@
             return `<article class="vcard vcard--${status}" role="listitem" data-aid="${aid}">
                         <div class="vcard__cover">${formatCover(video.cover, video.cover_local, aid)}${cardRibbon(status)}</div>
                         <div class="vcard__body">
-                            <a class="vcard__title" href="https://www.bilibili.com/video/av${aid}" target="_blank" rel="noopener" title="在B站打开">${title}</a>
+                            <a class="vcard__title" href="${watchUrl(video, status)}" target="_blank" rel="noopener" title="${watchTitle(status)}">${title}</a>
                             <div class="vcard__meta num">${meta}</div>
                             ${stampHtml(video, status)}
                             <div class="vcard__desc">${formatDescription(video.desc, aid)}</div>
@@ -2438,6 +2438,18 @@
         }
         
         // 状态章：表格标题列与灯箱共用同一份渲染
+        // 标题/灯箱标题的"去看"链接：已补档的原片已经 404，链到補档合集里的补档；其余链原片
+        function watchUrl(video, status) {
+            status = status || statusOf(video);
+            return status === 'backup'
+                ? `https://www.bilibili.com/video/av${video.reupload_aid}`
+                : `https://www.bilibili.com/video/av${video.aid}`;
+        }
+
+        function watchTitle(status) {
+            return status === 'backup' ? '在B站打开补档' : '在B站打开';
+        }
+
         function stampHtml(video, status) {
             status = status || statusOf(video);
             const label = escapeHtml(STATUS_LABEL[status]);
@@ -2468,11 +2480,11 @@
             if (!title) return '<span class="text-muted">无标题</span>';
 
             const status = statusOf(video);
-            const bilibiliUrl = `https://www.bilibili.com/video/av${video.aid}`;
+            const bilibiliUrl = watchUrl(video, status);
             const stamp = stampHtml(video, status);
 
             return `<div class="video-title${status === 'available' ? '' : ' unavailable'}">
-                        <a href="${bilibiliUrl}" target="_blank" title="在B站打开">${escapeHtml(title)}</a>${stamp}
+                        <a href="${bilibiliUrl}" target="_blank" rel="noopener" title="${watchTitle(status)}">${escapeHtml(title)}</a>${stamp}
                     </div>`;
         }
         
@@ -2749,7 +2761,8 @@
             const status = statusOf(video);
             const title = document.getElementById('lightboxTitle');
             title.textContent = video.title || '无标题';
-            title.href = `https://www.bilibili.com/video/av${video.aid}`;
+            title.href = watchUrl(video);
+            title.title = watchTitle(statusOf(video));
             document.getElementById('lightboxDate').textContent = (video.created_at || '').slice(0, 16);
             document.getElementById('lightboxDuration').textContent = video.duration ? formatDuration(video.duration) : '';
             document.getElementById('lightboxAid').textContent = `AV${video.aid}${video.bvid ? ' · ' + video.bvid : ''}`;
