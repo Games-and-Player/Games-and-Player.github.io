@@ -969,7 +969,7 @@
         .copy-btn:focus-visible, .collapse-btn:focus-visible, .cover-container:focus-visible, .lightbox-close:focus-visible,
         .btn-link-like:focus-visible, .view-btn:focus-visible, #cardSortSelect:focus-visible,
         #durationSelect:focus-visible, .mini-pager__btn:focus-visible, .side-pager:focus-visible,
-        .today-item:focus-visible {
+        .today-item:focus-visible, .section-bar__btn:focus-visible {
             outline: 2px solid var(--accent);
             outline-offset: 2px;
         }
@@ -1037,15 +1037,6 @@
         .cloud-tag.filtered {
             opacity: 0.35;
         }
-
-        .cloud-tag.size-1 { font-size: 0.75rem; }
-        .cloud-tag.size-2 { font-size: 0.8rem; }
-        .cloud-tag.size-3 { font-size: 0.9rem; }
-        .cloud-tag.size-4 { font-size: 1rem; }
-        .cloud-tag.size-5 { font-size: 1.2rem; }
-        .cloud-tag.size-6 { font-size: 1.35rem; }
-        .cloud-tag.size-7 { font-size: 1.5rem; }
-        .cloud-tag.size-8 { font-size: 1.7rem; }
 
         /* 热度靠 accent 底色的浓淡表达；淡底配 --ink，浓底配 --on-accent，
            两套主题下都是高对比 */
@@ -1311,22 +1302,21 @@
                 display: grid;
                 grid-template-columns: 300px minmax(0, 1fr) 300px;
                 grid-template-areas:
-                    "header header header"
-                    "stats stats stats"
-                    "survival survival survival"
-                    "legend legend legend"
-                    "left main right";
+                    "header header  header"
+                    "left   stats    right"
+                    "left   survival right"
+                    "left   legend   right"
+                    "left   main     right";
                 column-gap: 20px;
                 align-items: start;
             }
 
             .header { grid-area: header; }
-            .stats-cards { grid-area: stats; max-width: 1060px; margin-left: auto; margin-right: auto; }
-            /* 存续条与图例是两个兄弟元素，各占一行、都居中到 1060px，避免同一 grid-area 互相重叠。
-               .survival 是 flex 容器、四个色块没有内在宽度，grid item 上的 auto margin 会把它
-               收缩到内容宽度（实测塌成 6px）；改用 width:100%+justify-self:center 撑满再居中 */
-            .survival { grid-area: survival; width: 100%; max-width: 1060px; justify-self: center; }
-            .survival-legend { grid-area: legend; max-width: 1060px; margin-left: auto; margin-right: auto; }
+            /* 统计卡/存续条/图例挪进中栏，跟 .table-container 同宽；两侧栏区域名
+               跨 2-5 行、同名合并成一个矩形，栏顶因此贴着页眉正下方，不再空等这三块 */
+            .stats-cards { grid-area: stats; width: 100%; }
+            .survival { grid-area: survival; width: 100%; }
+            .survival-legend { grid-area: legend; width: 100%; }
             .side--left { grid-area: left; }
             /* DOM 顺序仍是 日历→往年今日（窄屏堆叠顺序不变），这里只用 flex order
                把往年今日挪到视觉上方——它比日历矮很多，放最上面才不会被 900px 高的
@@ -1334,6 +1324,26 @@
             .side--right { grid-area: right; display: flex; flex-direction: column; }
             #todayCard { order: -1; }
             .table-container { grid-area: main; min-width: 0; }
+
+            /* 统计卡进中栏后只有 752px（≥1600 时 872px）宽，6 张卡挤单行要收紧
+               内边距、数字字号用 clamp 跟着栏宽缩放；1440 实测未溢出/换行，两档
+               都保持单行——原先按 (auto-fit, minmax(160px,1fr)) 换行是旧的 3 栏宽度算的 */
+            .stats-cards {
+                grid-template-columns: repeat(6, 1fr);
+            }
+
+            .stat-card {
+                padding: 10px 12px;
+            }
+
+            .stat-number {
+                font-size: clamp(16px, 2.2vw, 22px);
+            }
+
+            .stat-number.is-date {
+                font-size: 15px;
+                white-space: nowrap;
+            }
 
             .side {
                 position: sticky;
@@ -1434,6 +1444,22 @@
             }
         }
 
+        /* <1440：三张侧栏卡的卡头换成一行紧凑按钮，点哪块展开哪块（可多开），
+           折叠的卡不占位；卡头本身隐藏，展开/收起交给按钮同步的 aria-expanded */
+        @media (max-width: 1439.98px) {
+            .section-bar { display: flex; gap: 8px; margin: 0 0 16px; }
+            .section-bar__btn { flex: 1; border: 1px solid var(--line); background: var(--surface); color: var(--ink-2); border-radius: 999px; padding: 6px 10px; font-size: .85rem; cursor: pointer; }
+            .section-bar__btn.is-open { background: var(--accent); color: var(--on-accent); border-color: var(--accent); }
+            .section-bar__btn[hidden] { display: none; }
+            #sideLeft .chart-container .chart-header, #sideRight .chart-container .chart-header { display: none; }   /* 卡头由按钮行代替 */
+            #sideLeft .collapsible.collapsed, #sideRight .collapsible.collapsed { display: none; }                /* 折叠的卡不占位 */
+            #sideLeft .chart-container, #sideRight .chart-container { padding: 16px; margin-bottom: 16px; }
+        }
+
+        @media (min-width: 1440px) {
+            .section-bar { display: none; }
+        }
+
         @media (prefers-color-scheme: dark) {
             /* Bootstrap 把 select 的下拉箭头写死成深灰 data URI，深色下换浅色 */
             .custom-select {
@@ -1508,6 +1534,14 @@
         <div class="survival" id="survivalBar" role="img" aria-label="视频存续比例"></div>
         <div class="survival-legend" id="survivalLegend"></div>
 
+        <!-- 窄屏（<1440）：一行紧凑按钮代替三张卡头，点击展开对应卡片；
+             宽屏隐藏，侧栏卡头照旧显示 -->
+        <div class="section-bar" id="sectionBar" role="group" aria-label="展开面板">
+            <button type="button" class="section-bar__btn" data-chart="tagcloud" aria-expanded="false" aria-controls="tagCloud">标签</button>
+            <button type="button" class="section-bar__btn" data-chart="heatmap" aria-expanded="false" aria-controls="heatmapCalendar">日历</button>
+            <button type="button" class="section-bar__btn" data-chart="today" aria-expanded="false" aria-controls="todayList" hidden>往年今日</button>
+        </div>
+
         <!-- 宽屏左侧栏：筛选卡 + 标签云 -->
         <aside class="side side--left" id="sideLeft">
             <div class="chart-container" id="filterCard" hidden>
@@ -1520,11 +1554,11 @@
             <div class="chart-container collapsible">
                 <div class="chart-header" onclick="toggleChart('tagcloud')">
                     <div class="header-content">
-                        <h3><svg class="icon" aria-hidden="true"><use href="#i-tag"/></svg> 标签热力云</h3>
-                        <p>点击标签可筛选相关视频，标签大小表示使用频率</p>
+                        <h3><svg class="icon" aria-hidden="true"><use href="#i-tag"/></svg> 标签</h3>
+                        <p>点击标签筛选，颜色越深使用越多</p>
                     </div>
                     <button type="button" class="collapse-btn" id="tagcloudToggle"
-                            aria-expanded="true" aria-controls="tagCloud" aria-label="折叠或展开标签热力云"
+                            aria-expanded="true" aria-controls="tagCloud" aria-label="折叠或展开标签"
                             onclick="event.stopPropagation(); toggleChart('tagcloud')">
                         <svg class="icon" aria-hidden="true"><use href="#i-chevron-up"/></svg>
                     </button>
@@ -1540,17 +1574,17 @@
             </div>
         </aside>
 
-        <!-- 宽屏右侧栏：投稿日历 + 往年今日 -->
+        <!-- 宽屏右侧栏：日历 + 往年今日 -->
         <aside class="side side--right" id="sideRight">
             <!-- 热力日历 -->
             <div class="chart-container collapsible">
                 <div class="chart-header" onclick="toggleChart('heatmap')">
                     <div class="header-content">
-                        <h3><svg class="icon" aria-hidden="true"><use href="#i-calendar"/></svg> 投稿日历</h3>
-                        <p>每格一天，颜色是当天投稿的存续状态；点击方块筛选当天投稿</p>
+                        <h3><svg class="icon" aria-hidden="true"><use href="#i-calendar"/></svg> 日历</h3>
+                        <p>每格一天，颜色是当天投稿的存续状态；点击筛选当天投稿</p>
                     </div>
                     <button type="button" class="collapse-btn" id="heatmapToggle"
-                            aria-expanded="true" aria-controls="heatmapCalendar" aria-label="折叠或展开投稿日历"
+                            aria-expanded="true" aria-controls="heatmapCalendar" aria-label="折叠或展开日历"
                             onclick="event.stopPropagation(); toggleChart('heatmap')">
                         <svg class="icon" aria-hidden="true"><use href="#i-chevron-up"/></svg>
                     </button>
@@ -1559,7 +1593,7 @@
                     <div id="heatmapCalendar" class="heatmap-container">
                         <div class="heatmap-loading">
                             <svg class="icon spin" aria-hidden="true"><use href="#i-spinner"/></svg>
-                            <span>正在生成投稿日历...</span>
+                            <span>正在生成日历...</span>
                         </div>
                     </div>
                 </div>
@@ -1681,6 +1715,10 @@
             syncFilterPlacement();
             // 绑定标签云点击
             bindTagCloud();
+            // 窄屏按钮行：点哪个就展开/收起对应侧栏卡片，复用 toggleChart
+            $(document).on('click', '.section-bar__btn', function () {
+                toggleChart(this.dataset.chart);
+            });
             // 绑定表格行内的委托事件（标签展开、封面放大）
             bindRowEvents();
             // 绑定往年今日：已删除条目点击后定位到表格
@@ -2446,10 +2484,13 @@
             const card = document.getElementById('todayCard');
             const list = document.getElementById('todayList');
             if (!card || !list) return;
+            // 窄屏按钮行里的「往年今日」按钮跟卡片同步：没条目就不出现
+            const btn = document.querySelector('.section-bar__btn[data-chart="today"]');
 
             const { items, widened } = pickTodayVideos(videos, today);
             if (!items.length) {
                 card.hidden = true;
+                if (btn) btn.hidden = true;
                 return;
             }
 
@@ -2459,6 +2500,7 @@
                 : '往年同一天的投稿';
             list.innerHTML = items.map(todayItemHtml).join('');
             card.hidden = false;
+            if (btn) btn.hidden = false;
         }
 
         // 点击已删除（待补档/仅自见）条目：把表格搜索定位到该 aid，表格视图、
@@ -3319,10 +3361,9 @@
             
             const tagElements = tagFrequency.map(tagData => {
                 const { tag, count } = tagData;
-                const sizeLevel = calculateSizeLevel(count, minFreq, maxFreq);
                 const heatLevel = calculateHeatLevel(count, minFreq, maxFreq);
-                
-                return `<span class="cloud-tag size-${sizeLevel} heat-${heatLevel}" 
+
+                return `<span class="cloud-tag heat-${heatLevel}"
                               data-tag="${escapeHtml(tag)}" 
                               data-count="${count}"
                               role="button" tabindex="0"
@@ -3453,13 +3494,6 @@
             return '\\|\\s*(?:' + alternatives.join('|') + ')\\s*\\|';
         }
         
-        function calculateSizeLevel(count, minFreq, maxFreq) {
-            if (maxFreq === minFreq) return 4;
-            
-            const ratio = (count - minFreq) / (maxFreq - minFreq);
-            return Math.max(1, Math.min(8, Math.ceil(ratio * 8)));
-        }
-        
         function calculateHeatLevel(count, minFreq, maxFreq) {
             if (maxFreq === minFreq) return 4;
             
@@ -3567,8 +3601,9 @@
             container.classList.toggle('collapsed', !willExpand);
             saveCollapseState(chartType, !willExpand);
             document.getElementById(chartType + 'Toggle')?.setAttribute('aria-expanded', String(willExpand));
+            syncSectionBarBtn(chartType, willExpand);
         }
-        
+
         function saveCollapseState(chartType, isCollapsed) {
             try {
                 localStorage.setItem(`chart_${chartType}_collapsed`, isCollapsed.toString());
@@ -3576,11 +3611,11 @@
                 console.log('无法保存折叠状态到本地存储');
             }
         }
-        
+
         function loadCollapseStates() {
             try {
-                // 热力图默认展开，标签云、往年今日默认折叠
-                const heatmapCollapsed = localStorage.getItem('chart_heatmap_collapsed') === 'true';
+                // 窄屏按钮行取代卡头后三块默认都折叠；宽屏侧栏永远展开的覆盖不受影响
+                const heatmapCollapsed = localStorage.getItem('chart_heatmap_collapsed') !== 'false';
                 const tagcloudCollapsed = localStorage.getItem('chart_tagcloud_collapsed') !== 'false';
                 const todayCollapsed = localStorage.getItem('chart_today_collapsed') !== 'false';
 
@@ -3589,19 +3624,29 @@
                 applyCollapseState('today', 'todayList', todayCollapsed);
             } catch (e) {
                 console.log('无法加载折叠状态');
-                // 如果出错，热力图默认展开，标签云、往年今日默认折叠
+                // 如果出错，三块都默认折叠
+                applyCollapseState('heatmap', 'heatmapCalendar', true);
                 applyCollapseState('tagcloud', 'tagCloud', true);
                 applyCollapseState('today', 'todayList', true);
             }
         }
 
-        // 折叠态既要写在容器的 class 上，也要同步到折叠按钮的 aria-expanded
+        // 折叠态既要写在容器的 class 上，也要同步到折叠按钮和窄屏按钮行对应按钮的 aria-expanded
         function applyCollapseState(chartType, elementId, isCollapsed) {
             const container = document.getElementById(elementId)?.closest('.collapsible');
             if (container) {
                 container.classList.toggle('collapsed', isCollapsed);
             }
             document.getElementById(chartType + 'Toggle')?.setAttribute('aria-expanded', String(!isCollapsed));
+            syncSectionBarBtn(chartType, !isCollapsed);
+        }
+
+        // 按钮行（<1440）上对应按钮的展开态：aria-expanded + 高亮样式
+        function syncSectionBarBtn(chartType, isOpen) {
+            const btn = document.querySelector(`.section-bar__btn[data-chart="${chartType}"]`);
+            if (!btn) return;
+            btn.setAttribute('aria-expanded', String(isOpen));
+            btn.classList.toggle('is-open', isOpen);
         }
         
         function escapeHtml(text) {
