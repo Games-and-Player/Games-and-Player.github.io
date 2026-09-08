@@ -1406,7 +1406,25 @@
                 top: 16px;
                 max-height: calc(100vh - 32px);
                 overflow-y: auto;
+                /* 侧栏滚动条：平时透明、鼠标悬在侧栏上才显出细条。
+                   Chromium 121+/Firefox 走标准属性（设了标准属性后 ::-webkit-scrollbar 会被忽略），
+                   老 Chromium/Safari 走下面的 ::-webkit-scrollbar；gutter 固定住，悬停时内容不抖 */
+                scrollbar-width: thin;
+                scrollbar-color: transparent transparent;
+                scrollbar-gutter: stable;
             }
+
+            .side:hover,
+            .side:focus-within {
+                scrollbar-color: rgba(var(--ink-rgb), .28) transparent;
+            }
+
+            .side::-webkit-scrollbar { width: 6px; }
+            .side::-webkit-scrollbar-track { background: transparent; }
+            .side::-webkit-scrollbar-thumb { background: transparent; border-radius: 3px; }
+            .side:hover::-webkit-scrollbar-thumb,
+            .side:focus-within::-webkit-scrollbar-thumb { background: rgba(var(--ink-rgb), .28); }
+            .side::-webkit-scrollbar-thumb:hover { background: rgba(var(--ink-rgb), .45); }
 
             .side .chart-container {
                 padding: 20px;
