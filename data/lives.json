@@ -1,6 +1,6 @@
 {
     "schema_version": 1,
-    "generated_at": "2026-09-09T16:51:57+08:00",
+    "generated_at": "2026-09-09T18:23:13+08:00",
     "count": 75,
     "lives": [
         {
@@ -18,7 +18,7 @@
             "title": "【直播回放】宋少弘直播 | 20260908 | 时之笛直面会 | 附直播弹幕",
             "duration": 4913,
             "uploaded_at": "2026-09-09",
-            "views": 806,
+            "views": 817,
             "cover": "https://i2.hdslb.com/bfs/archive/e5fdf4c6621f3af7c4a0f695a0a274faf7cbc3de.jpg",
             "part": 1
         },
@@ -37,7 +37,7 @@
             "title": "【直播回放】宋少弘直播 | 20260830 | 直播卖闲置 | 附直播弹幕",
             "duration": 8635,
             "uploaded_at": "2026-08-31",
-            "views": 256,
+            "views": 259,
             "cover": "https://i0.hdslb.com/bfs/archive/57e359ba3f3c3c260ad9103e357cc7a1fdb2db7e.jpg",
             "part": 1
         },
@@ -322,7 +322,7 @@
             "title": "【直播回放】宋少弘直播 | 20251212 | TGA直播 | 附直播弹幕",
             "duration": 15016,
             "uploaded_at": "2025-12-13",
-            "views": 987,
+            "views": 989,
             "cover": "https://i0.hdslb.com/bfs/archive/0d7b533b74d066ccfb4728442c59bc7c39a34ffd.jpg",
             "part": 1
         },
@@ -683,7 +683,7 @@
             "title": "【直播回放】宋少弘直播 | 20250809 | 理智与情感 | 附直播弹幕",
             "duration": 16608,
             "uploaded_at": "2025-08-10",
-            "views": 2503,
+            "views": 2504,
             "cover": "https://i0.hdslb.com/bfs/archive/c75607e27ed94c64ea671fcb92c4f7824c7034e6.jpg",
             "part": 1
         },
