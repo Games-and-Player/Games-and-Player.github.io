@@ -1,11 +1,16 @@
 #!/usr/bin/env python3
-"""每周：同步站主直播回放合集（3428508）进 data/lives.json，早期录像种子（source=early）永不改动。
+"""每周：同步站主直播回放合集（3428508）进 data/lives.json。
+不变量：source=='early'（辰默呵的 10 条早期录像种子）的内容字段永不改动；
+唯一例外是 dead_at——辰默呵的号不在我们控制下，录像若被下架也要能在页面上显示已失效，
+所以巡检对 early 和 owner 一视同仁，只是从不改动 early 的 date/topic/part/aid/bvid/
+title/duration/uploaded_at/views/cover/cover_local/author 这些内容字段。
 用法：
   python scripts/update_lives.py            登录 + 抓合集 + upsert + 巡检存活 + 镜像封面 + 写回
   python scripts/update_lives.py --dry-run  照常抓取/巡检，只是不写 lives.json、不下载封面
   python scripts/update_lives.py --offline  不联网，改读 data/lives_archives.json 上次抓到的合集缓存
 需要 data/cookie.json（風二中账号）或环境变量 BILIBILI_COOKIE：合集接口要 wbi 签名，
-签名密钥取自已登录的 nav 响应，所以登录失败就没法往下走。"""
+签名密钥取自已登录的 nav 响应，所以登录失败就没法往下走。
+巡检未知状态过多（B站风控/网络）时放弃写回，退出码 2，与 recheck.py 的 UNKNOWN_LIMIT 一致。"""
 import argparse
 import json
 import re
@@ -20,7 +25,7 @@ import requests
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 from scripts.enrich import TZ, now_iso, write_db  # noqa: E402
 from scripts.mirror_covers import fetch, to_webp  # noqa: E402
-from scripts.recheck import GONE  # noqa: E402
+from scripts.recheck import GONE, UNKNOWN_LIMIT  # noqa: E402
 from scripts.update_reupload import fetch_season_archives  # noqa: E402
 from utils.bilibili_api import BilibiliAPI  # noqa: E402
 
@@ -98,11 +103,26 @@ def _classify(resp: dict) -> str | None:
 
 
 def recheck_lives(lives: list[dict], api, today: str, sleep: float = API_INTERVAL) -> dict:
-    """逐条调用 get_view：不可见的标 dead_at（已标过的不覆盖），重新可见的清空。"""
-    changed = {"dead": 0, "revived": 0}
+    """逐条调用 get_view，对 owner 和 early 一视同仁（辰默呵的号不受我们控制，下架也要能显示已失效）：
+    不可见的标 dead_at（已标过的不覆盖），重新可见的清空。这是巡检唯一会碰的字段——
+    早期录像的 date/topic/title/duration/... 等内容字段永不改动。
+    先算好每条的判定，等未知状态没超过 UNKNOWN_LIMIT 再统一落到记录上，
+    与 recheck.py 的 run() 同一顺序：避免部分应用后半路因风控放弃写回却已经改了内存。"""
+    pending: list[tuple[dict, str]] = []
+    unknown = 0
     for r in lives:
         verdict = _classify(api.get_view(r["aid"]))
         time.sleep(sleep)
+        if verdict is None:
+            unknown += 1
+        else:
+            pending.append((r, verdict))
+    checked = len(lives)
+    if checked >= 50 and unknown / checked > UNKNOWN_LIMIT:
+        print(f"巡检未知状态 {unknown}/{checked} 超过 {UNKNOWN_LIMIT:.0%}，放弃写回")
+        raise SystemExit(2)
+    changed = {"dead": 0, "revived": 0}
+    for r, verdict in pending:
         if verdict == "dead" and r["dead_at"] is None:
             r["dead_at"] = today
             changed["dead"] += 1
@@ -150,7 +170,7 @@ def build_output(lives: list[dict], generated_at: str) -> dict:
 
 
 def main(argv: list[str] | None = None) -> int:
-    ap = argparse.ArgumentParser()
+    ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--dry-run", action="store_true")
     ap.add_argument("--offline", action="store_true")
     args = ap.parse_args(argv)

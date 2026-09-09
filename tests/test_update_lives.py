@@ -1,3 +1,5 @@
+import pytest
+
 from scripts.update_lives import parse_live_title, recheck_lives, sort_and_number, upsert_owner
 from utils.bilibili_api import BilibiliAPI
 
@@ -111,6 +113,50 @@ def test_recheck_lives_leaves_unknown_status_untouched():
     changed = recheck_lives(lives, api, "2026-09-09", sleep=0)
     assert lives[0]["dead_at"] is None
     assert changed == {"dead": 0, "revived": 0}
+
+
+def test_recheck_lives_marks_early_record_dead_without_touching_other_fields():
+    """辰默呵的号不受我们控制：巡检也要能把早期录像标成已失效，但除 dead_at 外一个字段都不能碰。"""
+    early = make_early(1)
+    before = dict(early)
+    api = FakeApi({1: {"code": 62002, "message": "不可见"}})
+    changed = recheck_lives([early], api, "2026-09-09", sleep=0)
+    assert changed == {"dead": 1, "revived": 0}
+    assert early["dead_at"] == "2026-09-09"
+    assert {k: v for k, v in early.items() if k != "dead_at"} == \
+           {k: v for k, v in before.items() if k != "dead_at"}
+
+
+def test_recheck_lives_revives_early_record():
+    early = make_early(1)
+    early["dead_at"] = "2026-08-01"
+    api = FakeApi({1: {"code": 0, "data": {}}})
+    changed = recheck_lives([early], api, "2026-09-09", sleep=0)
+    assert changed == {"dead": 0, "revived": 1}
+    assert early["dead_at"] is None
+
+
+def test_upsert_owner_never_touches_early_even_when_archives_reference_other_aids():
+    early = make_early(1)
+    before = dict(early)
+    a = archive(2, "标题 | 20260201 | 主题 | 附直播弹幕")
+    lives, _ = upsert_owner([early, make_owner(2)], [a], "2026-09-09")
+    assert lives[0] == before
+
+
+class UnknownApi:
+    """>20% 的记录返回未知状态（审核中/风控），巡检必须放弃写回而不是带着半套结果落盘。"""
+
+    def get_view(self, aid):
+        return {"code": 62004} if aid % 3 == 0 else {"code": 0}
+
+
+def test_recheck_lives_aborts_without_mutating_when_too_many_unknown():
+    lives = [make_owner(i) for i in range(60)]  # aid%3==0 → 20/60 未知，超过 UNKNOWN_LIMIT=0.2
+    with pytest.raises(SystemExit) as exc:
+        recheck_lives(lives, UnknownApi(), "2026-09-09", sleep=0)
+    assert exc.value.code == 2
+    assert all(r["dead_at"] is None for r in lives)
 
 
 def test_sort_and_number_orders_by_date_desc_then_part_asc_by_aid():

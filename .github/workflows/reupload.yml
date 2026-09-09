@@ -25,6 +25,8 @@ jobs:
           set -o pipefail
           python scripts/update_reupload.py | tee reupload.log
       - run: python scripts/validate.py
+      # update_lives.py 写的是 data/lives.json，与 validate.py 校验的 db.json 无关，
+      # 放在 validate.py 之后只是顺着现有步骤顺序，没有依赖关系
       - env:
           BILIBILI_COOKIE: ${{ secrets.BILIBILI_COOKIE }}
         run: |
