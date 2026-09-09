@@ -1529,6 +1529,10 @@
 .site-footer a { color: var(--ink-2); }
 
 /* ── live.html ──────────────────────────────────────────────────────── */
+/* ≥1440 一般规则把 .container-fluid 撑到 1560px（给三栏主页用）；直播页只有单栏
+   列表，宽屏下会拉出一条巨大的空隙，这里用类选择器的特异性覆盖回去 */
+body.live-page .container-fluid { max-width: 1000px; }
+
 .live-summary { text-align: center; color: var(--ink-2); font-size: .9rem; margin: 0 0 20px; }
 
 .live-search { margin: 0 0 28px; }
@@ -1554,7 +1558,7 @@
 
 .live-row {
     display: grid;
-    grid-template-columns: 96px 110px 1fr 70px 90px 70px auto;
+    grid-template-columns: 96px 150px 1fr 64px 80px 64px auto;
     gap: 12px; align-items: center; padding: 10px 0; border-bottom: 1px solid var(--line);
 }
 .live-row[hidden] { display: none; }
@@ -1562,7 +1566,7 @@
 
 .live-cover img { display: block; width: 96px; height: 64px; object-fit: cover; border-radius: 6px; border: 1px solid var(--line); }
 
-.live-date { font-size: .85rem; color: var(--ink-2); }
+.live-date { font-size: .85rem; color: var(--ink-2); white-space: nowrap; }
 .live-date__part { display: block; font-size: .75rem; color: var(--ink-3); }
 
 .live-topic { font-size: .95rem; }
