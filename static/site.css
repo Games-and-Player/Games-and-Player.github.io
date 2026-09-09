@@ -1582,9 +1582,9 @@ body.live-page .container-fluid { max-width: 1000px; }
 
 .live-empty { text-align: center; color: var(--ink-3); padding: 40px 0; }
 
-@media (max-width: 767px) {
+@media (max-width: 768px) {
     .live-row { display: flex; flex-wrap: wrap; align-items: center; column-gap: 10px; row-gap: 4px; padding: 10px 0; }
-    .live-cover { flex: none; }
+    .live-cover { flex: none; min-width: 56px; }
     .live-cover img { width: 56px; height: 38px; }
     .live-date { flex: none; }
     .live-topic { flex: 1 1 auto; min-width: 0; }

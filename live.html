@@ -14,7 +14,7 @@
     <meta property="og:url" content="https://dimisong.org/live.html">
     <meta property="og:image" content="https://dimisong.org/favicon.png">
 
-    <link rel="stylesheet" href="static/site.css">
+    <link rel="stylesheet" href="static/site.css?v=20260909">
 </head>
 <body class="live-page">
     <div class="container-fluid">
@@ -73,9 +73,11 @@
                 ? '<img src="' + escapeHtml(live.cover_local) + '" alt="" loading="lazy" width="96" height="64">'
                 : '';
             var topic = live.topic ? escapeHtml(live.topic) : '—';
+            var aid = escapeHtml(String(live.aid));
+            var mid = escapeHtml(String(live.author.mid));
             var action = live.dead_at
                 ? '<span class="live-dead-label">已失效（' + escapeHtml(live.dead_at) + '）</span>'
-                : '<a href="https://www.bilibili.com/video/av' + live.aid + '" target="_blank" rel="noopener">观看回放</a>';
+                : '<a href="https://www.bilibili.com/video/av' + aid + '" target="_blank" rel="noopener">观看回放</a>';
 
             return '' +
                 '<div class="live-row' + (live.dead_at ? ' live--dead' : '') + '" role="listitem"' +
@@ -85,9 +87,9 @@
                 '<div class="live-date">' + dateLabel + partLabel + '</div>' +
                 '<div class="live-topic">' + topic + '</div>' +
                 '<div class="live-break" aria-hidden="true"></div>' +
-                '<div class="live-duration live-meta" aria-label="时长 ' + escapeHtml(duration) + '">' + escapeHtml(duration) + '</div>' +
-                '<div class="live-source live-meta"><a href="https://space.bilibili.com/' + live.author.mid + '" target="_blank" rel="noopener">' + escapeHtml(live.author.name) + '</a></div>' +
-                '<div class="live-views live-meta" aria-label="播放 ' + views + '">' + views + '</div>' +
+                '<div class="live-duration live-meta"><span class="live-sr-only">时长 </span>' + escapeHtml(duration) + '</div>' +
+                '<div class="live-source live-meta"><a href="https://space.bilibili.com/' + mid + '" target="_blank" rel="noopener">' + escapeHtml(live.author.name) + '</a></div>' +
+                '<div class="live-views live-meta"><span class="live-sr-only">播放 </span>' + views + '</div>' +
                 '<div class="live-action live-meta">' + action + '</div>' +
                 '</div>';
         }
@@ -117,14 +119,17 @@
             document.getElementById('liveList').innerHTML = html || '<p class="live-empty">暂无记录</p>';
         }
 
+        var fullSummary = '';
+        var EMPTY_TEXT = '没有匹配的直播';
+
         function renderStats(lives) {
             var totalSec = lives.reduce(function (s, l) { return s + l.duration; }, 0);
             var hours = Math.round(totalSec / 3600);
             var dates = lives.map(function (l) { return l.date; });
             var earliest = dates.length ? dates.reduce(function (a, b) { return b < a ? b : a; }) : '—';
             var latest = dates.length ? dates.reduce(function (a, b) { return b > a ? b : a; }) : '—';
-            document.getElementById('liveSummary').textContent =
-                '共 ' + lives.length + ' 场 · 最早 ' + earliest + ' · 最近 ' + latest + ' · 累计时长 ' + hours + ' 小时';
+            fullSummary = '共 ' + lives.length + ' 场 · 最早 ' + earliest + ' · 最近 ' + latest + ' · 累计时长 ' + hours + ' 小时';
+            document.getElementById('liveSummary').textContent = fullSummary;
         }
 
         function applyFilter(query) {
@@ -138,15 +143,20 @@
                     if (match) visible++;
                 });
                 yearEl.hidden = visible === 0;
+                yearEl.querySelector('.live-year__count').textContent = '共 ' + visible + ' 场';
                 totalVisible += visible;
             });
-            document.getElementById('liveEmpty').hidden = totalVisible > 0;
+            var emptyEl = document.getElementById('liveEmpty');
+            emptyEl.textContent = EMPTY_TEXT;
+            emptyEl.hidden = totalVisible > 0;
+            document.getElementById('liveSummary').textContent = q ? '匹配 ' + totalVisible + ' 场' : fullSummary;
         }
 
         fetch('data/lives.json')
             .then(function (r) { return r.json(); })
             .then(function (data) {
                 var lives = data.lives || [];
+                document.getElementById('liveEmpty').textContent = EMPTY_TEXT;
                 renderStats(lives);
                 render(lives);
                 document.getElementById('liveSearch').addEventListener('input', function (e) {
@@ -155,6 +165,9 @@
             })
             .catch(function (err) {
                 document.getElementById('liveSummary').textContent = '加载失败';
+                var emptyEl = document.getElementById('liveEmpty');
+                emptyEl.textContent = '加载失败，请刷新重试';
+                emptyEl.hidden = false;
                 console.error(err);
             });
     })();
