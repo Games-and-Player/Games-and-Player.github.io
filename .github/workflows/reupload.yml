@@ -27,8 +27,12 @@ jobs:
       - run: python scripts/validate.py
       # update_lives.py 写的是 data/lives.json，与 validate.py 校验的 db.json 无关，
       # 放在 validate.py 之后只是顺着现有步骤顺序，没有依赖关系
+      # continue-on-error：这步可能因风控/网络退出 2（巡检未知过多）或 1（登录/翻页失败），
+      # 但退出 2 发生在 write_db 之前，data/lives.json 不会被半更新，让流程继续到 Commit，
+      # 别把 update_reupload.py 已经成功的结果白白扔掉一周
       - env:
           BILIBILI_COOKIE: ${{ secrets.BILIBILI_COOKIE }}
+        continue-on-error: true
         run: |
           set -o pipefail
           python scripts/update_lives.py | tee lives.log

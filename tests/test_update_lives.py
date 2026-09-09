@@ -1,6 +1,7 @@
 import pytest
 
-from scripts.update_lives import parse_live_title, recheck_lives, sort_and_number, upsert_owner
+from scripts.update_lives import (build_output, parse_live_title, recheck_lives, sort_and_number,
+                                   unchanged, upsert_owner)
 from utils.bilibili_api import BilibiliAPI
 
 OWNER = {"name": "風二中", "mid": 509617361}
@@ -41,44 +42,39 @@ def make_early(aid):
 
 def test_upsert_owner_leaves_early_records_untouched():
     early = make_early(1)
-    lives, new = upsert_owner([early], [], "2026-09-09")
+    lives, new = upsert_owner([early], [])
     assert lives == [early] and new == 0
 
 
 def test_upsert_owner_updates_matching_owner_record_by_aid():
     existing = make_owner(42, views=1)
     a = archive(42, "新标题 | 20260101 | 新主题 | 附直播弹幕", view=999, duration=222)
-    lives, new = upsert_owner([existing], [a], "2026-09-09")
+    lives, new = upsert_owner([existing], [a])
     assert new == 0
     r = lives[0]
     assert r["views"] == 999 and r["duration"] == 222 and r["title"] == a["title"]
     assert r["topic"] == "新主题" and r["dead_at"] is None
 
 
-def test_upsert_owner_marks_missing_owner_records_dead_without_deleting():
-    existing = make_owner(42)
-    lives, new = upsert_owner([existing], [], "2026-09-09")
+def test_upsert_owner_never_touches_dead_at_even_when_missing_from_archives():
+    """合集成员不是存活信号：dead_at 只归 recheck_lives 管，upsert 见不到就不动它。"""
+    existing = make_owner(42, dead_at="2026-01-01")
+    lives, new = upsert_owner([existing], [])
     assert new == 0
     assert len(lives) == 1
-    assert lives[0]["aid"] == 42 and lives[0]["dead_at"] == "2026-09-09"
-
-
-def test_upsert_owner_does_not_overwrite_an_already_set_dead_at():
-    existing = make_owner(42, dead_at="2026-01-01")
-    lives, _ = upsert_owner([existing], [], "2026-09-09")
-    assert lives[0]["dead_at"] == "2026-01-01"
+    assert lives[0]["aid"] == 42 and lives[0]["dead_at"] == "2026-01-01"
 
 
 def test_upsert_owner_skips_unparseable_titles(capsys):
     a = archive(7, "完全没有日期的标题")
-    lives, new = upsert_owner([], [a], "2026-09-09")
+    lives, new = upsert_owner([], [a])
     assert lives == [] and new == 0
     assert "无法解析" in capsys.readouterr().out
 
 
 def test_upsert_owner_adds_new_records():
     a = archive(99, "标题 | 20260201 | 主题 | 附直播弹幕")
-    lives, new = upsert_owner([], [a], "2026-09-09")
+    lives, new = upsert_owner([], [a])
     assert new == 1
     assert lives[0]["aid"] == 99 and lives[0]["source"] == "owner" and lives[0]["dead_at"] is None
 
@@ -140,8 +136,16 @@ def test_upsert_owner_never_touches_early_even_when_archives_reference_other_aid
     early = make_early(1)
     before = dict(early)
     a = archive(2, "标题 | 20260201 | 主题 | 附直播弹幕")
-    lives, _ = upsert_owner([early, make_owner(2)], [a], "2026-09-09")
+    lives, _ = upsert_owner([early, make_owner(2)], [a])
     assert lives[0] == before
+
+
+def test_unchanged_ignores_generated_at_but_not_content():
+    old = build_output([make_owner(1)], "2026-09-01T00:00:00+08:00")
+    same = build_output([make_owner(1)], "2026-09-09T00:00:00+08:00")
+    assert unchanged(old, same)
+    different = build_output([make_owner(1, views=2)], "2026-09-01T00:00:00+08:00")
+    assert not unchanged(old, different)
 
 
 class UnknownApi:

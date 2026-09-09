@@ -7,12 +7,12 @@
 | `scripts/update.py` | 每日（Daily Update） | 抓 UP 主新投稿追加进 `db.json`，顺带镜像封面 |
 | `scripts/recheck.py` | 每周（Weekly Recheck） | 逐条 view 现存视频判断删除/仅自见；再巡检补档视频是否还活着 |
 | `scripts/update_reupload.py` | 每周（Sync Reuploads）或手动 | 从补档合集抓列表并匹配 `reupload_aid`；`--dry-run` 只报告，`--verify` 复核已有匹配，`--offline` 读上次缓存不联网 |
-| `scripts/update_lives.py` | 每周（Sync Reuploads 之后）或手动 | 从站主直播回放合集（3428508）同步 `data/lives.json`，巡检存活并镜像封面到 `covers/live/`；`辰默呵` 的 10 条早期录像是一次性种子（`source: early`），脚本永不改动其内容字段，但巡检对它和 owner 记录一视同仁地设置/清空 `dead_at`（辰默呵的号不受我们控制，下架也要能在页面上显示已失效）；未知状态超过 20%（同 `recheck.py` 的 `UNKNOWN_LIMIT`）放弃写回，退出码 2；`--dry-run` 只报告，`--offline` 读上次缓存不联网 |
+| `scripts/update_lives.py` | 每周（Sync Reuploads 之后）或手动 | 从站主直播回放合集（3428508）同步 `data/lives.json`，巡检存活并镜像封面到 `covers/live/`；`辰默呵` 的 10 条早期录像是一次性种子（`source: early`），脚本永不改动其内容字段，但巡检对它和 owner 记录一视同仁地设置/清空 `dead_at`（辰默呵的号不受我们控制，下架也要能在页面上显示已失效）；合集成员不是存活信号，只由巡检判定 `dead_at`；未知状态超过 20%（同 `recheck.py` 的 `UNKNOWN_LIMIT`）放弃写回，退出码 2；内容不变（忽略 `generated_at`）就不落盘，打印 `lives: unchanged`；`--dry-run` 只报告，`--offline` 读 `data/lives_archives.json`（已 gitignore，全新 clone 得先联网跑一次才有）不联网；`validate.py` 不校验 `lives.json`，靠脚本自身的断言与 `tests/test_update_lives.py` 把关 |
 | `scripts/enrich.py` | 迁移与补数据时手动 | 升级到 schema v2 并补 `bvid`/https 封面/`cover_local`；加 `--durations` 用 view 接口补 `duration`/`stat` |
 | `scripts/mirror_covers.py` | 有新记录时手动 | 把封面下载成 `covers/{aid}.webp`，已存在的跳过 |
-| `scripts/validate.py` | 每次改完 `db.json` | 字段、类型、唯一性、状态一致性校验，出错退出码 1 |
+| `scripts/validate.py` | 每次改完 `db.json` | 字段、类型、唯一性、状态一致性校验，出错退出码 1（只管 `db.json`，不管 `data/lives.json`） |
 
-`enrich.py`、`mirror_covers.py`、`update_reupload.py` 都是幂等的，可以放心重跑。
+`enrich.py`、`mirror_covers.py`、`update_reupload.py`、`update_lives.py` 都是幂等的，可以放心重跑。
 
 ## 二、把改版分支合并到 `main`（`redesign/phase-1` 与 `redesign/phase-2-light` 已于 2026-08-27 合并；以后合并任何改过 db.json 的分支都按此步骤）
 
@@ -60,3 +60,6 @@ python -c "from utils import BilibiliAPI; BilibiliAPI().login_with_qrcode()"
 - 若 Actions 被风控，可改成在本机 cron 运行再 push，workflow 都保留了手动触发。
 - `62004 审核中` 视为未知状态，不改动记录，等下一轮巡检。
 - `reupload_dead_at` 只由巡检写入；合集同步遇到不同 aid 的新补档会替换 `reupload_aid` 并清除它。
+- 辰默呵的 10 条早期直播录像若在他账号下消失（下架/删号），不用做任何事：巡检会把那一行标成
+  已失效（日期），记录和已镜像的封面都留着，页面照常显示——因为这批录像本来就是第三方转存，
+  不像站主视频那样有官方补档合集可以走，没有「找补档」这一步。

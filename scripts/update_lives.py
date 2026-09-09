@@ -58,15 +58,14 @@ def parse_live_title(title: str) -> tuple[str | None, str]:
     return None, ""
 
 
-def upsert_owner(lives: list[dict], archives: list[dict], today: str) -> tuple[list[dict], int]:
+def upsert_owner(lives: list[dict], archives: list[dict]) -> tuple[list[dict], int]:
     """合集里的条目按 aid upsert 进 source=='owner' 的记录（更新 title/topic/duration/views/cover）；
-    early 记录不碰；合集里消失的 owner 记录不删，标 dead_at（已标过的不覆盖）。"""
+    early 记录不碰。合集成员不是存活信号——一条视频可能只是从合集里移出但仍能看，
+    合集里没有的 owner 记录也不动 dead_at；dead_at 唯一由紧随其后的 recheck_lives 判定。"""
     by_aid = {r["aid"]: r for r in lives if r["source"] == "owner"}
-    seen: set[int] = set()
     new_count = 0
     for a in archives:
         aid = a["aid"]
-        seen.add(aid)
         date, topic = parse_live_title(a["title"])
         if date is None:
             print(f"无法解析：{a['title']}")
@@ -86,9 +85,6 @@ def upsert_owner(lives: list[dict], archives: list[dict], today: str) -> tuple[l
             lives.append(record)
             by_aid[aid] = record
             new_count += 1
-    for r in lives:
-        if r["source"] == "owner" and r["aid"] not in seen and r["dead_at"] is None:
-            r["dead_at"] = today
     return lives, new_count
 
 
@@ -169,6 +165,13 @@ def build_output(lives: list[dict], generated_at: str) -> dict:
     return {"schema_version": 1, "generated_at": generated_at, "count": len(ordered), "lives": ordered}
 
 
+def unchanged(old: dict, new: dict) -> bool:
+    """比较两份 build_output() 产物，忽略 generated_at——内容没变就不用落盘，
+    workflow 的「无变化不提交」才有机会走到。"""
+    return {k: v for k, v in old.items() if k != "generated_at"} == \
+           {k: v for k, v in new.items() if k != "generated_at"}
+
+
 def main(argv: list[str] | None = None) -> int:
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--dry-run", action="store_true")
@@ -195,7 +198,7 @@ def main(argv: list[str] | None = None) -> int:
         lives = json.loads(LIVES.read_text(encoding="utf-8"))["lives"]
 
     today = datetime.now(TZ).strftime("%Y-%m-%d")
-    lives, new_count = upsert_owner(lives, archives, today)
+    lives, new_count = upsert_owner(lives, archives)
 
     if api is not None:
         recheck_lives(lives, api, today)
@@ -205,7 +208,11 @@ def main(argv: list[str] | None = None) -> int:
         covers_new = mirror_live_covers(lives, requests.Session())
 
     if not args.dry_run:
-        write_db(build_output(lives, now_iso()), LIVES)
+        output = build_output(lives, now_iso())
+        if LIVES.exists() and unchanged(json.loads(LIVES.read_text(encoding="utf-8")), output):
+            print("lives: unchanged")
+            return 0
+        write_db(output, LIVES)
 
     owner_total = sum(1 for r in lives if r["source"] == "owner")
     early_total = sum(1 for r in lives if r["source"] == "early")
