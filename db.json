@@ -1,7 +1,45 @@
 {
     "schema_version": 2,
-    "generated_at": "2026-09-08T16:48:35+08:00",
+    "generated_at": "2026-09-09T16:54:59+08:00",
     "videos": [
+        {
+            "aid": 117236081630166,
+            "bvid": "BV1SdYE6pE8y",
+            "title": "时之笛暨塞尔达40周年直面会直播回放",
+            "cover": "https://i2.hdslb.com/bfs/archive/2520ea5f0d96383c9cc5397fff91b779395641a3.jpg",
+            "desc": "2026年9月8日，塞尔达传说40周年直面会口译直播回放。\n并带观看后的第一时间感想。",
+            "tags": [
+                "上B站看播客",
+                "游戏杂谈",
+                "直播回放",
+                "任天堂",
+                "塞尔达传说",
+                "时之笛remake",
+                "闲聊",
+                "游戏文化",
+                "感想",
+                "时之笛"
+            ],
+            "cid": 41701605890,
+            "created_at": "2026-09-09 07:30",
+            "created_timestamp": 1788910200,
+            "duration": 4057,
+            "status_code": 0,
+            "status_description": "OK",
+            "is_available": true,
+            "status_check_time": "2026-09-09T16:54:54",
+            "deleted_found_at": null,
+            "restored_at": null,
+            "stat": {
+                "view": 9750,
+                "like": 482,
+                "coin": 93,
+                "favorite": 98,
+                "danmaku": 76,
+                "at": "2026-09-09"
+            },
+            "cover_local": "covers/117236081630166.webp"
+        },
         {
             "aid": 117228884204938,
             "bvid": "BV1hSbA6qESf",
@@ -71104,8 +71142,8 @@
         }
     ],
     "metadata": {
-        "total": 2040,
-        "available": 1096,
+        "total": 2041,
+        "available": 1097,
         "deleted": 939,
         "self_visible": 5,
         "reuploaded": 500,
@@ -71153,7 +71191,7 @@
                 "deleted": 0
             },
             "2026": {
-                "available": 157,
+                "available": 158,
                 "deleted": 1
             }
         },
