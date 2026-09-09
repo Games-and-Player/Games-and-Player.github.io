@@ -7,6 +7,7 @@
 | `scripts/update.py` | 每日（Daily Update） | 抓 UP 主新投稿追加进 `db.json`，顺带镜像封面 |
 | `scripts/recheck.py` | 每周（Weekly Recheck） | 逐条 view 现存视频判断删除/仅自见；再巡检补档视频是否还活着 |
 | `scripts/update_reupload.py` | 每周（Sync Reuploads）或手动 | 从补档合集抓列表并匹配 `reupload_aid`；`--dry-run` 只报告，`--verify` 复核已有匹配，`--offline` 读上次缓存不联网 |
+| `scripts/update_lives.py` | 每周（Sync Reuploads 之后）或手动 | 从站主直播回放合集（3428508）同步 `data/lives.json`，巡检存活并镜像封面到 `covers/live/`；`辰默呵` 的 10 条早期录像是一次性种子（`source: early`），脚本永不改动；`--dry-run` 只报告，`--offline` 读上次缓存不联网 |
 | `scripts/enrich.py` | 迁移与补数据时手动 | 升级到 schema v2 并补 `bvid`/https 封面/`cover_local`；加 `--durations` 用 view 接口补 `duration`/`stat` |
 | `scripts/mirror_covers.py` | 有新记录时手动 | 把封面下载成 `covers/{aid}.webp`，已存在的跳过 |
 | `scripts/validate.py` | 每次改完 `db.json` | 字段、类型、唯一性、状态一致性校验，出错退出码 1 |

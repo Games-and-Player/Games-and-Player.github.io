@@ -2,6 +2,7 @@
 data/cookie.json
 data/login.log
 data/uploaded_archives.json
+data/lives_archives.json
 
 # Python 相关
 __pycache__/
