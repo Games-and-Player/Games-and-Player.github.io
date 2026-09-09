@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>宋少弘直播回放 · dimisong.org</title>
+    <link rel="icon" type="image/png" href="favicon.png">
+
+    <meta name="description" content="宋少弘（原游戏公民大会）B站直播回放存档：收录 2022 年至今的直播录像与回放记录，供查找与补档之用。">
+    <link rel="canonical" href="https://dimisong.org/live.html">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="宋少弘直播回放">
+    <meta property="og:description" content="直播录像与回放的记录。">
+    <meta property="og:url" content="https://dimisong.org/live.html">
+    <meta property="og:image" content="https://dimisong.org/favicon.png">
+
+    <link rel="stylesheet" href="static/site.css">
+</head>
+<body>
+    <div class="container-fluid">
+        <div class="header">
+            <h1>宋少弘直播回放</h1>
+            <p>直播录像与回放的记录</p>
+            <nav class="site-nav"><a href="./">投稿存档</a><a href="live.html" aria-current="page">直播回放</a></nav>
+        </div>
+
+        <p class="live-summary" id="liveSummary">加载中…</p>
+
+        <div class="live-search">
+            <label for="liveSearch" class="live-sr-only">按日期或主题搜索</label>
+            <input type="search" id="liveSearch" placeholder="按日期或主题搜索…" autocomplete="off">
+        </div>
+
+        <div id="liveList"></div>
+
+        <footer class="site-footer">
+            <p>© 2025–2026 <a href="https://space.bilibili.com/509617361" target="_blank" rel="noopener">風二中</a> 整理 · 视频内容版权归 <a href="https://space.bilibili.com/67390259" target="_blank" rel="noopener">宋少弘</a> 所有</p>
+            <p>本站自 2025 年 5 月起整理宋少弘（原游戏公民大会）的 B 站投稿与直播回放记录，供查找与补档之用。</p>
+            <p>2022–2024 年的早期直播录像由 <a href="https://space.bilibili.com/175513102" target="_blank" rel="noopener">辰默呵</a> 录制并上传，谨此致谢。</p>
+        </footer>
+    </div>
+
+    <script>
+    (function () {
+        var WEEKDAYS = ['周日', '周一', '周二', '周三', '周四', '周五', '周六'];
+
+        function escapeHtml(s) {
+            return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) {
+                return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+            });
+        }
+
+        function formatDuration(sec) {
+            var h = Math.floor(sec / 3600);
+            var m = Math.floor((sec % 3600) / 60);
+            return h + ':' + String(m).padStart(2, '0');
+        }
+
+        function weekday(dateStr) {
+            var d = new Date(dateStr + 'T00:00:00Z');
+            return WEEKDAYS[d.getUTCDay()];
+        }
+
+        function renderRow(live, sameDayCount) {
+            var dateLabel = live.date + '（' + weekday(live.date) + '）';
+            var partLabel = sameDayCount > 1
+                ? '<span class="live-date__part">第 ' + live.part + ' 段</span>'
+                : '';
+            var cover = live.cover_local
+                ? '<img src="' + escapeHtml(live.cover_local) + '" alt="" loading="lazy" width="96" height="64">'
+                : '';
+            var topic = live.topic ? escapeHtml(live.topic) : '—';
+            var action = live.dead_at
+                ? '<span class="live-dead-label">已失效（' + escapeHtml(live.dead_at) + '）</span>'
+                : '<a href="https://www.bilibili.com/video/av' + live.aid + '" target="_blank" rel="noopener">观看回放</a>';
+
+            return '' +
+                '<div class="live-row' + (live.dead_at ? ' live--dead' : '') + '" role="listitem"' +
+                ' data-date="' + escapeHtml(live.date) + '"' +
+                ' data-topic="' + escapeHtml((live.topic || '').toLowerCase()) + '">' +
+                '<div class="live-cover">' + cover + '</div>' +
+                '<div class="live-date">' + dateLabel + partLabel + '</div>' +
+                '<div class="live-topic">' + topic + '</div>' +
+                '<div class="live-break" aria-hidden="true"></div>' +
+                '<div class="live-duration live-meta">' + formatDuration(live.duration) + '</div>' +
+                '<div class="live-source live-meta"><a href="https://space.bilibili.com/' + live.author.mid + '" target="_blank" rel="noopener">' + escapeHtml(live.author.name) + '</a></div>' +
+                '<div class="live-views live-meta">' + live.views + '</div>' +
+                '<div class="live-action live-meta">' + action + '</div>' +
+                '</div>';
+        }
+
+        function render(lives) {
+            var yearCounts = {}, dateCounts = {};
+            lives.forEach(function (l) {
+                var y = l.date.slice(0, 4);
+                yearCounts[y] = (yearCounts[y] || 0) + 1;
+                dateCounts[l.date] = (dateCounts[l.date] || 0) + 1;
+            });
+
+            var html = '', curYear = '';
+            lives.forEach(function (l) {
+                var y = l.date.slice(0, 4);
+                if (y !== curYear) {
+                    if (curYear) html += '</div></section>';
+                    html += '<section class="live-year"><h2>' + y + ' 年' +
+                        '<span class="live-year__count">共 ' + yearCounts[y] + ' 场</span></h2>' +
+                        '<div class="live-rows" role="list">';
+                    curYear = y;
+                }
+                html += renderRow(l, dateCounts[l.date]);
+            });
+            if (curYear) html += '</div></section>';
+
+            document.getElementById('liveList').innerHTML = html || '<p class="live-empty">暂无记录</p>';
+        }
+
+        function renderStats(lives) {
+            var totalSec = lives.reduce(function (s, l) { return s + l.duration; }, 0);
+            var hours = Math.round(totalSec / 3600);
+            var latest = lives[0] ? lives[0].date : '—';
+            var earliest = lives[lives.length - 1] ? lives[lives.length - 1].date : '—';
+            document.getElementById('liveSummary').textContent =
+                '共 ' + lives.length + ' 场 · 最早 ' + earliest + ' · 最近 ' + latest + ' · 累计时长 ' + hours + ' 小时';
+        }
+
+        function applyFilter(query) {
+            var q = query.trim().toLowerCase();
+            document.querySelectorAll('.live-year').forEach(function (yearEl) {
+                var visible = 0;
+                yearEl.querySelectorAll('.live-row').forEach(function (row) {
+                    var match = !q || row.dataset.date.indexOf(q) !== -1 || row.dataset.topic.indexOf(q) !== -1;
+                    row.hidden = !match;
+                    if (match) visible++;
+                });
+                yearEl.hidden = visible === 0;
+            });
+        }
+
+        fetch('data/lives.json')
+            .then(function (r) { return r.json(); })
+            .then(function (data) {
+                var lives = data.lives || [];
+                renderStats(lives);
+                render(lives);
+                document.getElementById('liveSearch').addEventListener('input', function (e) {
+                    applyFilter(e.target.value);
+                });
+            })
+            .catch(function (err) {
+                document.getElementById('liveSummary').textContent = '加载失败';
+                console.error(err);
+            });
+    })();
+    </script>
+</body>
+</html>
