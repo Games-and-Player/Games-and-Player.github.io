@@ -1,7 +1,45 @@
 {
     "schema_version": 2,
-    "generated_at": "2026-09-09T16:54:59+08:00",
+    "generated_at": "2026-09-10T16:53:50+08:00",
     "videos": [
+        {
+            "aid": 117241953652753,
+            "bvid": "BV1khY86uEiS",
+            "title": "任天堂直面会260909口译直播回放",
+            "cover": "https://i0.hdslb.com/bfs/archive/e078d14f493dcfaa9bcdcb6767e6cf87765c3ff1.jpg",
+            "desc": "任天堂直面会口译直播回放，以及第一时间观后感与闲聊。",
+            "tags": [
+                "上B站看播客",
+                "游戏杂谈",
+                "任天堂",
+                "直播回放",
+                "直播录像",
+                "游戏文化",
+                "卡比",
+                "密特罗德",
+                "NS2",
+                "直面会"
+            ],
+            "cid": 41736667605,
+            "created_at": "2026-09-10 07:30",
+            "created_timestamp": 1788996600,
+            "duration": 6724,
+            "status_code": 0,
+            "status_description": "OK",
+            "is_available": true,
+            "status_check_time": "2026-09-10T16:53:44",
+            "deleted_found_at": null,
+            "restored_at": null,
+            "stat": {
+                "view": 5425,
+                "like": 346,
+                "coin": 48,
+                "favorite": 53,
+                "danmaku": 36,
+                "at": "2026-09-10"
+            },
+            "cover_local": "covers/117241953652753.webp"
+        },
         {
             "aid": 117236081630166,
             "bvid": "BV1SdYE6pE8y",
@@ -71142,8 +71180,8 @@
         }
     ],
     "metadata": {
-        "total": 2041,
-        "available": 1097,
+        "total": 2042,
+        "available": 1098,
         "deleted": 939,
         "self_visible": 5,
         "reuploaded": 500,
@@ -71191,7 +71229,7 @@
                 "deleted": 0
             },
             "2026": {
-                "available": 158,
+                "available": 159,
                 "deleted": 1
             }
         },
