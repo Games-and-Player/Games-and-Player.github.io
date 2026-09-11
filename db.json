@@ -1,7 +1,45 @@
 {
     "schema_version": 2,
-    "generated_at": "2026-09-10T16:53:50+08:00",
+    "generated_at": "2026-09-11T16:51:24+08:00",
     "videos": [
+        {
+            "aid": 117246500345355,
+            "bvid": "BV1y8Yu6JE7w",
+            "title": "两场直面会，情绪之外聊聊观后感",
+            "cover": "https://i2.hdslb.com/bfs/archive/2cff3cc4e86a2bb6710028c08e237ec21aa7d9d8.jpg",
+            "desc": "任天堂背靠背直面会，有人满意，有人失望。\n本期早餐车，我们在情绪之外，聊聊观后感，以及任天堂一些可能的想法。",
+            "tags": [
+                "上B站看播客",
+                "塞尔达",
+                "游戏杂谈",
+                "任天堂",
+                "直面会",
+                "密特罗德",
+                "NS2",
+                "卡比",
+                "游戏文化",
+                "业界分析"
+            ],
+            "cid": 41758492320,
+            "created_at": "2026-09-11 07:30",
+            "created_timestamp": 1789083000,
+            "duration": 1143,
+            "status_code": 0,
+            "status_description": "OK",
+            "is_available": true,
+            "status_check_time": "2026-09-11T16:51:18",
+            "deleted_found_at": null,
+            "restored_at": null,
+            "stat": {
+                "view": 17019,
+                "like": 978,
+                "coin": 298,
+                "favorite": 212,
+                "danmaku": 184,
+                "at": "2026-09-11"
+            },
+            "cover_local": "covers/117246500345355.webp"
+        },
         {
             "aid": 117241953652753,
             "bvid": "BV1khY86uEiS",
@@ -71180,8 +71218,8 @@
         }
     ],
     "metadata": {
-        "total": 2042,
-        "available": 1098,
+        "total": 2043,
+        "available": 1099,
         "deleted": 939,
         "self_visible": 5,
         "reuploaded": 500,
@@ -71229,7 +71267,7 @@
                 "deleted": 0
             },
             "2026": {
-                "available": 159,
+                "available": 160,
                 "deleted": 1
             }
         },
