@@ -1,7 +1,44 @@
 {
     "schema_version": 2,
-    "generated_at": "2026-09-11T16:51:24+08:00",
+    "generated_at": "2026-09-12T16:35:04+08:00",
     "videos": [
+        {
+            "aid": 117251449559959,
+            "bvid": "BV1tYYL6rEJE",
+            "title": "十年追光记，明基屏幕挂灯发布会有感",
+            "cover": "https://i2.hdslb.com/bfs/archive/1eb6bffb691899a3d391239b73364727272739dd.jpg",
+            "desc": "前些时间，去参加了明基屏幕挂灯暨十周年回顾发布会，大开眼界。\n本期vlog，就来忠实记录一番，当然，也要谈谈对于新品的感受。",
+            "tags": [
+                "科技猎手",
+                "vlog",
+                "ScreenBar Max",
+                "明基",
+                "发布会",
+                "参观",
+                "观后感",
+                "屏幕挂灯",
+                "ScreenBar"
+            ],
+            "cid": 41787721938,
+            "created_at": "2026-09-12 12:00",
+            "created_timestamp": 1789185600,
+            "duration": 548,
+            "status_code": 0,
+            "status_description": "OK",
+            "is_available": true,
+            "status_check_time": "2026-09-12T16:34:59",
+            "deleted_found_at": null,
+            "restored_at": null,
+            "stat": {
+                "view": 2779,
+                "like": 355,
+                "coin": 112,
+                "favorite": 49,
+                "danmaku": 7,
+                "at": "2026-09-12"
+            },
+            "cover_local": "covers/117251449559959.webp"
+        },
         {
             "aid": 117246500345355,
             "bvid": "BV1y8Yu6JE7w",
@@ -71218,8 +71255,8 @@
         }
     ],
     "metadata": {
-        "total": 2043,
-        "available": 1099,
+        "total": 2044,
+        "available": 1100,
         "deleted": 939,
         "self_visible": 5,
         "reuploaded": 500,
@@ -71267,7 +71304,7 @@
                 "deleted": 0
             },
             "2026": {
-                "available": 160,
+                "available": 161,
                 "deleted": 1
             }
         },
