@@ -1,7 +1,45 @@
 {
     "schema_version": 2,
-    "generated_at": "2026-09-13T06:43:30+08:00",
+    "generated_at": "2026-09-14T17:46:53+08:00",
     "videos": [
+        {
+            "aid": 117263311246901,
+            "bvid": "BV1mtYe6ZEvQ",
+            "title": "谍影重重，小岛新作被迫更换东家",
+            "cover": "https://i2.hdslb.com/bfs/archive/dfcfe397c2541333a412e697a03374e923f123df.jpg",
+            "desc": "索尼单方叫停，微软紧急接盘！小岛新作《PHYSINT》背后的商业算计与预算隐患，颇为值得玩味。\n本期早餐车，我们就来聊聊这个话题。",
+            "tags": [
+                "上B站看播客",
+                "小岛秀夫",
+                "游戏杂谈",
+                "索尼",
+                "微软",
+                "physint",
+                "OD",
+                "游戏文化",
+                "死亡搁浅",
+                "业界分析"
+            ],
+            "cid": 41855287813,
+            "created_at": "2026-09-14 07:30",
+            "created_timestamp": 1789342200,
+            "duration": 1013,
+            "status_code": 0,
+            "status_description": "OK",
+            "is_available": true,
+            "status_check_time": "2026-09-14T17:46:48",
+            "deleted_found_at": null,
+            "restored_at": null,
+            "stat": {
+                "view": 15537,
+                "like": 886,
+                "coin": 255,
+                "favorite": 224,
+                "danmaku": 124,
+                "at": "2026-09-14"
+            },
+            "cover_local": "covers/117263311246901.webp"
+        },
         {
             "aid": 117251449559959,
             "bvid": "BV1tYYL6rEJE",
@@ -71255,8 +71293,8 @@
         }
     ],
     "metadata": {
-        "total": 2044,
-        "available": 1100,
+        "total": 2045,
+        "available": 1101,
         "deleted": 939,
         "self_visible": 5,
         "reuploaded": 500,
@@ -71304,7 +71342,7 @@
                 "deleted": 0
             },
             "2026": {
-                "available": 161,
+                "available": 162,
                 "deleted": 1
             }
         },
