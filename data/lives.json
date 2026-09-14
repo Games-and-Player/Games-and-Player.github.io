@@ -1,8 +1,27 @@
 {
     "schema_version": 1,
-    "generated_at": "2026-09-13T07:59:06+08:00",
-    "count": 76,
+    "generated_at": "2026-09-14T20:21:33+08:00",
+    "count": 77,
     "lives": [
+        {
+            "source": "owner",
+            "aid": 117264435124225,
+            "bvid": "BV1rmYB68EEh",
+            "cover_local": "covers/live/117264435124225.webp",
+            "author": {
+                "name": "風二中",
+                "mid": 509617361
+            },
+            "dead_at": null,
+            "date": "2026-09-13",
+            "topic": "卖东西咯",
+            "title": "【直播回放】宋少弘直播 | 20260913 | 卖东西咯 | 附直播弹幕",
+            "duration": 9030,
+            "uploaded_at": "2026-09-13",
+            "views": 196,
+            "cover": "https://i2.hdslb.com/bfs/archive/d69d4a43980906c22cda49bb85ad7433965a6860.jpg",
+            "part": 1
+        },
         {
             "source": "owner",
             "aid": 117242121426990,
@@ -18,7 +37,7 @@
             "title": "【直播回放】宋少弘直播 | 20260909 | 任天堂直面会 | 附直播弹幕",
             "duration": 7622,
             "uploaded_at": "2026-09-10",
-            "views": 394,
+            "views": 420,
             "cover": "https://i1.hdslb.com/bfs/archive/904a7cd3daab8f2551df13c59800da0ec1207c77.jpg",
             "part": 1
         },
@@ -37,7 +56,7 @@
             "title": "【直播回放】宋少弘直播 | 20260908 | 时之笛直面会 | 附直播弹幕",
             "duration": 4913,
             "uploaded_at": "2026-09-09",
-            "views": 932,
+            "views": 942,
             "cover": "https://i2.hdslb.com/bfs/archive/e5fdf4c6621f3af7c4a0f695a0a274faf7cbc3de.jpg",
             "part": 1
         },
@@ -56,7 +75,7 @@
             "title": "【直播回放】宋少弘直播 | 20260830 | 直播卖闲置 | 附直播弹幕",
             "duration": 8635,
             "uploaded_at": "2026-08-31",
-            "views": 281,
+            "views": 285,
             "cover": "https://i0.hdslb.com/bfs/archive/57e359ba3f3c3c260ad9103e357cc7a1fdb2db7e.jpg",
             "part": 1
         },
@@ -75,7 +94,7 @@
             "title": "【直播回放】宋少弘直播 | 20260823 | 直播卖闲置 | 附直播弹幕",
             "duration": 9817,
             "uploaded_at": "2026-08-25",
-            "views": 297,
+            "views": 299,
             "cover": "https://i2.hdslb.com/bfs/archive/25e1ec47c07f3c82d5101e9a0a07f6f943525dc3.jpg",
             "part": 1
         },
@@ -113,7 +132,7 @@
             "title": "【直播回放】宋少弘直播 | 20260816 | 直播卖闲置 | 附直播弹幕",
             "duration": 1405,
             "uploaded_at": "2026-08-16",
-            "views": 267,
+            "views": 269,
             "cover": "https://i0.hdslb.com/bfs/archive/6bfc150ac247eec0fcdee18bacf37e2aa19a0087.jpg",
             "part": 1
         },
@@ -132,7 +151,7 @@
             "title": "【直播回放】宋少弘直播 | 20260809 | 直播卖闲置 | 附直播弹幕",
             "duration": 16367,
             "uploaded_at": "2026-08-11",
-            "views": 567,
+            "views": 571,
             "cover": "https://i1.hdslb.com/bfs/archive/81ed83a6e206679fe54b1d2146ff20b03cde49e0.jpg",
             "part": 1
         },
@@ -151,7 +170,7 @@
             "title": "【直播回放】宋少弘直播 | 20260802 | 直播卖闲置 | 附直播弹幕",
             "duration": 11671,
             "uploaded_at": "2026-08-03",
-            "views": 558,
+            "views": 559,
             "cover": "https://i1.hdslb.com/bfs/archive/e80da65cf225ecc19e47403ef46d6be9cf37451c.jpg",
             "part": 1
         },
@@ -284,7 +303,7 @@
             "title": "【直播回放】宋少弘直播 | 20260609 | 任天堂直面会 | 附直播弹幕",
             "duration": 4641,
             "uploaded_at": "2026-07-05",
-            "views": 196,
+            "views": 197,
             "cover": "https://i0.hdslb.com/bfs/archive/4a5f408c70d35d3e0a6357e298f11a85a6fe7553.jpg",
             "part": 1
         },
@@ -303,7 +322,7 @@
             "title": "【直播回放】宋少弘直播 | 20260606 | 直播卖闲置 | 附直播弹幕",
             "duration": 5035,
             "uploaded_at": "2026-07-05",
-            "views": 261,
+            "views": 263,
             "cover": "https://i2.hdslb.com/bfs/archive/bbc833909ca800caefdfaddb489837cb27909fd5.jpg",
             "part": 1
         },
@@ -322,7 +341,7 @@
             "title": "【直播回放】宋少弘直播 | 20260530 | 直播卖闲置 | 附直播弹幕",
             "duration": 12556,
             "uploaded_at": "2026-05-31",
-            "views": 299,
+            "views": 300,
             "cover": "https://i2.hdslb.com/bfs/archive/bbc833909ca800caefdfaddb489837cb27909fd5.jpg",
             "part": 1
         },
@@ -474,7 +493,7 @@
             "title": "【直播回放】宋少弘直播 | 20250927 | 回看TGS微软和索尼发布会 | 附直播弹幕",
             "duration": 22827,
             "uploaded_at": "2025-09-28",
-            "views": 1288,
+            "views": 1289,
             "cover": "https://i2.hdslb.com/bfs/archive/ddaff425a745847f027a759110de5ae29e8d0b22.jpg",
             "part": 1
         },
@@ -588,7 +607,7 @@
             "title": "【直播回放】宋少弘直播 | 20250906 | 先玩玩丝之歌 | 附直播弹幕",
             "duration": 17082,
             "uploaded_at": "2025-09-07",
-            "views": 1041,
+            "views": 1043,
             "cover": "https://i2.hdslb.com/bfs/archive/fd87619174c0d8e2a4ad1c986b385e7faf8dc524.jpg",
             "part": 1
         },
@@ -626,7 +645,7 @@
             "title": "【直播回放】宋少弘直播 | 20250827 | 理智与情感 | 附直播弹幕",
             "duration": 17431,
             "uploaded_at": "2025-08-28",
-            "views": 1590,
+            "views": 1618,
             "cover": "https://i0.hdslb.com/bfs/archive/0fd5dd4e975530ede694bb151249de7763af538d.jpg",
             "part": 1
         },
@@ -645,7 +664,7 @@
             "title": "【直播回放】宋少弘直播 | 20250820 | 先玩玩游戏，头七 | 附直播弹幕",
             "duration": 17778,
             "uploaded_at": "2025-08-21",
-            "views": 1723,
+            "views": 1726,
             "cover": "https://i1.hdslb.com/bfs/archive/9b79c6bb4f07cc4298f4ecdb1363106edec608e5.jpg",
             "part": 1
         },
@@ -892,7 +911,7 @@
             "title": "【直播回放】宋少弘直播 | 20250705 | 诅咒的相机，把玩一翻 | 附直播弹幕",
             "duration": 20688,
             "uploaded_at": "2025-07-06",
-            "views": 1808,
+            "views": 1810,
             "cover": "https://i0.hdslb.com/bfs/archive/ac9c490cc71fccd0793764ebe64a2b8fc61ead12.jpg",
             "part": 1
         },
@@ -911,7 +930,7 @@
             "title": "【直播回放】宋少弘直播 | 20250702 | 马车8水友赛 | 附直播弹幕",
             "duration": 18537,
             "uploaded_at": "2025-07-03",
-            "views": 1280,
+            "views": 1281,
             "cover": "https://i1.hdslb.com/bfs/archive/0bd7857336de2f1cba474b12422926b8eca845cd.jpg",
             "part": 1
         },
@@ -949,7 +968,7 @@
             "title": "【直播回放】宋少弘直播 | 20250625 | 快递连接世界 | 附直播弹幕",
             "duration": 21498,
             "uploaded_at": "2025-06-26",
-            "views": 1284,
+            "views": 1285,
             "cover": "https://i2.hdslb.com/bfs/archive/128bda679ca26b8b8515b26352d25febfee68983.jpg",
             "part": 1
         },
@@ -1006,7 +1025,7 @@
             "title": "【直播回放】宋少弘直播 | 20250614 | 马车挑战8000分 | 附直播弹幕",
             "duration": 18221,
             "uploaded_at": "2025-06-15",
-            "views": 2657,
+            "views": 2658,
             "cover": "https://i2.hdslb.com/bfs/archive/8d60e500c02307e678fddd8376930d4dd2b50065.jpg",
             "part": 1
         },
@@ -1044,7 +1063,7 @@
             "title": "【直播回放】宋少弘直播 | 20240915 | 初见机器人 | 附直播弹幕",
             "duration": 28665,
             "uploaded_at": "2024-09-16",
-            "views": 2002,
+            "views": 2004,
             "cover": "https://i2.hdslb.com/bfs/archive/6232ec24e646aafa73a7c4869916fe1300039f65.jpg",
             "part": 1
         },
@@ -1120,7 +1139,7 @@
             "title": "【直播回放】宋少弘直播 | 20240827 | 你也有金箍棒啊！| 附直播弹幕",
             "duration": 24698,
             "uploaded_at": "2024-08-28",
-            "views": 997,
+            "views": 998,
             "cover": "https://i0.hdslb.com/bfs/archive/1b6fce6e6ad9523bf62c59197f4d84b82fc0af57.jpg",
             "part": 1
         },
@@ -1139,7 +1158,7 @@
             "title": "【直播回放】宋少弘直播 | 20240824 | 吃我老宋一棒 | 附直播弹幕",
             "duration": 24115,
             "uploaded_at": "2024-08-25",
-            "views": 1271,
+            "views": 1272,
             "cover": "https://i2.hdslb.com/bfs/archive/b016fccae9dd47a19cca94c220ea694dda87a29a.jpg",
             "part": 1
         },
@@ -1158,7 +1177,7 @@
             "title": "【直播回放】宋少弘直播 | 20240820 | 吃我老宋一棒 | 附直播弹幕",
             "duration": 22195,
             "uploaded_at": "2024-08-21",
-            "views": 2373,
+            "views": 2377,
             "cover": "https://i0.hdslb.com/bfs/archive/1873eaf149ad342e2bb4e335ff17f6a97d1bbe19.jpg",
             "part": 1
         },
@@ -1196,7 +1215,7 @@
             "title": "【直播回放】宋少弘直播 | 20240806 | 吐槽老节目 | 附直播弹幕",
             "duration": 13804,
             "uploaded_at": "2024-08-07",
-            "views": 3188,
+            "views": 3190,
             "cover": "https://i0.hdslb.com/bfs/archive/0e8c88cea445008abd223e39784a094f64a3b863.jpg",
             "part": 1
         },
@@ -1215,7 +1234,7 @@
             "title": "【直播回放】宋少弘直播 | 20240728 | 今天玩一个新游戏 | 附直播弹幕",
             "duration": 12746,
             "uploaded_at": "2024-07-29",
-            "views": 1852,
+            "views": 1853,
             "cover": "https://i1.hdslb.com/bfs/archive/0a2c167413e6d3fe5437099f689dac8c41b4be91.jpg",
             "part": 1
         },
@@ -1234,7 +1253,7 @@
             "title": "【直播回放】宋少弘直播 | 20240721 | 吐槽老节目 | 附直播弹幕",
             "duration": 9339,
             "uploaded_at": "2024-07-21",
-            "views": 2497,
+            "views": 2498,
             "cover": "https://i2.hdslb.com/bfs/archive/e6b08d8c7e3d75496ab34dcaae6d40c1724d1f5d.jpg",
             "part": 1
         },
@@ -1253,7 +1272,7 @@
             "title": "【直播回放】宋少弘直播 | 20240716 | 笑谈老节目 | 附直播弹幕",
             "duration": 8683,
             "uploaded_at": "2024-07-16",
-            "views": 5294,
+            "views": 5299,
             "cover": "https://i2.hdslb.com/bfs/archive/402e7ce4a0c4d17fc231c9fc361b17b55ee1f26c.jpg",
             "part": 1
         },
