@@ -1,7 +1,45 @@
 {
     "schema_version": 2,
-    "generated_at": "2026-09-14T19:40:17+08:00",
+    "generated_at": "2026-09-15T17:21:23+08:00",
     "videos": [
+        {
+            "aid": 117268243814583,
+            "bvid": "BV1WUYk65Eiw",
+            "title": "毫无性价比，我体验了富哥的玩具",
+            "cover": "https://i0.hdslb.com/bfs/archive/a3905443d447291ee0433f1914a4cc3e5c248d7d.jpg",
+            "desc": "我的一位怀旧游戏爱好者友人，花两千多买了一台只能玩GBC的机器，并且非要我先体验一番。\n于是，我也沾光体验了一把富哥的玩具，但是，好话不多。\n本期早餐车，我们就来看看这个毫无性价比的掌机。不是商单，放心观看。",
+            "tags": [
+                "上B站看播客",
+                "掌机",
+                "游戏杂谈",
+                "玩具",
+                "电子核桃",
+                "modretro",
+                "GBC",
+                "烧录卡",
+                "游戏文化",
+                "怀旧游戏"
+            ],
+            "cid": 41881174886,
+            "created_at": "2026-09-15 07:30",
+            "created_timestamp": 1789428600,
+            "duration": 905,
+            "status_code": 0,
+            "status_description": "OK",
+            "is_available": true,
+            "status_check_time": "2026-09-15T17:21:18",
+            "deleted_found_at": null,
+            "restored_at": null,
+            "stat": {
+                "view": 30254,
+                "like": 1092,
+                "coin": 292,
+                "favorite": 243,
+                "danmaku": 219,
+                "at": "2026-09-15"
+            },
+            "cover_local": "covers/117268243814583.webp"
+        },
         {
             "aid": 117263311246901,
             "bvid": "BV1mtYe6ZEvQ",
@@ -71293,8 +71331,8 @@
         }
     ],
     "metadata": {
-        "total": 2045,
-        "available": 1101,
+        "total": 2046,
+        "available": 1102,
         "deleted": 939,
         "self_visible": 5,
         "reuploaded": 500,
@@ -71342,7 +71380,7 @@
                 "deleted": 0
             },
             "2026": {
-                "available": 162,
+                "available": 163,
                 "deleted": 1
             }
         },
