@@ -1,7 +1,45 @@
 {
     "schema_version": 2,
-    "generated_at": "2026-09-15T17:21:23+08:00",
+    "generated_at": "2026-09-17T17:22:46+08:00",
     "videos": [
+        {
+            "aid": 117279987602438,
+            "bvid": "BV1f9ec69Ep8",
+            "title": "勇者通马桶，那些凑数的垃圾支线",
+            "cover": "https://i2.hdslb.com/bfs/archive/fe08f9a4d7365e1971abe34c4b9b73732601547b.jpg",
+            "desc": "开放世界大量流水线跑腿支线被玩家戏称为通马桶任务，这类无意义劳动，让我想起了大卫格雷博书中的，现实中的狗屁工作。\n本期早餐车，我们就来探讨一下，这些垃圾任务何以大量存在。",
+            "tags": [
+                "上B站看播客",
+                "游戏杂谈",
+                "RPG",
+                "游戏人生",
+                "支线",
+                "叙事失调",
+                "罐头游戏",
+                "游戏文化",
+                "通马桶",
+                "重复任务"
+            ],
+            "cid": 41942713002,
+            "created_at": "2026-09-17 07:30",
+            "created_timestamp": 1789601400,
+            "duration": 930,
+            "status_code": 0,
+            "status_description": "OK",
+            "is_available": true,
+            "status_check_time": "2026-09-17T17:22:40",
+            "deleted_found_at": null,
+            "restored_at": null,
+            "stat": {
+                "view": 12159,
+                "like": 824,
+                "coin": 249,
+                "favorite": 181,
+                "danmaku": 122,
+                "at": "2026-09-17"
+            },
+            "cover_local": "covers/117279987602438.webp"
+        },
         {
             "aid": 117268243814583,
             "bvid": "BV1WUYk65Eiw",
@@ -71331,8 +71369,8 @@
         }
     ],
     "metadata": {
-        "total": 2046,
-        "available": 1102,
+        "total": 2047,
+        "available": 1103,
         "deleted": 939,
         "self_visible": 5,
         "reuploaded": 500,
@@ -71380,7 +71418,7 @@
                 "deleted": 0
             },
             "2026": {
-                "available": 163,
+                "available": 164,
                 "deleted": 1
             }
         },
