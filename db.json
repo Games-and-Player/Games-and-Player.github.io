@@ -1,7 +1,45 @@
 {
     "schema_version": 2,
-    "generated_at": "2026-09-17T17:22:46+08:00",
+    "generated_at": "2026-09-18T16:57:18+08:00",
     "videos": [
+        {
+            "aid": 117290523825653,
+            "bvid": "BV19ye16zE6r",
+            "title": "户外吃披萨，体验别样的太白遗风",
+            "cover": "https://i2.hdslb.com/bfs/archive/74233cc0947ed68e76b1b12814fbfae795e5d125.jpg",
+            "desc": "今天到李太白留下诗篇的鸡笼山，边吃披萨，别聊些有趣的话题。",
+            "tags": [
+                "记录我的美食日常",
+                "披萨",
+                "生活记录",
+                "美食",
+                "南京",
+                "李白",
+                "鸡笼山",
+                "户外",
+                "玄武湖",
+                "谢眺"
+            ],
+            "cid": 41993244027,
+            "created_at": "2026-09-18 14:15",
+            "created_timestamp": 1789712117,
+            "duration": 692,
+            "status_code": 0,
+            "status_description": "OK",
+            "is_available": true,
+            "status_check_time": "2026-09-18T16:57:14",
+            "deleted_found_at": null,
+            "restored_at": null,
+            "stat": {
+                "view": 3418,
+                "like": 422,
+                "coin": 135,
+                "favorite": 88,
+                "danmaku": 35,
+                "at": "2026-09-18"
+            },
+            "cover_local": "covers/117290523825653.webp"
+        },
         {
             "aid": 117279987602438,
             "bvid": "BV1f9ec69Ep8",
@@ -71369,8 +71407,8 @@
         }
     ],
     "metadata": {
-        "total": 2047,
-        "available": 1103,
+        "total": 2048,
+        "available": 1104,
         "deleted": 939,
         "self_visible": 5,
         "reuploaded": 500,
@@ -71418,7 +71456,7 @@
                 "deleted": 0
             },
             "2026": {
-                "available": 164,
+                "available": 165,
                 "deleted": 1
             }
         },
