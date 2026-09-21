@@ -1,7 +1,45 @@
 {
     "schema_version": 2,
-    "generated_at": "2026-09-20T06:49:12+08:00",
+    "generated_at": "2026-09-21T17:51:02+08:00",
     "videos": [
+        {
+            "aid": 117302183862156,
+            "bvid": "BV1SEeB6VELk",
+            "title": "开箱限定版，聊聊新老火纹的不同魅力",
+            "cover": "https://i1.hdslb.com/bfs/archive/90aa5d89cc6e891988ae0fba591f17678cac3ec1.jpg",
+            "desc": "本期早餐车，开箱火纹万缕千丝限定版，嗯，怎么来的，节目里说。\n顺便聊聊加贺昭三时代的火纹，与新火纹之间不同的魅力。",
+            "tags": [
+                "上B站看播客",
+                "游戏杂谈",
+                "开箱",
+                "任天堂",
+                "火焰纹章",
+                "万缕千丝",
+                "NS2",
+                "游戏文化",
+                "加贺昭三",
+                "万紫千红"
+            ],
+            "cid": 42049014034,
+            "created_at": "2026-09-21 07:30",
+            "created_timestamp": 1789947000,
+            "duration": 835,
+            "status_code": 0,
+            "status_description": "OK",
+            "is_available": true,
+            "status_check_time": "2026-09-21T17:50:57",
+            "deleted_found_at": null,
+            "restored_at": null,
+            "stat": {
+                "view": 16458,
+                "like": 941,
+                "coin": 299,
+                "favorite": 200,
+                "danmaku": 138,
+                "at": "2026-09-21"
+            },
+            "cover_local": "covers/117302183862156.webp"
+        },
         {
             "aid": 117290523825653,
             "bvid": "BV19ye16zE6r",
@@ -71407,8 +71445,8 @@
         }
     ],
     "metadata": {
-        "total": 2048,
-        "available": 1104,
+        "total": 2049,
+        "available": 1105,
         "deleted": 939,
         "self_visible": 5,
         "reuploaded": 500,
@@ -71456,7 +71494,7 @@
                 "deleted": 0
             },
             "2026": {
-                "available": 165,
+                "available": 166,
                 "deleted": 1
             }
         },
