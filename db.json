@@ -1,7 +1,45 @@
 {
     "schema_version": 2,
-    "generated_at": "2026-09-21T17:51:02+08:00",
+    "generated_at": "2026-09-22T17:14:42+08:00",
     "videos": [
+        {
+            "aid": 117309096072207,
+            "bvid": "BV1p2hq6sE84",
+            "title": "盲目避险，3A厂商为何失去创意自信",
+            "cover": "https://i2.hdslb.com/bfs/archive/ab45deb93a45325ad0ab9b925c964df67240f11e.jpg",
+            "desc": "rob fahey认为，面对居高不下的研发成本，3A厂商陷入风险焦虑，由此开始过度依赖焦点小组与盲目迎合分心者，最终丧失创意自信。\n本期早餐车，我们就来聊聊这个话题。",
+            "tags": [
+                "上B站看播客",
+                "游戏杂谈",
+                "任天堂",
+                "索尼",
+                "微软",
+                "steam",
+                "Focus Group",
+                "游戏文化",
+                "3A",
+                "业界分析"
+            ],
+            "cid": 42085057033,
+            "created_at": "2026-09-22 07:30",
+            "created_timestamp": 1790033400,
+            "duration": 972,
+            "status_code": 0,
+            "status_description": "OK",
+            "is_available": true,
+            "status_check_time": "2026-09-22T17:14:37",
+            "deleted_found_at": null,
+            "restored_at": null,
+            "stat": {
+                "view": 12089,
+                "like": 805,
+                "coin": 251,
+                "favorite": 196,
+                "danmaku": 69,
+                "at": "2026-09-22"
+            },
+            "cover_local": "covers/117309096072207.webp"
+        },
         {
             "aid": 117302183862156,
             "bvid": "BV1SEeB6VELk",
@@ -71445,8 +71483,8 @@
         }
     ],
     "metadata": {
-        "total": 2049,
-        "available": 1105,
+        "total": 2050,
+        "available": 1106,
         "deleted": 939,
         "self_visible": 5,
         "reuploaded": 500,
@@ -71494,7 +71532,7 @@
                 "deleted": 0
             },
             "2026": {
-                "available": 166,
+                "available": 167,
                 "deleted": 1
             }
         },
