@@ -36,11 +36,13 @@ jobs:
         run: |
           set -o pipefail
           python scripts/update_lives.py | tee lives.log
+      # 横幅封面墙：纯本地合成（不联网），按月取样，内容没变就不写文件
+      - run: python scripts/make_walls.py
       - name: Commit
         run: |
-          if git diff --quiet db.json data/lives.json && [ -z "$(git status --porcelain covers/live)" ]; then echo "no changes"; exit 0; fi
+          if git diff --quiet db.json data/lives.json && [ -z "$(git status --porcelain covers/live static/wall.webp static/wall-live.webp)" ]; then echo "no changes"; exit 0; fi
           git config user.name "${{ github.actor }}"
           git config user.email "${{ github.actor }}@users.noreply.github.com"
-          git add db.json data/lives.json covers/live
+          git add db.json data/lives.json covers/live static/wall.webp static/wall-live.webp
           git commit -m "🔁 更新补档信息 $(date +'%Y%m%d') / 直播回放"
           git push || (git pull --rebase && git push)
