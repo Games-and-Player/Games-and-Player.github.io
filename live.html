@@ -14,23 +14,44 @@
     <meta property="og:url" content="https://dimisong.org/live.html">
     <meta property="og:image" content="https://dimisong.org/favicon.png">
 
-    <link rel="stylesheet" href="static/site.css?v=20260909">
+    <link rel="stylesheet" href="static/site.css?v=20260924">
 </head>
 <body class="live-page">
     <div class="container-fluid">
-        <div class="header">
+        <div class="header header--banner">
             <h1>宋少弘直播回放</h1>
             <p>直播录像与回放的记录</p>
             <nav class="site-nav"><a href="./">投稿存档</a><a href="live.html" aria-current="page">直播回放</a></nav>
         </div>
 
-        <p class="live-summary" id="liveSummary">加载中…</p>
-
-        <div class="live-search">
-            <label for="liveSearch" class="live-sr-only">按日期或主题搜索</label>
-            <input type="search" id="liveSearch" placeholder="按日期或主题搜索…" autocomplete="off">
+        <div class="lv-stats" id="lvStats">
+            <div class="stat-card">
+                <div class="stat-number num" id="lvStatCount">-</div>
+                <div class="stat-label">场直播</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number num" id="lvStatHours">-</div>
+                <div class="stat-label">小时录像</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number num is-date" id="lvStatFirst">—</div>
+                <div class="stat-label">首场</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number num is-date" id="lvStatLast">—</div>
+                <div class="stat-label">最近一场</div>
+            </div>
         </div>
 
+        <div class="lv-bar">
+            <div class="lv-chips" id="lvChips" role="group" aria-label="按主题筛选"></div>
+            <div class="live-search">
+                <label for="liveSearch" class="live-sr-only">按日期或主题搜索</label>
+                <input type="search" id="liveSearch" placeholder="按日期或主题搜索…" autocomplete="off">
+            </div>
+        </div>
+
+        <p class="live-sr-only" id="liveStatus" aria-live="polite"></p>
         <div id="liveList"></div>
         <p class="live-empty" id="liveEmpty" hidden>没有匹配的直播</p>
 
@@ -44,6 +65,7 @@
     <script>
     (function () {
         var WEEKDAYS = ['周日', '周一', '周二', '周三', '周四', '周五', '周六'];
+        var TOP_TOPICS_N = 6;
 
         function escapeHtml(s) {
             return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) {
@@ -62,109 +84,139 @@
             return WEEKDAYS[d.getUTCDay()];
         }
 
-        function renderRow(live, sameDayCount) {
-            var duration = formatDuration(live.duration);
-            var views = escapeHtml(String(live.views));
-            var dateLabel = escapeHtml(live.date) + '（' + escapeHtml(weekday(live.date)) + '）';
-            var partLabel = sameDayCount > 1
-                ? '<span class="live-date__part">第 ' + escapeHtml(String(live.part)) + ' 段</span>'
-                : '';
-            var cover = live.cover_local
-                ? '<img src="' + escapeHtml(live.cover_local) + '" alt="" loading="lazy" width="96" height="64">'
-                : '';
-            var topic = live.topic ? escapeHtml(live.topic) : '—';
-            var aid = escapeHtml(String(live.aid));
-            var mid = escapeHtml(String(live.author.mid));
-            var action = live.dead_at
-                ? '<span class="live-dead-label">已失效（' + escapeHtml(live.dead_at) + '）</span>'
-                : '<a href="https://www.bilibili.com/video/av' + aid + '" target="_blank" rel="noopener">观看回放</a>';
-
-            return '' +
-                '<div class="live-row' + (live.dead_at ? ' live--dead' : '') + '" role="listitem"' +
-                ' data-date="' + escapeHtml(live.date) + '"' +
-                ' data-topic="' + escapeHtml((live.topic || '').toLowerCase()) + '">' +
-                '<div class="live-cover">' + cover + '</div>' +
-                '<div class="live-date">' + dateLabel + partLabel + '</div>' +
-                '<div class="live-topic">' + topic + '</div>' +
-                '<div class="live-break" aria-hidden="true"></div>' +
-                '<div class="live-duration live-meta"><span class="live-sr-only">时长 </span>' + escapeHtml(duration) + '</div>' +
-                '<div class="live-source live-meta"><a href="https://space.bilibili.com/' + mid + '" target="_blank" rel="noopener">' + escapeHtml(live.author.name) + '</a></div>' +
-                '<div class="live-views live-meta"><span class="live-sr-only">播放 </span>' + views + '</div>' +
-                '<div class="live-action live-meta">' + action + '</div>' +
-                '</div>';
-        }
-
-        function render(lives) {
-            var yearCounts = {}, dateCounts = {};
-            lives.forEach(function (l) {
-                var y = l.date.slice(0, 4);
-                yearCounts[y] = (yearCounts[y] || 0) + 1;
-                dateCounts[l.date] = (dateCounts[l.date] || 0) + 1;
-            });
-
-            var html = '', curYear = '';
-            lives.forEach(function (l) {
-                var y = l.date.slice(0, 4);
-                if (y !== curYear) {
-                    if (curYear) html += '</div></section>';
-                    html += '<section class="live-year"><h2>' + y + ' 年' +
-                        '<span class="live-year__count">共 ' + yearCounts[y] + ' 场</span></h2>' +
-                        '<div class="live-rows" role="list">';
-                    curYear = y;
-                }
-                html += renderRow(l, dateCounts[l.date]);
-            });
-            if (curYear) html += '</div></section>';
-
-            document.getElementById('liveList').innerHTML = html || '<p class="live-empty">暂无记录</p>';
-        }
-
-        var fullSummary = '';
-        var EMPTY_TEXT = '没有匹配的直播';
+        var allLives = [];
+        var sameDayCounts = {};
+        var currentTopic = ''; // '' = 全部
 
         function renderStats(lives) {
             var totalSec = lives.reduce(function (s, l) { return s + l.duration; }, 0);
             var hours = Math.round(totalSec / 3600);
             var dates = lives.map(function (l) { return l.date; });
-            var earliest = dates.length ? dates.reduce(function (a, b) { return b < a ? b : a; }) : '—';
-            var latest = dates.length ? dates.reduce(function (a, b) { return b > a ? b : a; }) : '—';
-            fullSummary = '共 ' + lives.length + ' 场 · 最早 ' + earliest + ' · 最近 ' + latest + ' · 累计时长 ' + hours + ' 小时';
-            document.getElementById('liveSummary').textContent = fullSummary;
+            var earliest = dates.reduce(function (a, b) { return b < a ? b : a; });
+            var latest = dates.reduce(function (a, b) { return b > a ? b : a; });
+            document.getElementById('lvStatCount').textContent = lives.length;
+            document.getElementById('lvStatHours').textContent = hours;
+            document.getElementById('lvStatFirst').textContent = earliest;
+            document.getElementById('lvStatLast').textContent = latest;
         }
 
-        function applyFilter(query) {
-            var q = query.trim().toLowerCase();
-            var totalVisible = 0;
-            document.querySelectorAll('.live-year').forEach(function (yearEl) {
-                var visible = 0;
-                yearEl.querySelectorAll('.live-row').forEach(function (row) {
-                    var match = !q || row.dataset.date.indexOf(q) !== -1 || row.dataset.topic.indexOf(q) !== -1;
-                    row.hidden = !match;
-                    if (match) visible++;
-                });
-                yearEl.hidden = visible === 0;
-                yearEl.querySelector('.live-year__count').textContent = '共 ' + visible + ' 场';
-                totalVisible += visible;
+        // 出现次数最多的非空主题：与 Python collections.Counter.most_common 同规则——
+        // 按次数降序，次数相同时按数据里第一次出现的顺序（稳定排序）。
+        function topTopics(lives, n) {
+            var counts = {}, order = [];
+            lives.forEach(function (l) {
+                var t = l.topic;
+                if (!t) return;
+                if (!(t in counts)) { counts[t] = 0; order.push(t); }
+                counts[t]++;
             });
-            var emptyEl = document.getElementById('liveEmpty');
-            emptyEl.textContent = EMPTY_TEXT;
-            emptyEl.hidden = totalVisible > 0;
-            document.getElementById('liveSummary').textContent = q ? '匹配 ' + totalVisible + ' 场' : fullSummary;
+            order.sort(function (a, b) { return counts[b] - counts[a]; });
+            return order.slice(0, n).map(function (t) { return { topic: t, count: counts[t] }; });
         }
+
+        function renderChips(lives) {
+            var html = '<button type="button" class="lv-chip" data-topic="" aria-pressed="' +
+                (currentTopic === '' ? 'true' : 'false') + '">全部<b>' + escapeHtml(String(lives.length)) + '</b></button>';
+            topTopics(lives, TOP_TOPICS_N).forEach(function (item) {
+                html += '<button type="button" class="lv-chip" data-topic="' + escapeHtml(item.topic) + '" aria-pressed="' +
+                    (currentTopic === item.topic ? 'true' : 'false') + '">' + escapeHtml(item.topic) +
+                    '<b>' + escapeHtml(String(item.count)) + '</b></button>';
+            });
+            document.getElementById('lvChips').innerHTML = html;
+        }
+
+        function updateChipPressed() {
+            document.querySelectorAll('#lvChips .lv-chip').forEach(function (btn) {
+                btn.setAttribute('aria-pressed', btn.dataset.topic === currentTopic ? 'true' : 'false');
+            });
+        }
+
+        function renderCard(live) {
+            var dead = !!live.dead_at;
+            var sameDay = sameDayCounts[live.date] > 1;
+            var aid = escapeHtml(String(live.aid));
+            var coverHtml = live.cover_local
+                ? '<img src="' + escapeHtml(live.cover_local) + '" alt="" loading="lazy" width="480" height="300">'
+                : '';
+            var badgeHtml = dead
+                ? '<span class="lv-part lv-part--dead">已失效 ' + escapeHtml(live.dead_at) + '</span>'
+                : (sameDay ? '<span class="lv-part">第 ' + escapeHtml(String(live.part)) + ' 段</span>' : '');
+            var topicHtml = live.topic
+                ? '<span class="lv-topic">' + escapeHtml(live.topic) + '</span>'
+                : '<span class="lv-topic lv-topic--none">直播录像</span>';
+
+            var body =
+                '<span class="lv-cover">' + coverHtml + badgeHtml +
+                '<span class="lv-dur"><span class="live-sr-only">时长 </span>' + escapeHtml(formatDuration(live.duration)) + '</span></span>' +
+                '<span class="lv-body">' +
+                '<span class="lv-date num">' + escapeHtml(live.date) + ' · ' + escapeHtml(weekday(live.date)) + '</span>' +
+                topicHtml +
+                '<span class="lv-meta"><span>' + escapeHtml(live.author.name) + '</span><span class="num">' +
+                escapeHtml(String(live.views)) + ' 次播放</span></span>' +
+                '</span>';
+
+            if (dead) {
+                return '<li><div class="lv-card lv-card--dead">' + body + '</div></li>';
+            }
+            return '<li><a class="lv-card" href="https://www.bilibili.com/video/av' + aid +
+                '" target="_blank" rel="noopener">' + body + '</a></li>';
+        }
+
+        function matches(live, topic, q) {
+            if (topic && live.topic !== topic) return false;
+            if (!q) return true;
+            return live.date.indexOf(q) !== -1 || (live.topic || '').toLowerCase().indexOf(q) !== -1;
+        }
+
+        function render() {
+            var q = document.getElementById('liveSearch').value.trim().toLowerCase();
+            var filtered = allLives.filter(function (l) { return matches(l, currentTopic, q); });
+
+            var html = '', curYear = '', yearItems = [];
+            function flushYear() {
+                if (!curYear) return;
+                var sec = yearItems.reduce(function (s, l) { return s + l.duration; }, 0);
+                var hours = Math.round(sec / 3600);
+                html += '<section class="lv-year"><h2>' + escapeHtml(curYear) + ' 年<span>' + escapeHtml(String(yearItems.length)) +
+                    ' 场 · ' + escapeHtml(String(hours)) + ' 小时</span></h2><ul class="lv-grid">' +
+                    yearItems.map(renderCard).join('') + '</ul></section>';
+            }
+            filtered.forEach(function (l) {
+                var y = l.date.slice(0, 4);
+                if (y !== curYear) { flushYear(); curYear = y; yearItems = []; }
+                yearItems.push(l);
+            });
+            flushYear();
+
+            document.getElementById('liveList').innerHTML = html;
+
+            var filtering = !!(currentTopic || q);
+            document.getElementById('liveStatus').textContent = filtering ? '匹配 ' + filtered.length + ' 场' : '';
+            document.getElementById('liveEmpty').hidden = filtered.length > 0;
+        }
+
+        document.getElementById('lvChips').addEventListener('click', function (e) {
+            var btn = e.target.closest('.lv-chip');
+            if (!btn) return;
+            currentTopic = btn.dataset.topic;
+            updateChipPressed();
+            render();
+        });
+
+        document.getElementById('liveSearch').addEventListener('input', render);
 
         fetch('data/lives.json')
             .then(function (r) { return r.json(); })
             .then(function (data) {
-                var lives = data.lives || [];
-                document.getElementById('liveEmpty').textContent = EMPTY_TEXT;
-                renderStats(lives);
-                render(lives);
-                document.getElementById('liveSearch').addEventListener('input', function (e) {
-                    applyFilter(e.target.value);
+                allLives = data.lives || [];
+                allLives.forEach(function (l) {
+                    sameDayCounts[l.date] = (sameDayCounts[l.date] || 0) + 1;
                 });
+                renderStats(allLives);
+                renderChips(allLives);
+                render();
             })
             .catch(function (err) {
-                document.getElementById('liveSummary').textContent = '加载失败';
                 var emptyEl = document.getElementById('liveEmpty');
                 emptyEl.textContent = '加载失败，请刷新重试';
                 emptyEl.hidden = false;
