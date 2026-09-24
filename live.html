@@ -92,8 +92,8 @@
             var totalSec = lives.reduce(function (s, l) { return s + l.duration; }, 0);
             var hours = Math.round(totalSec / 3600);
             var dates = lives.map(function (l) { return l.date; });
-            var earliest = dates.reduce(function (a, b) { return b < a ? b : a; });
-            var latest = dates.reduce(function (a, b) { return b > a ? b : a; });
+            var earliest = dates.length ? dates.reduce(function (a, b) { return b < a ? b : a; }) : '—';
+            var latest = dates.length ? dates.reduce(function (a, b) { return b > a ? b : a; }) : '—';
             document.getElementById('lvStatCount').textContent = lives.length;
             document.getElementById('lvStatHours').textContent = hours;
             document.getElementById('lvStatFirst').textContent = earliest;
