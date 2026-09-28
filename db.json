@@ -1,7 +1,45 @@
 {
     "schema_version": 2,
-    "generated_at": "2026-09-27T07:11:52+08:00",
+    "generated_at": "2026-09-28T18:48:44+08:00",
     "videos": [
+        {
+            "aid": 117342046525655,
+            "bvid": "BV1YFah6xEXp",
+            "title": "动视接手，要让光环再次伟大？",
+            "cover": "https://i0.hdslb.com/bfs/archive/fa7f1593a023f5e2f1cff3ed05ddcae7bdd0408f.jpg",
+            "desc": "微软方面正式确认halo studio（343）退居二线，动视接手光环新作开发。\n这次的所谓great reset，能让光环系列再次伟大吗？\n本期早餐车，我们就来聊聊这个话题。",
+            "tags": [
+                "上B站看播客",
+                "游戏杂谈",
+                "COD",
+                "HALO",
+                "虚幻",
+                "halo studio",
+                "343",
+                "动视暴雪",
+                "战争机器",
+                "游戏文化"
+            ],
+            "cid": 42243525713,
+            "created_at": "2026-09-28 07:30",
+            "created_timestamp": 1790551800,
+            "duration": 1095,
+            "status_code": 0,
+            "status_description": "OK",
+            "is_available": true,
+            "status_check_time": "2026-09-28T18:48:38",
+            "deleted_found_at": null,
+            "restored_at": null,
+            "stat": {
+                "view": 10891,
+                "like": 724,
+                "coin": 207,
+                "favorite": 159,
+                "danmaku": 61,
+                "at": "2026-09-28"
+            },
+            "cover_local": "covers/117342046525655.webp"
+        },
         {
             "aid": 117329966930013,
             "bvid": "BV115h16EEtM",
@@ -71594,8 +71632,8 @@
         }
     ],
     "metadata": {
-        "total": 2053,
-        "available": 1108,
+        "total": 2054,
+        "available": 1109,
         "deleted": 940,
         "self_visible": 5,
         "reuploaded": 500,
@@ -71643,7 +71681,7 @@
                 "deleted": 0
             },
             "2026": {
-                "available": 169,
+                "available": 170,
                 "deleted": 2
             }
         },
