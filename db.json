@@ -1,7 +1,45 @@
 {
     "schema_version": 2,
-    "generated_at": "2026-09-28T18:48:44+08:00",
+    "generated_at": "2026-09-29T18:36:06+08:00",
     "videos": [
+        {
+            "aid": 117348153431956,
+            "bvid": "BV1B7a36GEuc",
+            "title": "恐怖游戏，我似乎开始渐渐无感了",
+            "cover": "https://i1.hdslb.com/bfs/archive/468493e58b9bde3985b11a99b1451e6ad4e24d55.jpg",
+            "desc": "作为一个长久以来热爱各类恐怖内容的玩家，我发现，我对于恐怖游戏的爱好程度，正在明显下降。\n因为恐怖游戏存在一个无法克服的矛盾，那就是好玩的不恐怖，恐怖的通常不好玩。\n本期早餐车，我们就来聊聊这个话题。",
+            "tags": [
+                "上B站看播客",
+                "恐怖游戏",
+                "逃生",
+                "生化危机",
+                "游戏杂谈",
+                "steam",
+                "NS2",
+                "游戏文化",
+                "PS5",
+                "xbox"
+            ],
+            "cid": 42275504357,
+            "created_at": "2026-09-29 07:30",
+            "created_timestamp": 1790638200,
+            "duration": 705,
+            "status_code": 0,
+            "status_description": "OK",
+            "is_available": true,
+            "status_check_time": "2026-09-29T18:36:01",
+            "deleted_found_at": null,
+            "restored_at": null,
+            "stat": {
+                "view": 12770,
+                "like": 854,
+                "coin": 226,
+                "favorite": 191,
+                "danmaku": 99,
+                "at": "2026-09-29"
+            },
+            "cover_local": "covers/117348153431956.webp"
+        },
         {
             "aid": 117342046525655,
             "bvid": "BV1YFah6xEXp",
@@ -71632,8 +71670,8 @@
         }
     ],
     "metadata": {
-        "total": 2054,
-        "available": 1109,
+        "total": 2055,
+        "available": 1110,
         "deleted": 940,
         "self_visible": 5,
         "reuploaded": 500,
@@ -71681,7 +71719,7 @@
                 "deleted": 0
             },
             "2026": {
-                "available": 170,
+                "available": 171,
                 "deleted": 2
             }
         },
