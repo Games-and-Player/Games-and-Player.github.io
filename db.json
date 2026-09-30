@@ -1,7 +1,45 @@
 {
     "schema_version": 2,
-    "generated_at": "2026-09-29T18:36:06+08:00",
+    "generated_at": "2026-09-30T18:25:17+08:00",
     "videos": [
+        {
+            "aid": 117353622802549,
+            "bvid": "BV1sPap6DEgv",
+            "title": "沉没成本，小岛新作背后的经济账",
+            "cover": "https://i0.hdslb.com/bfs/archive/eb436d937645d9746ba1f0c0d839308a5bfd6c10.jpg",
+            "desc": "最近不少朋友问我，当小岛和索尼分道扬镳，新作physint转投微软后，索尼之前的投资可以回收吗？\n本期早餐车，我们就来聊聊这个话题。",
+            "tags": [
+                "上B站看播客",
+                "游戏杂谈",
+                "小岛秀夫",
+                "微软",
+                "索尼",
+                "Physint",
+                "投资",
+                "游戏文化",
+                "成本",
+                "业界分析"
+            ],
+            "cid": 42305718175,
+            "created_at": "2026-09-30 07:30",
+            "created_timestamp": 1790724600,
+            "duration": 588,
+            "status_code": 0,
+            "status_description": "OK",
+            "is_available": true,
+            "status_check_time": "2026-09-30T18:25:11",
+            "deleted_found_at": null,
+            "restored_at": null,
+            "stat": {
+                "view": 11663,
+                "like": 827,
+                "coin": 222,
+                "favorite": 168,
+                "danmaku": 55,
+                "at": "2026-09-30"
+            },
+            "cover_local": "covers/117353622802549.webp"
+        },
         {
             "aid": 117348153431956,
             "bvid": "BV1B7a36GEuc",
@@ -71670,8 +71708,8 @@
         }
     ],
     "metadata": {
-        "total": 2055,
-        "available": 1110,
+        "total": 2056,
+        "available": 1111,
         "deleted": 940,
         "self_visible": 5,
         "reuploaded": 500,
@@ -71719,7 +71757,7 @@
                 "deleted": 0
             },
             "2026": {
-                "available": 171,
+                "available": 172,
                 "deleted": 2
             }
         },
