@@ -1,7 +1,45 @@
 {
     "schema_version": 2,
-    "generated_at": "2026-09-30T18:25:17+08:00",
+    "generated_at": "2026-10-02T18:26:35+08:00",
     "videos": [
+        {
+            "aid": 117369997365294,
+            "bvid": "BV1CGam6HEVJ",
+            "title": "郑和下西洋，米乐怒吃肚包肉",
+            "cover": "https://i1.hdslb.com/bfs/archive/28b9f78194081a86ac7ea0da0866f24fa37a3104.jpg",
+            "desc": "国庆节，去到当年郑和下西洋时，所乘之船的宝船厂遗址公园。\n同时，也要和米乐吃肚包肉和葱油饼，其乐融融。",
+            "tags": [
+                "随手记录我的生活碎片",
+                "生活记录",
+                "吃货",
+                "南京",
+                "宝船公园",
+                "葱油饼",
+                "郑和",
+                "国庆节",
+                "肚包肉",
+                "宝船厂遗址"
+            ],
+            "cid": 42390456281,
+            "created_at": "2026-10-02 15:03",
+            "created_timestamp": 1790924587,
+            "duration": 639,
+            "status_code": 0,
+            "status_description": "OK",
+            "is_available": true,
+            "status_check_time": "2026-10-02T18:26:30",
+            "deleted_found_at": null,
+            "restored_at": null,
+            "stat": {
+                "view": 3505,
+                "like": 427,
+                "coin": 133,
+                "favorite": 74,
+                "danmaku": 32,
+                "at": "2026-10-02"
+            },
+            "cover_local": "covers/117369997365294.webp"
+        },
         {
             "aid": 117353622802549,
             "bvid": "BV1sPap6DEgv",
@@ -71708,8 +71746,8 @@
         }
     ],
     "metadata": {
-        "total": 2056,
-        "available": 1111,
+        "total": 2057,
+        "available": 1112,
         "deleted": 940,
         "self_visible": 5,
         "reuploaded": 500,
@@ -71757,7 +71795,7 @@
                 "deleted": 0
             },
             "2026": {
-                "available": 172,
+                "available": 173,
                 "deleted": 2
             }
         },
