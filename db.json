@@ -1,7 +1,45 @@
 {
     "schema_version": 2,
-    "generated_at": "2026-10-04T07:21:10+08:00",
+    "generated_at": "2026-10-06T19:11:40+08:00",
     "videos": [
+        {
+            "aid": 117392512587549,
+            "bvid": "BV1BrpF6RE9w",
+            "title": "生化爆发夜，观感不俗的改编电影",
+            "cover": "https://i2.hdslb.com/bfs/archive/e7ff91502a9908701119f6527e3520dd72b38872.jpg",
+            "desc": "去看了4D版本的游戏改编电影，生化危机爆发夜。个人认为观感不俗。\n本期节目，我们就来聊聊这个话题。",
+            "tags": [
+                "上B站看播客",
+                "电影",
+                "游戏杂谈",
+                "游戏改编",
+                "生化危机",
+                "爆发夜",
+                "游戏文化",
+                "观后感",
+                "闲聊",
+                "4D电影"
+            ],
+            "cid": 42505078072,
+            "created_at": "2026-10-06 14:32",
+            "created_timestamp": 1791268358,
+            "duration": 784,
+            "status_code": 0,
+            "status_description": "OK",
+            "is_available": true,
+            "status_check_time": "2026-10-06T19:11:35",
+            "deleted_found_at": null,
+            "restored_at": null,
+            "stat": {
+                "view": 8163,
+                "like": 645,
+                "coin": 171,
+                "favorite": 164,
+                "danmaku": 31,
+                "at": "2026-10-06"
+            },
+            "cover_local": "covers/117392512587549.webp"
+        },
         {
             "aid": 117375768729591,
             "bvid": "BV1bgHY6cEXz",
@@ -71784,8 +71822,8 @@
         }
     ],
     "metadata": {
-        "total": 2058,
-        "available": 1113,
+        "total": 2059,
+        "available": 1114,
         "deleted": 940,
         "self_visible": 5,
         "reuploaded": 500,
@@ -71833,7 +71871,7 @@
                 "deleted": 0
             },
             "2026": {
-                "available": 174,
+                "available": 175,
                 "deleted": 2
             }
         },
