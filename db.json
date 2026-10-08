@@ -1,7 +1,45 @@
 {
     "schema_version": 2,
-    "generated_at": "2026-10-06T19:11:40+08:00",
+    "generated_at": "2026-10-08T19:16:49+08:00",
     "videos": [
+        {
+            "aid": 117399978250495,
+            "bvid": "BV12oHy6tEQ9",
+            "title": "不止游戏，聊聊我的国庆假期",
+            "cover": "https://i0.hdslb.com/bfs/archive/6cc1b76280d9cca38d8f946892b100ecc876d24f.jpg",
+            "desc": "国庆期间，除却攻略游戏之外，我也有折腾了不少其他事情。\n本期早餐车，就边吃火锅，边和大家聊聊我的国庆假期。",
+            "tags": [
+                "上B站看播客",
+                "火锅",
+                "生活记录",
+                "谭谈交通",
+                "游戏杂谈",
+                "国庆",
+                "鬼武者",
+                "感悟",
+                "游戏文化",
+                "假期"
+            ],
+            "cid": 42544071165,
+            "created_at": "2026-10-08 07:30",
+            "created_timestamp": 1791415800,
+            "duration": 715,
+            "status_code": 0,
+            "status_description": "OK",
+            "is_available": true,
+            "status_check_time": "2026-10-08T19:16:43",
+            "deleted_found_at": null,
+            "restored_at": null,
+            "stat": {
+                "view": 11155,
+                "like": 921,
+                "coin": 338,
+                "favorite": 158,
+                "danmaku": 70,
+                "at": "2026-10-08"
+            },
+            "cover_local": "covers/117399978250495.webp"
+        },
         {
             "aid": 117392512587549,
             "bvid": "BV1BrpF6RE9w",
@@ -71822,8 +71860,8 @@
         }
     ],
     "metadata": {
-        "total": 2059,
-        "available": 1114,
+        "total": 2060,
+        "available": 1115,
         "deleted": 940,
         "self_visible": 5,
         "reuploaded": 500,
@@ -71871,7 +71909,7 @@
                 "deleted": 0
             },
             "2026": {
-                "available": 175,
+                "available": 176,
                 "deleted": 2
             }
         },
