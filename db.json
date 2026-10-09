@@ -1,7 +1,45 @@
 {
     "schema_version": 2,
-    "generated_at": "2026-10-08T19:16:49+08:00",
+    "generated_at": "2026-10-09T19:15:49+08:00",
     "videos": [
+        {
+            "aid": 117404608893347,
+            "bvid": "BV1afHD6HE4F",
+            "title": "手残亦乐，我的鬼武者通关感受",
+            "cover": "https://i2.hdslb.com/bfs/archive/a5ecff2cec1c87cb9585f59ce528918c89f319a4.jpg",
+            "desc": "通关了NS2版本的鬼武者剑之道，作为一个手残玩家，我也获得了足够乐趣。\n本期早餐车，我们就来无剧透的聊聊这款游戏。",
+            "tags": [
+                "上B站看播客",
+                "游戏杂谈",
+                "NS2",
+                "源义经",
+                "宫本武藏",
+                "卡普空",
+                "动作游戏",
+                "游戏文化",
+                "鬼武者",
+                "通关感受"
+            ],
+            "cid": 42563733260,
+            "created_at": "2026-10-09 07:30",
+            "created_timestamp": 1791502200,
+            "duration": 960,
+            "status_code": 0,
+            "status_description": "OK",
+            "is_available": true,
+            "status_check_time": "2026-10-09T19:15:44",
+            "deleted_found_at": null,
+            "restored_at": null,
+            "stat": {
+                "view": 10637,
+                "like": 796,
+                "coin": 233,
+                "favorite": 142,
+                "danmaku": 76,
+                "at": "2026-10-09"
+            },
+            "cover_local": "covers/117404608893347.webp"
+        },
         {
             "aid": 117399978250495,
             "bvid": "BV12oHy6tEQ9",
@@ -71860,8 +71898,8 @@
         }
     ],
     "metadata": {
-        "total": 2060,
-        "available": 1115,
+        "total": 2061,
+        "available": 1116,
         "deleted": 940,
         "self_visible": 5,
         "reuploaded": 500,
@@ -71909,7 +71947,7 @@
                 "deleted": 0
             },
             "2026": {
-                "available": 176,
+                "available": 177,
                 "deleted": 2
             }
         },
