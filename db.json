@@ -1,7 +1,45 @@
 {
     "schema_version": 2,
-    "generated_at": "2026-10-09T19:15:49+08:00",
+    "generated_at": "2026-10-10T18:32:29+08:00",
     "videos": [
+        {
+            "aid": 117410296305432,
+            "bvid": "BV1yopx6zEnU",
+            "title": "战争机器，提醒我热爱的本质是共鸣",
+            "cover": "https://i2.hdslb.com/bfs/archive/da1f69c82f1c4011ccdf51b0f63a0dbe148e31f0.jpg",
+            "desc": "战争机器事变日解锁后，我当晚就鏖战五小时，尤未尽兴，可谓不能自拔。这也让我开始思考，关于热爱的本质。\n本期早餐车，我们就来聊聊这个话题。",
+            "tags": [
+                "上B站看播客",
+                "游戏杂谈",
+                "TPS",
+                "事变日",
+                "战争机器",
+                "游戏文化",
+                "xbox",
+                "coalition",
+                "xgp",
+                "gear of war"
+            ],
+            "cid": 42592437920,
+            "created_at": "2026-10-10 07:30",
+            "created_timestamp": 1791588600,
+            "duration": 768,
+            "status_code": 0,
+            "status_description": "OK",
+            "is_available": true,
+            "status_check_time": "2026-10-10T18:32:24",
+            "deleted_found_at": null,
+            "restored_at": null,
+            "stat": {
+                "view": 10316,
+                "like": 756,
+                "coin": 251,
+                "favorite": 147,
+                "danmaku": 70,
+                "at": "2026-10-10"
+            },
+            "cover_local": "covers/117410296305432.webp"
+        },
         {
             "aid": 117404608893347,
             "bvid": "BV1afHD6HE4F",
@@ -71898,8 +71936,8 @@
         }
     ],
     "metadata": {
-        "total": 2061,
-        "available": 1116,
+        "total": 2062,
+        "available": 1117,
         "deleted": 940,
         "self_visible": 5,
         "reuploaded": 500,
@@ -71947,7 +71985,7 @@
                 "deleted": 0
             },
             "2026": {
-                "available": 177,
+                "available": 178,
                 "deleted": 2
             }
         },
