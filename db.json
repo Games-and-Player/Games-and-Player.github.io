@@ -1,7 +1,45 @@
 {
     "schema_version": 2,
-    "generated_at": "2026-10-11T07:58:22+08:00",
+    "generated_at": "2026-10-12T19:51:07+08:00",
     "videos": [
+        {
+            "aid": 117421805410928,
+            "bvid": "BV13MpE6FE5X",
+            "title": "IP复活潮，文艺复兴因何而起？",
+            "cover": "https://i0.hdslb.com/bfs/archive/f2c9107e4c8995c72d1ff2a2e584daa0434bdc08.jpg",
+            "desc": "据传索尼将复活捉猴啦这个IP，推出新作。实在这几年IP复活潮颇为凶猛，比如鬼武者，寂静岭都属于复活的IP。这种文艺复兴背后的原因何在呢？\n本期早餐车，我们就来聊聊这个话题。",
+            "tags": [
+                "上B站看播客",
+                "游戏杂谈",
+                "IP",
+                "索尼",
+                "寂静岭",
+                "鬼武者",
+                "游戏文化",
+                "科乐美",
+                "捉猴啦",
+                "饿狼传说"
+            ],
+            "cid": 42650697763,
+            "created_at": "2026-10-12 07:30",
+            "created_timestamp": 1791761400,
+            "duration": 960,
+            "status_code": 0,
+            "status_description": "OK",
+            "is_available": true,
+            "status_check_time": "2026-10-12T19:51:02",
+            "deleted_found_at": null,
+            "restored_at": null,
+            "stat": {
+                "view": 10360,
+                "like": 822,
+                "coin": 257,
+                "favorite": 158,
+                "danmaku": 83,
+                "at": "2026-10-12"
+            },
+            "cover_local": "covers/117421805410928.webp"
+        },
         {
             "aid": 117410296305432,
             "bvid": "BV1yopx6zEnU",
@@ -71936,8 +71974,8 @@
         }
     ],
     "metadata": {
-        "total": 2062,
-        "available": 1117,
+        "total": 2063,
+        "available": 1118,
         "deleted": 940,
         "self_visible": 5,
         "reuploaded": 500,
@@ -71985,7 +72023,7 @@
                 "deleted": 0
             },
             "2026": {
-                "available": 178,
+                "available": 179,
                 "deleted": 2
             }
         },
