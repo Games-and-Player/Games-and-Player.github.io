@@ -1,7 +1,45 @@
 {
     "schema_version": 2,
-    "generated_at": "2026-10-12T19:51:07+08:00",
+    "generated_at": "2026-10-13T19:40:01+08:00",
     "videos": [
+        {
+            "aid": 117427643946388,
+            "bvid": "BV1Bwpo6mEQW",
+            "title": "动态模糊，高票当选玩家最恨特效",
+            "cover": "https://i0.hdslb.com/bfs/archive/3df8aedd0b3696299d83fc33f4ad70bfb881c576.jpg",
+            "desc": "游戏媒体PC GAMER，举办玩家投票活动，结果超八成玩家票选出最讨厌的特效，是动态模糊。\n这个事情很有意思，本期早餐车，我们就来聊聊这个话题。",
+            "tags": [
+                "上B站看播客",
+                "特效",
+                "趣闻",
+                "游戏杂谈",
+                "玩家投票",
+                "色差",
+                "游戏文化",
+                "动态模糊",
+                "PC GAMER",
+                "暗角"
+            ],
+            "cid": 42680322292,
+            "created_at": "2026-10-13 07:30",
+            "created_timestamp": 1791847800,
+            "duration": 919,
+            "status_code": 0,
+            "status_description": "OK",
+            "is_available": true,
+            "status_check_time": "2026-10-13T19:39:55",
+            "deleted_found_at": null,
+            "restored_at": null,
+            "stat": {
+                "view": 17493,
+                "like": 1028,
+                "coin": 296,
+                "favorite": 204,
+                "danmaku": 157,
+                "at": "2026-10-13"
+            },
+            "cover_local": "covers/117427643946388.webp"
+        },
         {
             "aid": 117421805410928,
             "bvid": "BV13MpE6FE5X",
@@ -71974,8 +72012,8 @@
         }
     ],
     "metadata": {
-        "total": 2063,
-        "available": 1118,
+        "total": 2064,
+        "available": 1119,
         "deleted": 940,
         "self_visible": 5,
         "reuploaded": 500,
@@ -72023,7 +72061,7 @@
                 "deleted": 0
             },
             "2026": {
-                "available": 179,
+                "available": 180,
                 "deleted": 2
             }
         },
