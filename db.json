@@ -1,7 +1,45 @@
 {
     "schema_version": 2,
-    "generated_at": "2026-10-13T19:40:01+08:00",
+    "generated_at": "2026-10-14T17:26:45+08:00",
     "videos": [
+        {
+            "aid": 117433633348342,
+            "bvid": "BV1xGpq6uE48",
+            "title": "游戏意难平，命运写死但依然挥剑",
+            "cover": "https://i2.hdslb.com/bfs/archive/8b9fb86a4038bc89f37844fc6353a05b2da3e1e6.jpg",
+            "desc": "游戏中难免也许多意难平的剧情，比如仙剑的结局。而玩家看似是游戏世界的上帝，却也现在程序框架里，无法改变任何走向。而由此，我也产生了一些感悟与思考。\n本期早餐车，我们就来聊聊这个话题。",
+            "tags": [
+                "上B站看播客",
+                "游戏人生",
+                "仙剑",
+                "游戏杂谈",
+                "2077",
+                "感悟",
+                "战争机器",
+                "提线木偶",
+                "游戏文化",
+                "FFX"
+            ],
+            "cid": 42711322548,
+            "created_at": "2026-10-14 07:30",
+            "created_timestamp": 1791934200,
+            "duration": 897,
+            "status_code": 0,
+            "status_description": "OK",
+            "is_available": true,
+            "status_check_time": "2026-10-14T17:26:40",
+            "deleted_found_at": null,
+            "restored_at": null,
+            "stat": {
+                "view": 8745,
+                "like": 714,
+                "coin": 228,
+                "favorite": 145,
+                "danmaku": 71,
+                "at": "2026-10-14"
+            },
+            "cover_local": "covers/117433633348342.webp"
+        },
         {
             "aid": 117427643946388,
             "bvid": "BV1Bwpo6mEQW",
@@ -72012,8 +72050,8 @@
         }
     ],
     "metadata": {
-        "total": 2064,
-        "available": 1119,
+        "total": 2065,
+        "available": 1120,
         "deleted": 940,
         "self_visible": 5,
         "reuploaded": 500,
@@ -72061,7 +72099,7 @@
                 "deleted": 0
             },
             "2026": {
-                "available": 180,
+                "available": 181,
                 "deleted": 2
             }
         },
