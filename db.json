@@ -1,7 +1,45 @@
 {
     "schema_version": 2,
-    "generated_at": "2026-10-14T17:26:45+08:00",
+    "generated_at": "2026-10-15T17:04:50+08:00",
     "videos": [
+        {
+            "aid": 117439253716499,
+            "bvid": "BV1k9py6WEcE",
+            "title": "多线并进？Xbox次世代殊难逆料",
+            "cover": "https://i2.hdslb.com/bfs/archive/1ba15ae55edfacaa8cab2555a5d1d3f1dcf4e726.jpg",
+            "desc": "目前看来，微软次世代主机 Project Helix将会 摒弃单一硬件，转向“多形态装置组合”。这当然并非容易的事情，尤其在xbox部门背负盈利压力的情况下。\n本期早餐车，我们就来聊聊这个话题。",
+            "tags": [
+                "上B站看播客",
+                "游戏杂谈",
+                "微软",
+                "掌机",
+                "helix",
+                "混合形态",
+                "次世代",
+                "游戏文化",
+                "xbox",
+                "业界分析"
+            ],
+            "cid": 42738256295,
+            "created_at": "2026-10-15 07:30",
+            "created_timestamp": 1792020600,
+            "duration": 892,
+            "status_code": 0,
+            "status_description": "OK",
+            "is_available": true,
+            "status_check_time": "2026-10-15T17:04:44",
+            "deleted_found_at": null,
+            "restored_at": null,
+            "stat": {
+                "view": 10375,
+                "like": 716,
+                "coin": 221,
+                "favorite": 153,
+                "danmaku": 40,
+                "at": "2026-10-15"
+            },
+            "cover_local": "covers/117439253716499.webp"
+        },
         {
             "aid": 117433633348342,
             "bvid": "BV1xGpq6uE48",
@@ -72050,8 +72088,8 @@
         }
     ],
     "metadata": {
-        "total": 2065,
-        "available": 1120,
+        "total": 2066,
+        "available": 1121,
         "deleted": 940,
         "self_visible": 5,
         "reuploaded": 500,
@@ -72099,7 +72137,7 @@
                 "deleted": 0
             },
             "2026": {
-                "available": 181,
+                "available": 182,
                 "deleted": 2
             }
         },
