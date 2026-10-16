@@ -1,7 +1,45 @@
 {
     "schema_version": 2,
-    "generated_at": "2026-10-15T17:04:50+08:00",
+    "generated_at": "2026-10-16T16:57:17+08:00",
     "videos": [
+        {
+            "aid": 117449353599869,
+            "bvid": "BV1ShJ96JEN1",
+            "title": "就在这深秋的桂花香里，我蟹了",
+            "cover": "https://i0.hdslb.com/bfs/archive/dbaeddedd17cdcdd653fad6a5bcba207dd453977.jpg",
+            "desc": "在布满了桂花香气的深秋，我又蟹了，这次连米乐，也参与其间。\n本期早餐车，我们就来品尝一下螃蟹小哥的美味。",
+            "tags": [
+                "记录我的美食日常",
+                "美食",
+                "吃播",
+                "生活记录",
+                "日常美食",
+                "大闸蟹",
+                "桂花",
+                "肉包子",
+                "Vlog",
+                "固城湖"
+            ],
+            "cid": 42786622568,
+            "created_at": "2026-10-16 15:24",
+            "created_timestamp": 1792135445,
+            "duration": 859,
+            "status_code": 0,
+            "status_description": "OK",
+            "is_available": true,
+            "status_check_time": "2026-10-16T16:57:12",
+            "deleted_found_at": null,
+            "restored_at": null,
+            "stat": {
+                "view": 2823,
+                "like": 314,
+                "coin": 99,
+                "favorite": 57,
+                "danmaku": 75,
+                "at": "2026-10-16"
+            },
+            "cover_local": "covers/117449353599869.webp"
+        },
         {
             "aid": 117439253716499,
             "bvid": "BV1k9py6WEcE",
@@ -72088,8 +72126,8 @@
         }
     ],
     "metadata": {
-        "total": 2066,
-        "available": 1121,
+        "total": 2067,
+        "available": 1122,
         "deleted": 940,
         "self_visible": 5,
         "reuploaded": 500,
@@ -72137,7 +72175,7 @@
                 "deleted": 0
             },
             "2026": {
-                "available": 182,
+                "available": 183,
                 "deleted": 2
             }
         },
