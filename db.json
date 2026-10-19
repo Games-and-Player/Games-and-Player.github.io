@@ -1,7 +1,45 @@
 {
     "schema_version": 2,
-    "generated_at": "2026-10-18T06:42:50+08:00",
+    "generated_at": "2026-10-19T17:48:16+08:00",
     "videos": [
+        {
+            "aid": 117461298978713,
+            "bvid": "BV1W9n36tEpQ",
+            "title": "幸福的重逢，事变日是几乎无暇的作品",
+            "cover": "https://i0.hdslb.com/bfs/archive/e37b14572070bbbcaa226977201ba0bd1a4cdc60.jpg",
+            "desc": "周末通关了战争机器事变日，我感觉本作几乎无暇，但既然是几乎，就还是有点小瑕疵，主要是在剧情上存在叙事真空导致的吃书，当然，这不是什么大问题。\n本期早餐车，我们就来聊聊通关后的感受。",
+            "tags": [
+                "上B站看播客",
+                "剧情",
+                "游戏杂谈",
+                "TPS",
+                "事变日",
+                "战争机器",
+                "游戏文化",
+                "xbox",
+                "coalition",
+                "通关感受"
+            ],
+            "cid": 42843571191,
+            "created_at": "2026-10-19 07:30",
+            "created_timestamp": 1792366200,
+            "duration": 1018,
+            "status_code": 0,
+            "status_description": "OK",
+            "is_available": true,
+            "status_check_time": "2026-10-19T17:48:10",
+            "deleted_found_at": null,
+            "restored_at": null,
+            "stat": {
+                "view": 8905,
+                "like": 712,
+                "coin": 242,
+                "favorite": 130,
+                "danmaku": 68,
+                "at": "2026-10-19"
+            },
+            "cover_local": "covers/117461298978713.webp"
+        },
         {
             "aid": 117449353599869,
             "bvid": "BV1ShJ96JEN1",
@@ -72126,8 +72164,8 @@
         }
     ],
     "metadata": {
-        "total": 2067,
-        "available": 1122,
+        "total": 2068,
+        "available": 1123,
         "deleted": 940,
         "self_visible": 5,
         "reuploaded": 500,
@@ -72175,7 +72213,7 @@
                 "deleted": 0
             },
             "2026": {
-                "available": 183,
+                "available": 184,
                 "deleted": 2
             }
         },
