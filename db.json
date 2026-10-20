@@ -1,7 +1,45 @@
 {
     "schema_version": 2,
-    "generated_at": "2026-10-19T17:48:16+08:00",
+    "generated_at": "2026-10-20T17:21:26+08:00",
     "videos": [
+        {
+            "aid": 117467103892909,
+            "bvid": "BV1UEnJ6WEv5",
+            "title": "剧本烂？大佬谈起罪恶都市往事",
+            "cover": "https://i2.hdslb.com/bfs/archive/b7462785402d449a6eb18055be38839d5eab48c5.jpg",
+            "desc": "今日，gta系列的灵魂人物dan houser在接受访谈时表示，罪恶都市这一作的剧本颇烂，全靠演员撑场面。这当然是创作者的自谦，实在vc的剧本当然不烂。\n本期早餐车，我们就来聊聊这个话题。",
+            "tags": [
+                "上B站看播客",
+                "GTA",
+                "游戏杂谈",
+                "R星",
+                "演员",
+                "剧本",
+                "罪恶都市",
+                "游戏文化",
+                "疤面煞星",
+                "Dan Houser"
+            ],
+            "cid": 42871230060,
+            "created_at": "2026-10-20 07:30",
+            "created_timestamp": 1792452600,
+            "duration": 818,
+            "status_code": 0,
+            "status_description": "OK",
+            "is_available": true,
+            "status_check_time": "2026-10-20T17:21:22",
+            "deleted_found_at": null,
+            "restored_at": null,
+            "stat": {
+                "view": 10470,
+                "like": 692,
+                "coin": 193,
+                "favorite": 205,
+                "danmaku": 29,
+                "at": "2026-10-20"
+            },
+            "cover_local": "covers/117467103892909.webp"
+        },
         {
             "aid": 117461298978713,
             "bvid": "BV1W9n36tEpQ",
@@ -72164,8 +72202,8 @@
         }
     ],
     "metadata": {
-        "total": 2068,
-        "available": 1123,
+        "total": 2069,
+        "available": 1124,
         "deleted": 940,
         "self_visible": 5,
         "reuploaded": 500,
@@ -72213,7 +72251,7 @@
                 "deleted": 0
             },
             "2026": {
-                "available": 184,
+                "available": 185,
                 "deleted": 2
             }
         },
