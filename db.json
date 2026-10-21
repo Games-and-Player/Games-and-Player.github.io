@@ -1,7 +1,45 @@
 {
     "schema_version": 2,
-    "generated_at": "2026-10-20T17:21:26+08:00",
+    "generated_at": "2026-10-21T17:17:40+08:00",
     "videos": [
+        {
+            "aid": 117473026317182,
+            "bvid": "BV1BDnA6tExa",
+            "title": "池鱼之祸，AI冲击下的次世代困局",
+            "cover": "https://i0.hdslb.com/bfs/archive/619b23b29ffde940f509ad3695158b43e8db5db1.jpg",
+            "desc": "PS6成本高企，实际这并非索尼一家的问题，在AI冲击下BOM成本被极限拉高，是次世代主机共同的池鱼之祸。\n本期早餐车，我们就来聊聊这个话题。",
+            "tags": [
+                "上B站看播客",
+                "游戏杂谈",
+                "主机",
+                "内存",
+                "PS6",
+                "次世代",
+                "游戏文化",
+                "存储",
+                "Helix",
+                "业界分析"
+            ],
+            "cid": 42899737409,
+            "created_at": "2026-10-21 07:30",
+            "created_timestamp": 1792539000,
+            "duration": 921,
+            "status_code": 0,
+            "status_description": "OK",
+            "is_available": true,
+            "status_check_time": "2026-10-21T17:17:35",
+            "deleted_found_at": null,
+            "restored_at": null,
+            "stat": {
+                "view": 11085,
+                "like": 722,
+                "coin": 214,
+                "favorite": 177,
+                "danmaku": 93,
+                "at": "2026-10-21"
+            },
+            "cover_local": "covers/117473026317182.webp"
+        },
         {
             "aid": 117467103892909,
             "bvid": "BV1UEnJ6WEv5",
@@ -72202,8 +72240,8 @@
         }
     ],
     "metadata": {
-        "total": 2069,
-        "available": 1124,
+        "total": 2070,
+        "available": 1125,
         "deleted": 940,
         "self_visible": 5,
         "reuploaded": 500,
@@ -72251,7 +72289,7 @@
                 "deleted": 0
             },
             "2026": {
-                "available": 185,
+                "available": 186,
                 "deleted": 2
             }
         },
