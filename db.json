@@ -1,7 +1,45 @@
 {
     "schema_version": 2,
-    "generated_at": "2026-10-21T17:17:40+08:00",
+    "generated_at": "2026-10-22T17:20:33+08:00",
     "videos": [
+        {
+            "aid": 117478529242885,
+            "bvid": "BV19Wnz6QE1p",
+            "title": "切削之耳，无限套娃与恐怖游戏",
+            "cover": "https://i0.hdslb.com/bfs/archive/1b3e98a06b873df43b6034433cae0e2f0aab7b72.jpg",
+            "desc": "今日读三三恐怖新作《切削之耳》，其中无限套娃的破元写法，令人耳目一心，由此令我想到关于恐怖游戏的表现形式之问题。\n本期早餐车，我们就来聊聊这个话题。",
+            "tags": [
+                "上B站看播客",
+                "恐怖游戏",
+                "循环",
+                "游戏杂谈",
+                "怪谈",
+                "套娃",
+                "恐怖小说",
+                "游戏文化",
+                "the hex",
+                "三津田信三"
+            ],
+            "cid": 42923132205,
+            "created_at": "2026-10-22 07:30",
+            "created_timestamp": 1792625400,
+            "duration": 965,
+            "status_code": 0,
+            "status_description": "OK",
+            "is_available": true,
+            "status_check_time": "2026-10-22T17:20:28",
+            "deleted_found_at": null,
+            "restored_at": null,
+            "stat": {
+                "view": 6118,
+                "like": 588,
+                "coin": 187,
+                "favorite": 136,
+                "danmaku": 39,
+                "at": "2026-10-22"
+            },
+            "cover_local": "covers/117478529242885.webp"
+        },
         {
             "aid": 117473026317182,
             "bvid": "BV1BDnA6tExa",
@@ -72240,8 +72278,8 @@
         }
     ],
     "metadata": {
-        "total": 2070,
-        "available": 1125,
+        "total": 2071,
+        "available": 1126,
         "deleted": 940,
         "self_visible": 5,
         "reuploaded": 500,
@@ -72289,7 +72327,7 @@
                 "deleted": 0
             },
             "2026": {
-                "available": 186,
+                "available": 187,
                 "deleted": 2
             }
         },
