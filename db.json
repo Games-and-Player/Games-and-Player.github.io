@@ -1,7 +1,45 @@
 {
     "schema_version": 2,
-    "generated_at": "2026-10-25T06:57:25+08:00",
+    "generated_at": "2026-10-26T18:00:43+08:00",
     "videos": [
+        {
+            "aid": 117501933524571,
+            "bvid": "BV1H4nS6hEXm",
+            "title": "FF共鸣，回忆起JRPG的黄金年代",
+            "cover": "https://i1.hdslb.com/bfs/archive/4aff4979ac0a211e16f2b2aa4bcec66aa22b1826.jpg",
+            "desc": "周末体验了一下最终幻想共鸣，感觉挺不错，正好又看到polygon评选出7款经典jrpg，由此我想到了那个百花齐放的年代，那个每个游戏都有自己的特色的黄金时代。\n本期早餐车，我们就顺着共鸣，聊聊这个话题。",
+            "tags": [
+                "上B站看播客",
+                "最终幻想",
+                "游戏杂谈",
+                "女神侧身像",
+                "共鸣",
+                "地球冒险",
+                "JRPG",
+                "游戏文化",
+                "日式rpg",
+                "ff9"
+            ],
+            "cid": 43047849302,
+            "created_at": "2026-10-26 07:30",
+            "created_timestamp": 1792971000,
+            "duration": 987,
+            "status_code": 0,
+            "status_description": "OK",
+            "is_available": true,
+            "status_check_time": "2026-10-26T18:00:38",
+            "deleted_found_at": null,
+            "restored_at": null,
+            "stat": {
+                "view": 10666,
+                "like": 769,
+                "coin": 265,
+                "favorite": 178,
+                "danmaku": 43,
+                "at": "2026-10-26"
+            },
+            "cover_local": "covers/117501933524571.webp"
+        },
         {
             "aid": 117484116055726,
             "bvid": "BV17Dn267Ez8",
@@ -72316,8 +72354,8 @@
         }
     ],
     "metadata": {
-        "total": 2072,
-        "available": 1127,
+        "total": 2073,
+        "available": 1128,
         "deleted": 940,
         "self_visible": 5,
         "reuploaded": 500,
@@ -72365,7 +72403,7 @@
                 "deleted": 0
             },
             "2026": {
-                "available": 188,
+                "available": 189,
                 "deleted": 2
             }
         },
