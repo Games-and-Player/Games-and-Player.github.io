@@ -1,7 +1,45 @@
 {
     "schema_version": 2,
-    "generated_at": "2026-10-27T17:44:42+08:00",
+    "generated_at": "2026-10-28T18:29:51+08:00",
     "videos": [
+        {
+            "aid": 117513107084590,
+            "bvid": "BV1tsxu6MEMf",
+            "title": "危险游戏，我的打游戏受伤往事",
+            "cover": "https://i2.hdslb.com/bfs/archive/7942bb0a2c3bc65063be8845dc9aa699ed6c7edd.jpg",
+            "desc": "打游戏当然不是什么危险的事情，但我确实也有打游戏险些受伤或者体力不支的经历。\n本期早餐车，我们就来聊聊这个有趣的话题。",
+            "tags": [
+                "上B站看播客",
+                "DDR",
+                "搞笑",
+                "游戏杂谈",
+                "网吧",
+                "逃课",
+                "往事",
+                "游戏文化",
+                "i社",
+                "游戏趣事"
+            ],
+            "cid": 43101785994,
+            "created_at": "2026-10-28 07:30",
+            "created_timestamp": 1793143800,
+            "duration": 994,
+            "status_code": 0,
+            "status_description": "OK",
+            "is_available": true,
+            "status_check_time": "2026-10-28T18:29:45",
+            "deleted_found_at": null,
+            "restored_at": null,
+            "stat": {
+                "view": 8756,
+                "like": 811,
+                "coin": 328,
+                "favorite": 177,
+                "danmaku": 148,
+                "at": "2026-10-28"
+            },
+            "cover_local": "covers/117513107084590.webp"
+        },
         {
             "aid": 117507251835265,
             "bvid": "BV1fUnZ67E2G",
@@ -72392,8 +72430,8 @@
         }
     ],
     "metadata": {
-        "total": 2074,
-        "available": 1129,
+        "total": 2075,
+        "available": 1130,
         "deleted": 940,
         "self_visible": 5,
         "reuploaded": 500,
@@ -72441,7 +72479,7 @@
                 "deleted": 0
             },
             "2026": {
-                "available": 190,
+                "available": 191,
                 "deleted": 2
             }
         },
