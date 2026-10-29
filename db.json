@@ -1,7 +1,45 @@
 {
     "schema_version": 2,
-    "generated_at": "2026-10-28T18:29:51+08:00",
+    "generated_at": "2026-10-29T18:50:23+08:00",
     "videos": [
+        {
+            "aid": 117517938857562,
+            "bvid": "BV11WxE6fE9D",
+            "title": "快慢有别，聊聊游戏的两种心流",
+            "cover": "https://i2.hdslb.com/bfs/archive/d00b92aafc9ce8cd3569991a55151c1a210ba036.jpg",
+            "desc": "游戏的节奏有快慢之别，但快与慢本身并无好坏之分，快枪手也可以是贬义词，但不同节奏的游戏所产生之心流体验，亦有所不同，也是不争之事实。\n本期早餐车，我们就来聊聊这个话题。",
+            "tags": [
+                "上B站看播客",
+                "游戏杂谈",
+                "游戏文化",
+                "快节奏",
+                "慢节奏",
+                "DOOM",
+                "欧卡",
+                "战争机器",
+                "心流",
+                "越过山丘"
+            ],
+            "cid": 43123606155,
+            "created_at": "2026-10-29 07:30",
+            "created_timestamp": 1793230200,
+            "duration": 667,
+            "status_code": 0,
+            "status_description": "OK",
+            "is_available": true,
+            "status_check_time": "2026-10-29T18:50:00",
+            "deleted_found_at": null,
+            "restored_at": null,
+            "stat": {
+                "view": 6869,
+                "like": 587,
+                "coin": 151,
+                "favorite": 144,
+                "danmaku": 46,
+                "at": "2026-10-29"
+            },
+            "cover_local": "covers/117517938857562.webp"
+        },
         {
             "aid": 117513107084590,
             "bvid": "BV1tsxu6MEMf",
@@ -72430,8 +72468,8 @@
         }
     ],
     "metadata": {
-        "total": 2075,
-        "available": 1130,
+        "total": 2076,
+        "available": 1131,
         "deleted": 940,
         "self_visible": 5,
         "reuploaded": 500,
@@ -72479,7 +72517,7 @@
                 "deleted": 0
             },
             "2026": {
-                "available": 191,
+                "available": 192,
                 "deleted": 2
             }
         },
