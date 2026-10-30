@@ -1,7 +1,45 @@
 {
     "schema_version": 2,
-    "generated_at": "2026-10-29T18:50:23+08:00",
+    "generated_at": "2026-10-30T18:48:47+08:00",
     "videos": [
+        {
+            "aid": 117524783961718,
+            "bvid": "BV1mDxc67EEu",
+            "title": "江湖剑影，影之刃零初玩感受分享",
+            "cover": "https://i1.hdslb.com/bfs/archive/0fbbf6052bf9c5c7ed9e06c80a7d70f3350c25ef.jpg",
+            "desc": "影之刃零解锁后，我便一口气玩了五小时，游戏当然不是完美的，但我玩得很开心。\n本期早餐车，我们就来我的初玩感受，以供大家参考。",
+            "tags": [
+                "上B站看播客",
+                "游戏杂谈",
+                "雨血",
+                "初见",
+                "steam",
+                "动作游戏",
+                "手残党",
+                "游戏文化",
+                "游戏感受",
+                "影之刃零"
+            ],
+            "cid": 43157487677,
+            "created_at": "2026-10-30 07:30",
+            "created_timestamp": 1793316600,
+            "duration": 944,
+            "status_code": 0,
+            "status_description": "OK",
+            "is_available": true,
+            "status_check_time": "2026-10-30T18:48:41",
+            "deleted_found_at": null,
+            "restored_at": null,
+            "stat": {
+                "view": 21932,
+                "like": 1253,
+                "coin": 428,
+                "favorite": 242,
+                "danmaku": 348,
+                "at": "2026-10-30"
+            },
+            "cover_local": "covers/117524783961718.webp"
+        },
         {
             "aid": 117517938857562,
             "bvid": "BV11WxE6fE9D",
@@ -72468,8 +72506,8 @@
         }
     ],
     "metadata": {
-        "total": 2076,
-        "available": 1131,
+        "total": 2077,
+        "available": 1132,
         "deleted": 940,
         "self_visible": 5,
         "reuploaded": 500,
@@ -72517,7 +72555,7 @@
                 "deleted": 0
             },
             "2026": {
-                "available": 192,
+                "available": 193,
                 "deleted": 2
             }
         },
