@@ -1,7 +1,45 @@
 {
     "schema_version": 2,
-    "generated_at": "2026-10-30T18:48:47+08:00",
+    "generated_at": "2026-10-31T18:18:25+08:00",
     "videos": [
+        {
+            "aid": 117527820636208,
+            "bvid": "BV1DrxY6CEqL",
+            "title": "大为震撼，100寸4K120Hz真高刷的绝伦游戏体验 | 坚果N5S Ultra Max至臻版上手",
+            "cover": "https://i2.hdslb.com/bfs/archive/afb6dd15a6f57483455035ef514d552f0bcf57ef.jpg",
+            "desc": "近日得以体验无短板的4K 120Hz百寸高刷投影仪，坚果N5S Ultra Max至臻版，大为震撼。\n本期节目，就来分享使用感受。",
+            "tags": [
+                "科技猎手",
+                "坚果",
+                "游戏投影",
+                "4K 120Hz",
+                "高刷投影",
+                "坚果N5S Ultra Max至臻版",
+                "极限竞速",
+                "战争机器",
+                "瘟疫传说",
+                "坚果投影"
+            ],
+            "cid": 43168695211,
+            "created_at": "2026-10-31 12:00",
+            "created_timestamp": 1793419200,
+            "duration": 656,
+            "status_code": 0,
+            "status_description": "OK",
+            "is_available": true,
+            "status_check_time": "2026-10-31T18:18:20",
+            "deleted_found_at": null,
+            "restored_at": null,
+            "stat": {
+                "view": 3421,
+                "like": 458,
+                "coin": 138,
+                "favorite": 59,
+                "danmaku": 24,
+                "at": "2026-10-31"
+            },
+            "cover_local": "covers/117527820636208.webp"
+        },
         {
             "aid": 117524783961718,
             "bvid": "BV1mDxc67EEu",
@@ -72506,8 +72544,8 @@
         }
     ],
     "metadata": {
-        "total": 2077,
-        "available": 1132,
+        "total": 2078,
+        "available": 1133,
         "deleted": 940,
         "self_visible": 5,
         "reuploaded": 500,
@@ -72555,7 +72593,7 @@
                 "deleted": 0
             },
             "2026": {
-                "available": 193,
+                "available": 194,
                 "deleted": 2
             }
         },
