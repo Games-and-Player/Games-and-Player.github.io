@@ -1,7 +1,45 @@
 {
     "schema_version": 2,
-    "generated_at": "2026-11-01T07:48:48+08:00",
+    "generated_at": "2026-11-02T20:15:23+08:00",
     "videos": [
+        {
+            "aid": 117540168669155,
+            "bvid": "BV1GrxW6XE7p",
+            "title": "轮椅打法，江湖有便道，人生无捷径",
+            "cover": "https://i2.hdslb.com/bfs/archive/40d07ef1f9ca55f48e1f6eb9bc82852721a3fe15.jpg",
+            "desc": "在轮椅打法的加持下，叶师傅我打得居然挺轻松，但江湖有便道，人生无捷径，由此我也产生了一些关于轮椅打开的思考。\n本期早餐车，我们就来聊聊这个话题。",
+            "tags": [
+                "上B站看播客",
+                "娱乐",
+                "游戏杂谈",
+                "手残党",
+                "动作游戏",
+                "逃课",
+                "轮椅",
+                "人生感悟",
+                "游戏文化",
+                "影之刃零"
+            ],
+            "cid": 43232723636,
+            "created_at": "2026-11-02 07:30",
+            "created_timestamp": 1793575800,
+            "duration": 921,
+            "status_code": 0,
+            "status_description": "OK",
+            "is_available": true,
+            "status_check_time": "2026-11-02T20:15:17",
+            "deleted_found_at": null,
+            "restored_at": null,
+            "stat": {
+                "view": 14277,
+                "like": 879,
+                "coin": 220,
+                "favorite": 159,
+                "danmaku": 101,
+                "at": "2026-11-02"
+            },
+            "cover_local": "covers/117540168669155.webp"
+        },
         {
             "aid": 117527820636208,
             "bvid": "BV1DrxY6CEqL",
@@ -72544,8 +72582,8 @@
         }
     ],
     "metadata": {
-        "total": 2078,
-        "available": 1133,
+        "total": 2079,
+        "available": 1134,
         "deleted": 940,
         "self_visible": 5,
         "reuploaded": 500,
@@ -72593,7 +72631,7 @@
                 "deleted": 0
             },
             "2026": {
-                "available": 194,
+                "available": 195,
                 "deleted": 2
             }
         },
