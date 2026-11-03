@@ -1,7 +1,45 @@
 {
     "schema_version": 2,
-    "generated_at": "2026-11-02T20:15:23+08:00",
+    "generated_at": "2026-11-03T19:49:26+08:00",
     "videos": [
+        {
+            "aid": 117546695072564,
+            "bvid": "BV1ZZ4c6iEsT",
+            "title": "人肉打字机，追忆无语音的网游时代",
+            "cover": "https://i1.hdslb.com/bfs/archive/ad8576fc249fceaea5feb4988fb0d8849bbaf7f9.jpg",
+            "desc": "如今网游或电竞游戏内置语音，已经是常态，但那个只能靠打字交流的网游时代，却也有它的乐趣。\n本期早餐车，我们就聊聊这个话题，朝花夕拾。",
+            "tags": [
+                "上B站看播客",
+                "游戏杂谈",
+                "YY",
+                "游戏文化",
+                "竞技游戏",
+                "打字",
+                "聊天室",
+                "TS",
+                "MMORPG",
+                "语音系统"
+            ],
+            "cid": 43265360748,
+            "created_at": "2026-11-03 07:30",
+            "created_timestamp": 1793662200,
+            "duration": 901,
+            "status_code": 0,
+            "status_description": "OK",
+            "is_available": true,
+            "status_check_time": "2026-11-03T19:49:21",
+            "deleted_found_at": null,
+            "restored_at": null,
+            "stat": {
+                "view": 7463,
+                "like": 660,
+                "coin": 227,
+                "favorite": 135,
+                "danmaku": 85,
+                "at": "2026-11-03"
+            },
+            "cover_local": "covers/117546695072564.webp"
+        },
         {
             "aid": 117540168669155,
             "bvid": "BV1GrxW6XE7p",
@@ -72582,8 +72620,8 @@
         }
     ],
     "metadata": {
-        "total": 2079,
-        "available": 1134,
+        "total": 2080,
+        "available": 1135,
         "deleted": 940,
         "self_visible": 5,
         "reuploaded": 500,
@@ -72631,7 +72669,7 @@
                 "deleted": 0
             },
             "2026": {
-                "available": 195,
+                "available": 196,
                 "deleted": 2
             }
         },
