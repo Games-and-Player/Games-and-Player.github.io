@@ -1,7 +1,45 @@
 {
     "schema_version": 2,
-    "generated_at": "2026-11-05T20:09:08+08:00",
+    "generated_at": "2026-11-06T19:59:04+08:00",
     "videos": [
+        {
+            "aid": 117562583029878,
+            "bvid": "BV1eD446TEXJ",
+            "title": "反复震荡，我那无法根治的电子ED",
+            "cover": "https://i2.hdslb.com/bfs/archive/6fab69b44b7cb1b74306abf3ab140bb8538a8e28.jpg",
+            "desc": "时之笛remake发售，身边不少朋友玩得兴起，但我却受限于无法根治反复发作的电子ED，暂时无力应战。\n本期早餐车，我们就来聊聊这个话题。",
+            "tags": [
+                "上B站看播客",
+                "游戏杂谈",
+                "电子ED",
+                "户外",
+                "闲聊",
+                "时之笛",
+                "游戏文化",
+                "人到中年",
+                "GTA 6",
+                "影之刃零"
+            ],
+            "cid": 43346297914,
+            "created_at": "2026-11-06 07:30",
+            "created_timestamp": 1793921400,
+            "duration": 600,
+            "status_code": 0,
+            "status_description": "OK",
+            "is_available": true,
+            "status_check_time": "2026-11-06T19:58:59",
+            "deleted_found_at": null,
+            "restored_at": null,
+            "stat": {
+                "view": 13479,
+                "like": 858,
+                "coin": 283,
+                "favorite": 189,
+                "danmaku": 113,
+                "at": "2026-11-06"
+            },
+            "cover_local": "covers/117562583029878.webp"
+        },
         {
             "aid": 117557096943901,
             "bvid": "BV16LxQ65E1Q",
@@ -72658,8 +72696,8 @@
         }
     ],
     "metadata": {
-        "total": 2081,
-        "available": 1136,
+        "total": 2082,
+        "available": 1137,
         "deleted": 940,
         "self_visible": 5,
         "reuploaded": 500,
@@ -72707,7 +72745,7 @@
                 "deleted": 0
             },
             "2026": {
-                "available": 197,
+                "available": 198,
                 "deleted": 2
             }
         },
