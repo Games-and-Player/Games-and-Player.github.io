@@ -1,7 +1,45 @@
 {
     "schema_version": 2,
-    "generated_at": "2026-11-08T08:07:52+08:00",
+    "generated_at": "2026-11-09T20:44:37+08:00",
     "videos": [
+        {
+            "aid": 117578890483590,
+            "bvid": "BV1h94s64EZB",
+            "title": "你太大了，steam新手柄使用感受",
+            "cover": "https://i0.hdslb.com/bfs/archive/684f3cf900394a94733a3cefbf67a5a7e69e8780.jpg",
+            "desc": "最近我终于有机会体验了steam的新手柄，虽然两块触摸板挺有用，但为了这个设计，其实牺牲了不少，导致使用时，其实不太舒服。\n本期早餐车，我们就来聊聊我的体验感受。",
+            "tags": [
+                "上B站看播客",
+                "手柄",
+                "游戏杂谈",
+                "硬件",
+                "steam",
+                "游戏文化",
+                "触摸板",
+                "体验报告",
+                "游戏设备",
+                "valve"
+            ],
+            "cid": 43426254515,
+            "created_at": "2026-11-09 07:30",
+            "created_timestamp": 1794180600,
+            "duration": 663,
+            "status_code": 0,
+            "status_description": "OK",
+            "is_available": true,
+            "status_check_time": "2026-11-09T20:44:32",
+            "deleted_found_at": null,
+            "restored_at": null,
+            "stat": {
+                "view": 13029,
+                "like": 847,
+                "coin": 262,
+                "favorite": 146,
+                "danmaku": 70,
+                "at": "2026-11-09"
+            },
+            "cover_local": "covers/117578890483590.webp"
+        },
         {
             "aid": 117562583029878,
             "bvid": "BV1eD446TEXJ",
@@ -72696,8 +72734,8 @@
         }
     ],
     "metadata": {
-        "total": 2082,
-        "available": 1137,
+        "total": 2083,
+        "available": 1138,
         "deleted": 940,
         "self_visible": 5,
         "reuploaded": 500,
@@ -72745,7 +72783,7 @@
                 "deleted": 0
             },
             "2026": {
-                "available": 198,
+                "available": 199,
                 "deleted": 2
             }
         },
