@@ -1,7 +1,45 @@
 {
     "schema_version": 2,
-    "generated_at": "2026-11-09T20:44:37+08:00",
+    "generated_at": "2026-11-10T20:28:20+08:00",
     "videos": [
+        {
+            "aid": 117585215494915,
+            "bvid": "BV1BLWx6hEpr",
+            "title": "无用之用，我们为何需要游戏",
+            "cover": "https://i2.hdslb.com/bfs/archive/f3c91ac522bccb3853ade8eb3102633a467a191d.jpg",
+            "desc": "长久以来，游戏被认为是无用的东西，因为通常它无法满足任何功利性的目的，但即便如此，游戏已经是很多人生命力不可或缺之物，这或许恰是庄子所谓无用之用的最好注脚。\n本期早餐车，我们就来聊聊这个话题。",
+            "tags": [
+                "上B站看播客",
+                "电子游戏",
+                "游戏杂谈",
+                "生活",
+                "生存",
+                "庄子",
+                "好奇心",
+                "功利",
+                "游戏文化",
+                "无用之用"
+            ],
+            "cid": 43456987688,
+            "created_at": "2026-11-10 07:30",
+            "created_timestamp": 1794267000,
+            "duration": 815,
+            "status_code": 0,
+            "status_description": "OK",
+            "is_available": true,
+            "status_check_time": "2026-11-10T20:28:14",
+            "deleted_found_at": null,
+            "restored_at": null,
+            "stat": {
+                "view": 9979,
+                "like": 870,
+                "coin": 327,
+                "favorite": 223,
+                "danmaku": 55,
+                "at": "2026-11-10"
+            },
+            "cover_local": "covers/117585215494915.webp"
+        },
         {
             "aid": 117578890483590,
             "bvid": "BV1h94s64EZB",
@@ -72734,8 +72772,8 @@
         }
     ],
     "metadata": {
-        "total": 2083,
-        "available": 1138,
+        "total": 2084,
+        "available": 1139,
         "deleted": 940,
         "self_visible": 5,
         "reuploaded": 500,
@@ -72783,7 +72821,7 @@
                 "deleted": 0
             },
             "2026": {
-                "available": 199,
+                "available": 200,
                 "deleted": 2
             }
         },
