@@ -1,7 +1,45 @@
 {
     "schema_version": 2,
-    "generated_at": "2026-11-10T20:28:20+08:00",
+    "generated_at": "2026-11-11T19:47:47+08:00",
     "videos": [
+        {
+            "aid": 117591658010813,
+            "bvid": "BV199WM6rE5C",
+            "title": "GTA 6，难以轻易满足的期待",
+            "cover": "https://i1.hdslb.com/bfs/archive/5c2f1f130cac5585b6e172f2971e9fe25d326507.jpg",
+            "desc": "十多年等待，前作的辉煌，以及玩家不断累积的想象，让《GTA 6》承载了远超一款游戏的期待，但也正是这份期待，使得R星难以轻松满足玩家。\n本期早餐车，我们就来聊聊这个话题。",
+            "tags": [
+                "上B站看播客",
+                "游戏杂谈",
+                "XBOX",
+                "神作",
+                "R星",
+                "PS5",
+                "游戏文化",
+                "开放世界",
+                "GTA6",
+                "玩家期待"
+            ],
+            "cid": 43487855925,
+            "created_at": "2026-11-11 07:30",
+            "created_timestamp": 1794353400,
+            "duration": 786,
+            "status_code": 0,
+            "status_description": "OK",
+            "is_available": true,
+            "status_check_time": "2026-11-11T19:47:42",
+            "deleted_found_at": null,
+            "restored_at": null,
+            "stat": {
+                "view": 26020,
+                "like": 1244,
+                "coin": 340,
+                "favorite": 286,
+                "danmaku": 206,
+                "at": "2026-11-11"
+            },
+            "cover_local": "covers/117591658010813.webp"
+        },
         {
             "aid": 117585215494915,
             "bvid": "BV1BLWx6hEpr",
@@ -72772,8 +72810,8 @@
         }
     ],
     "metadata": {
-        "total": 2084,
-        "available": 1139,
+        "total": 2085,
+        "available": 1140,
         "deleted": 940,
         "self_visible": 5,
         "reuploaded": 500,
@@ -72821,7 +72859,7 @@
                 "deleted": 0
             },
             "2026": {
-                "available": 200,
+                "available": 201,
                 "deleted": 2
             }
         },
