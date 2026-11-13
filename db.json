@@ -1,7 +1,45 @@
 {
     "schema_version": 2,
-    "generated_at": "2026-11-11T19:47:47+08:00",
+    "generated_at": "2026-11-13T20:03:54+08:00",
     "videos": [
+        {
+            "aid": 117602915456896,
+            "bvid": "BV11RWR64EYy",
+            "title": "割裂的30帧，GTA 6为何让玩家产生分歧？",
+            "cover": "https://i2.hdslb.com/bfs/archive/28d09b7e4f1a3f5f59302d03691a5a12adb37382.jpg",
+            "desc": "当《GTA 6》选择30帧，玩家的感受却不尽相同，有人愿意为更复杂的开放世界接受妥协，也有人无法接受落后于时代的30帧，割裂感由是而生。\n本期早餐车，我们就来聊聊这个话题。",
+            "tags": [
+                "上B站看播客",
+                "R星",
+                "游戏杂谈",
+                "XBOX",
+                "帧数",
+                "PS5",
+                "游戏文化",
+                "GTA6",
+                "开放世界",
+                "PS5 PRO"
+            ],
+            "cid": 43541923104,
+            "created_at": "2026-11-13 07:30",
+            "created_timestamp": 1794526200,
+            "duration": 915,
+            "status_code": 0,
+            "status_description": "OK",
+            "is_available": true,
+            "status_check_time": "2026-11-13T20:03:49",
+            "deleted_found_at": null,
+            "restored_at": null,
+            "stat": {
+                "view": 33632,
+                "like": 1296,
+                "coin": 387,
+                "favorite": 282,
+                "danmaku": 344,
+                "at": "2026-11-13"
+            },
+            "cover_local": "covers/117602915456896.webp"
+        },
         {
             "aid": 117591658010813,
             "bvid": "BV199WM6rE5C",
@@ -72810,8 +72848,8 @@
         }
     ],
     "metadata": {
-        "total": 2085,
-        "available": 1140,
+        "total": 2086,
+        "available": 1141,
         "deleted": 940,
         "self_visible": 5,
         "reuploaded": 500,
@@ -72859,7 +72897,7 @@
                 "deleted": 0
             },
             "2026": {
-                "available": 201,
+                "available": 202,
                 "deleted": 2
             }
         },
