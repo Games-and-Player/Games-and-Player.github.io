@@ -1,7 +1,45 @@
 {
     "schema_version": 2,
-    "generated_at": "2026-11-15T08:21:58+08:00",
+    "generated_at": "2026-11-16T20:37:53+08:00",
     "videos": [
+        {
+            "aid": 117619843669261,
+            "bvid": "BV1Xtsp6UEBF",
+            "title": "机缘巧合，我还是买了gta6的实体版",
+            "cover": "https://i2.hdslb.com/bfs/archive/ef6183dd5ea97030b8ff48974556e88f568437e1.jpg",
+            "desc": "机缘巧合，还是买了伪实体版本的gta 6。问题是，R星不惜分润渠道，提前发售保证竞争力，也要搞code in box的原因是什么呢？\n本期早餐车，我们就来聊聊这个话题。\n本期早餐车code in boxcodecode in box",
+            "tags": [
+                "上B站看播客",
+                "游戏杂谈",
+                "XBOX",
+                "R星",
+                "伪实体",
+                "code in box",
+                "GTA6",
+                "游戏文化",
+                "实体店",
+                "PS5"
+            ],
+            "cid": 43625612429,
+            "created_at": "2026-11-16 07:30",
+            "created_timestamp": 1794785400,
+            "duration": 832,
+            "status_code": 0,
+            "status_description": "OK",
+            "is_available": true,
+            "status_check_time": "2026-11-16T20:37:48",
+            "deleted_found_at": null,
+            "restored_at": null,
+            "stat": {
+                "view": 29900,
+                "like": 1308,
+                "coin": 357,
+                "favorite": 282,
+                "danmaku": 264,
+                "at": "2026-11-16"
+            },
+            "cover_local": "covers/117619843669261.webp"
+        },
         {
             "aid": 117602915456896,
             "bvid": "BV11RWR64EYy",
@@ -72848,8 +72886,8 @@
         }
     ],
     "metadata": {
-        "total": 2086,
-        "available": 1141,
+        "total": 2087,
+        "available": 1142,
         "deleted": 940,
         "self_visible": 5,
         "reuploaded": 500,
@@ -72897,7 +72935,7 @@
                 "deleted": 0
             },
             "2026": {
-                "available": 202,
+                "available": 203,
                 "deleted": 2
             }
         },
