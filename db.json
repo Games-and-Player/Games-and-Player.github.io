@@ -1,7 +1,45 @@
 {
     "schema_version": 2,
-    "generated_at": "2026-11-16T20:37:53+08:00",
+    "generated_at": "2026-11-17T21:06:13+08:00",
     "videos": [
+        {
+            "aid": 117625447257938,
+            "bvid": "BV1aBsP6FE6T",
+            "title": "因为人生没有二周目，影之刃零通关感受",
+            "cover": "https://i1.hdslb.com/bfs/archive/77df543c4fc15dc9ee9e8af2f9e3a2dea9f4da66.jpg",
+            "desc": "打通了影之刃零的真结局，非常满意。然而，我最初却是想着草草通关，所幸没有，因为游戏有二周目，人生却没有，一次完整的体验，或许才是答案。\n本期早餐车，我们就来聊聊这个话题。",
+            "tags": [
+                "上B站看播客",
+                "游戏杂谈",
+                "人生",
+                "武侠",
+                "steam",
+                "魂",
+                "江湖",
+                "游戏文化",
+                "通关感受",
+                "影之刃零"
+            ],
+            "cid": 43652219453,
+            "created_at": "2026-11-17 07:30",
+            "created_timestamp": 1794871800,
+            "duration": 886,
+            "status_code": 0,
+            "status_description": "OK",
+            "is_available": true,
+            "status_check_time": "2026-11-17T21:06:07",
+            "deleted_found_at": null,
+            "restored_at": null,
+            "stat": {
+                "view": 16188,
+                "like": 1100,
+                "coin": 373,
+                "favorite": 220,
+                "danmaku": 125,
+                "at": "2026-11-17"
+            },
+            "cover_local": "covers/117625447257938.webp"
+        },
         {
             "aid": 117619843669261,
             "bvid": "BV1Xtsp6UEBF",
@@ -72886,8 +72924,8 @@
         }
     ],
     "metadata": {
-        "total": 2087,
-        "available": 1142,
+        "total": 2088,
+        "available": 1143,
         "deleted": 940,
         "self_visible": 5,
         "reuploaded": 500,
@@ -72935,7 +72973,7 @@
                 "deleted": 0
             },
             "2026": {
-                "available": 203,
+                "available": 204,
                 "deleted": 2
             }
         },
