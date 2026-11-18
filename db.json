@@ -1,7 +1,45 @@
 {
     "schema_version": 2,
-    "generated_at": "2026-11-17T21:06:13+08:00",
+    "generated_at": "2026-11-18T20:56:09+08:00",
     "videos": [
+        {
+            "aid": 117626252565382,
+            "bvid": "BV1TWsA6DESu",
+            "title": "生化危机，为何选择从二代开始重制",
+            "cover": "https://i1.hdslb.com/bfs/archive/f44ac3968103280458e49dab5f968559b30546f4.jpg",
+            "desc": "竹内润生化系列30周年时接受采访，谈到了为何跳过生化1而从2代开始重制的原因，但我觉得他只是说了其中的一方面，并非全部的考量。\n本期早餐车，我们就来聊聊这个话题。",
+            "tags": [
+                "上B站看播客",
+                "生化危机",
+                "Xbox",
+                "NS2",
+                "卡普空",
+                "三上真司",
+                "PS5",
+                "Steam",
+                "remake",
+                "竹内润"
+            ],
+            "cid": 43657005869,
+            "created_at": "2026-11-18 07:30",
+            "created_timestamp": 1794958200,
+            "duration": 944,
+            "status_code": 0,
+            "status_description": "OK",
+            "is_available": true,
+            "status_check_time": "2026-11-18T20:56:04",
+            "deleted_found_at": null,
+            "restored_at": null,
+            "stat": {
+                "view": 15149,
+                "like": 975,
+                "coin": 281,
+                "favorite": 247,
+                "danmaku": 81,
+                "at": "2026-11-18"
+            },
+            "cover_local": "covers/117626252565382.webp"
+        },
         {
             "aid": 117625447257938,
             "bvid": "BV1aBsP6FE6T",
@@ -72924,8 +72962,8 @@
         }
     ],
     "metadata": {
-        "total": 2088,
-        "available": 1143,
+        "total": 2089,
+        "available": 1144,
         "deleted": 940,
         "self_visible": 5,
         "reuploaded": 500,
@@ -72973,7 +73011,7 @@
                 "deleted": 0
             },
             "2026": {
-                "available": 204,
+                "available": 205,
                 "deleted": 2
             }
         },
