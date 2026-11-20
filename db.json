@@ -1,7 +1,45 @@
 {
     "schema_version": 2,
-    "generated_at": "2026-11-18T20:56:09+08:00",
+    "generated_at": "2026-11-20T20:43:47+08:00",
     "videos": [
+        {
+            "aid": 117643147220764,
+            "bvid": "BV15csh6gEhi",
+            "title": "无双之作，再次见证神作降临",
+            "cover": "https://i2.hdslb.com/bfs/archive/b5e9e98fc94fe21a0049d250042758e861cda7a4.jpg",
+            "desc": "能够亲眼见证gta 6这样无双神作的降临，是身为玩家最幸福的时刻。\n本期早餐车，就来聊聊gta 6的初见感受，那份独一无二的震撼。",
+            "tags": [
+                "上B站看播客",
+                "游戏杂谈",
+                "侠盗猎车手",
+                "R星",
+                "游戏文化",
+                "游戏推荐",
+                "xbox",
+                "rockstar",
+                "ps5",
+                "GTA 6"
+            ],
+            "cid": 43741676741,
+            "created_at": "2026-11-20 07:30",
+            "created_timestamp": 1795131000,
+            "duration": 950,
+            "status_code": 0,
+            "status_description": "OK",
+            "is_available": true,
+            "status_check_time": "2026-11-20T20:43:42",
+            "deleted_found_at": null,
+            "restored_at": null,
+            "stat": {
+                "view": 32166,
+                "like": 1759,
+                "coin": 712,
+                "favorite": 417,
+                "danmaku": 432,
+                "at": "2026-11-20"
+            },
+            "cover_local": "covers/117643147220764.webp"
+        },
         {
             "aid": 117626252565382,
             "bvid": "BV1TWsA6DESu",
@@ -72962,8 +73000,8 @@
         }
     ],
     "metadata": {
-        "total": 2089,
-        "available": 1144,
+        "total": 2090,
+        "available": 1145,
         "deleted": 940,
         "self_visible": 5,
         "reuploaded": 500,
@@ -73011,7 +73049,7 @@
                 "deleted": 0
             },
             "2026": {
-                "available": 205,
+                "available": 206,
                 "deleted": 2
             }
         },
