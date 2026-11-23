@@ -1,7 +1,45 @@
 {
     "schema_version": 2,
-    "generated_at": "2026-11-22T08:46:34+08:00",
+    "generated_at": "2026-11-23T22:24:00+08:00",
     "videos": [
+        {
+            "aid": 117659001691090,
+            "bvid": "BV1feyVzaEr2",
+            "title": "不留活口，为何我在游戏中赶尽杀绝",
+            "cover": "https://i1.hdslb.com/bfs/archive/b3272be58daa6895d72e2ccf864ad83635c8c891.jpg",
+            "desc": "gta 6存在所谓非致命玩法，但我依旧维持长久来的习惯，不留活口。我们会发现，游戏玩家习惯慎杀，有些则是赶尽杀绝，这个区别本身就很有意思。\n本期早餐车，我们就来聊聊这个话题。",
+            "tags": [
+                "上B站看播客",
+                "单机游戏",
+                "游戏杂谈",
+                "MGS",
+                "杀手47",
+                "潜行",
+                "游戏文化",
+                "刚正面",
+                "GTA 6",
+                "玩家行为"
+            ],
+            "cid": 43821303694,
+            "created_at": "2026-11-23 07:30",
+            "created_timestamp": 1795390200,
+            "duration": 825,
+            "status_code": 0,
+            "status_description": "OK",
+            "is_available": true,
+            "status_check_time": "2026-11-23T22:23:54",
+            "deleted_found_at": null,
+            "restored_at": null,
+            "stat": {
+                "view": 19429,
+                "like": 1002,
+                "coin": 332,
+                "favorite": 229,
+                "danmaku": 161,
+                "at": "2026-11-23"
+            },
+            "cover_local": "covers/117659001691090.webp"
+        },
         {
             "aid": 117643147220764,
             "bvid": "BV15csh6gEhi",
@@ -73000,8 +73038,8 @@
         }
     ],
     "metadata": {
-        "total": 2090,
-        "available": 1145,
+        "total": 2091,
+        "available": 1146,
         "deleted": 940,
         "self_visible": 5,
         "reuploaded": 500,
@@ -73049,7 +73087,7 @@
                 "deleted": 0
             },
             "2026": {
-                "available": 206,
+                "available": 207,
                 "deleted": 2
             }
         },
