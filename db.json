@@ -1,7 +1,45 @@
 {
     "schema_version": 2,
-    "generated_at": "2026-11-23T22:24:00+08:00",
+    "generated_at": "2026-11-24T22:44:17+08:00",
     "videos": [
+        {
+            "aid": 117665830017047,
+            "bvid": "BV1weySzuEEZ",
+            "title": "并非易事，能够沉浸游戏，是一种机缘",
+            "cover": "https://i0.hdslb.com/bfs/archive/289f52921be5dbf3e9d8ea5f38bc43856061411c.jpg",
+            "desc": "最近沉迷gta 6，不能自拔。但我由是想到，人生能够这样沉浸体验游戏的机会，其实并没有想象中的那么多，有时候，这也是一种机缘。\n本期早餐车，我们就来朝花夕拾，聊聊这个话题。",
+            "tags": [
+                "上B站看播客",
+                "时间",
+                "游戏杂谈",
+                "网络游戏",
+                "FC",
+                "沉浸",
+                "游戏文化",
+                "人生经历",
+                "GTA 6",
+                "游戏往事"
+            ],
+            "cid": 43860295965,
+            "created_at": "2026-11-24 07:30",
+            "created_timestamp": 1795476600,
+            "duration": 901,
+            "status_code": 0,
+            "status_description": "OK",
+            "is_available": true,
+            "status_check_time": "2026-11-24T22:44:11",
+            "deleted_found_at": null,
+            "restored_at": null,
+            "stat": {
+                "view": 16618,
+                "like": 1166,
+                "coin": 434,
+                "favorite": 241,
+                "danmaku": 177,
+                "at": "2026-11-24"
+            },
+            "cover_local": "covers/117665830017047.webp"
+        },
         {
             "aid": 117659001691090,
             "bvid": "BV1feyVzaEr2",
@@ -73038,8 +73076,8 @@
         }
     ],
     "metadata": {
-        "total": 2091,
-        "available": 1146,
+        "total": 2092,
+        "available": 1147,
         "deleted": 940,
         "self_visible": 5,
         "reuploaded": 500,
@@ -73087,7 +73125,7 @@
                 "deleted": 0
             },
             "2026": {
-                "available": 207,
+                "available": 208,
                 "deleted": 2
             }
         },
