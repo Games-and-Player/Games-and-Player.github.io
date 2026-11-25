@@ -1,7 +1,45 @@
 {
     "schema_version": 2,
-    "generated_at": "2026-11-24T22:44:17+08:00",
+    "generated_at": "2026-11-25T22:08:22+08:00",
     "videos": [
+        {
+            "aid": 117671484004734,
+            "bvid": "BV1wv1czMEJL",
+            "title": "原创危机，AI克隆冲击游戏创意壁垒",
+            "cover": "https://i0.hdslb.com/bfs/archive/69170bf81803a993586c77f9ae2f1dd954562142.jpg",
+            "desc": "Game Industry的一篇文章提出一个观点，即现今在ai克隆和逆向盛行之下，不少创意优先的独立游戏，不得闪电发售避免抄袭与借鉴。\n本期节目，就来聊聊这个话题，和大家分享我的观察与观点。",
+            "tags": [
+                "上B站看播客",
+                "游戏杂谈",
+                "人工智能",
+                "独立游戏",
+                "创意壁垒",
+                "规模壁垒",
+                "REA",
+                "3A",
+                "游戏文化",
+                "业界分析"
+            ],
+            "cid": 43888150579,
+            "created_at": "2026-11-25 07:30",
+            "created_timestamp": 1795563000,
+            "duration": 911,
+            "status_code": 0,
+            "status_description": "OK",
+            "is_available": true,
+            "status_check_time": "2026-11-25T22:08:17",
+            "deleted_found_at": null,
+            "restored_at": null,
+            "stat": {
+                "view": 10906,
+                "like": 777,
+                "coin": 262,
+                "favorite": 178,
+                "danmaku": 26,
+                "at": "2026-11-25"
+            },
+            "cover_local": "covers/117671484004734.webp"
+        },
         {
             "aid": 117665830017047,
             "bvid": "BV1weySzuEEZ",
@@ -73076,8 +73114,8 @@
         }
     ],
     "metadata": {
-        "total": 2092,
-        "available": 1147,
+        "total": 2093,
+        "available": 1148,
         "deleted": 940,
         "self_visible": 5,
         "reuploaded": 500,
@@ -73125,7 +73163,7 @@
                 "deleted": 0
             },
             "2026": {
-                "available": 208,
+                "available": 209,
                 "deleted": 2
             }
         },
