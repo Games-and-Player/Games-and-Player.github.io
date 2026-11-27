@@ -1,7 +1,45 @@
 {
     "schema_version": 2,
-    "generated_at": "2026-11-26T21:45:30+08:00",
+    "generated_at": "2026-11-27T21:42:45+08:00",
     "videos": [
+        {
+            "aid": 117681885811008,
+            "bvid": "BV1mFyUzkEmU",
+            "title": "游戏光盘盒，为何大小不一？",
+            "cover": "https://i1.hdslb.com/bfs/archive/85d7ea33991cbe4215e92d835135f61b37d1380a.jpg",
+            "desc": "明明DVD和CD一样大，但为什么类似PS2这样的DVD游戏盘盒，就比PS1这样的CD盘盒大很多呢？本期节目，就来聊聊这个趣味冷知识，顺便显摆一下我的时之笛（游戏啊，不是别的什么奇怪的笛子）。",
+            "tags": [
+                "上B站看播客",
+                "游戏杂谈",
+                "黑胶唱片",
+                "NS2",
+                "游戏文化",
+                "录像带",
+                "时之笛",
+                "游戏光盘",
+                "cd",
+                "dvd"
+            ],
+            "cid": 43938547473,
+            "created_at": "2026-11-27 07:30",
+            "created_timestamp": 1795735800,
+            "duration": 664,
+            "status_code": 0,
+            "status_description": "OK",
+            "is_available": true,
+            "status_check_time": "2026-11-27T21:42:40",
+            "deleted_found_at": null,
+            "restored_at": null,
+            "stat": {
+                "view": 11375,
+                "like": 841,
+                "coin": 300,
+                "favorite": 181,
+                "danmaku": 82,
+                "at": "2026-11-27"
+            },
+            "cover_local": "covers/117681885811008.webp"
+        },
         {
             "aid": 117676970153442,
             "bvid": "BV1BUykz1EyW",
@@ -73149,8 +73187,8 @@
         }
     ],
     "metadata": {
-        "total": 2094,
-        "available": 1149,
+        "total": 2095,
+        "available": 1150,
         "deleted": 940,
         "self_visible": 5,
         "reuploaded": 500,
@@ -73198,7 +73236,7 @@
                 "deleted": 0
             },
             "2026": {
-                "available": 210,
+                "available": 211,
                 "deleted": 2
             }
         },
